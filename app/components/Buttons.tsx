@@ -1,23 +1,30 @@
-"use client";
-import { useState } from "react";
+
+import { useState, useEffect, FormEvent } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "./modal";
 
 export default function Buttons() {
-  const [buttons, setButtons] = useState(Array.from({ length: 600 }));
+  // const [buttons, setButtons] = useState(Array.from({ length: 600 }));
   const [hasMore, setHasMore] = useState(true);
   const [reserved, setReserved] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showAside, setShowAside] = useState(false);
   const [removed, setRemoved] = useState([]);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
+  const availableNumbers = Array.from({ length: 600 })
+  .map((_, index) => index)
+  .filter((index) => !reserved.includes(index) && !removed.includes(index));
+
+const [buttons, setButtons] = useState(availableNumbers);
 
   const fetchMoreData = () => {
     if (buttons.length - removed.length >= 30000) {
       setHasMore(false);
       return;
     }
-  
+
     setTimeout(() => {
       const newButtons = [];
       for (let i = 0; i < 200; i++) {
@@ -43,14 +50,43 @@ export default function Buttons() {
     setShowModal(true);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false); // hide the modal
     setRemoved([...removed, ...reserved]);
     setReserved([]);
     setShowAside(false);
+
+    // Send data to API route
+    const res = await fetch("http://localhost:3000/api/reservedNumbers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        numbers: reserved,
+      }),
+    });
+    // 
+    if (res.ok) {
+      // Remove reserved numbers from the available buttons
+      const updatedButtons = buttons.filter((_, index) => !reserved.includes(index));
+      setButtons(updatedButtons);
+    } else {
+      console.error("An error occurred while processing the request.");
+    }
+    // 
+
+    const result = await res.json();
+    console.log(result);
+
+
+    // Reset name and email fields
+    setName("");
+    setEmail("");
   };
-  console.log(removed)
 
   return (
     <div>
@@ -70,9 +106,9 @@ export default function Buttons() {
         >
           <div className="grid grid-cols-4 gap-1 place-items-center py-4">
             {buttons.map((_, index) => {
-             if (reserved.includes(index) || removed.includes(index)) {
-              return null;
-            }
+              if (reserved.includes(index) || removed.includes(index)) {
+                return null;
+              }
               return (
                 <button
                   className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500 focus:outline-none active:translate-y-1 transform transition-all duration-100 ease-in-out"
@@ -149,6 +185,8 @@ export default function Buttons() {
                 id="name"
                 type="text"
                 placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div className="mb-4">
@@ -163,6 +201,8 @@ export default function Buttons() {
                 id="email"
                 type="email"
                 placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="bg-white p-2 rounded">
