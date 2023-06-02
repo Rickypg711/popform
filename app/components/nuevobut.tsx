@@ -1,4 +1,7 @@
-// big change here
+
+
+
+// big change here 
 import { useState, useEffect, FormEvent } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "./modal";
@@ -7,42 +10,13 @@ export default function Buttons() {
   const [hasMore, setHasMore] = useState(true);
   const [reserved, setReserved] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [removed, setRemoved] = useState([]);
+  const [removed, setRemoved] = useState([1, 15, 24, 417]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
 
   // Create initial buttons array excluding the numbers already removed
-  const [buttons, setButtons] = useState(
-    Array.from({ length: 500 }, (_, i) => i + 1).filter((num) =>
-      removed ? !removed.includes(num) : true
-    )
-  );
-  //
+  const [buttons, setButtons] = useState(Array.from({ length: 500 }, (_, i) => i + 1).filter(num => !removed.includes(num)));
 
-  // useEffect(() => {
-  const fetchRemovedNumbers = async () => {
-    try {
-      const res = await fetch("http://localhost:3000/api/reservedNumbers");
-      const data = await res.json();
-
-      if (res.ok) {
-        setRemoved(data);
-        // Set isLoading to false when data has been successfully fetched
-        setIsLoading(false);
-      } else {
-        console.error(data.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchRemovedNumbers();
-  }, []);
-
-  //
   console.log("Reserved: ", reserved);
   console.log("Removed: ", removed);
   console.log("Buttons: ", buttons);
@@ -55,63 +29,51 @@ export default function Buttons() {
     }
   };
 
-  // let see handle submit
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setShowModal(false);
+    setShowModal(false); // hide the modal
 
-    try {
-      // Send data to API route
-      const res = await fetch("http://localhost:3000/api/reservedNumbers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          numbers: reserved,
-        }),
-      });
+    // Send data to API route
+    const res = await fetch("http://localhost:3000/api/reservedNumbers", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        numbers: reserved,
+      }),
+    });
 
-      const result = await res.json();
-
-      if (res.ok) {
-        // After reserving numbers, fetch the updated list of removed numbers
-        await fetchRemovedNumbers();
-        setReserved([]);
-      } else {
-        console.error(result.error);
-      }
-    } catch (error) {
-      console.error("Error:", error);
+    if (res.ok) {
+      setRemoved([...removed, ...reserved]);
+      setReserved([]);
+    } else {
+      console.error("An error occurred while processing the request.");
     }
 
+    const result = await res.json();
+    console.log(result);
+
+    // Reset name and email fields
     setName("");
     setEmail("");
   };
 
-  //
-
-  //
-
   // Watch for changes in 'removed' state and update 'buttons' state accordingly
   useEffect(() => {
-    const availableNumbers = Array.from(
-      { length: 500 },
-      (_, i) => i + 1
-    ).filter((num) => (removed ? !removed.includes(num) : true));
-    console.log("Available numbers:", availableNumbers);
-
+    const availableNumbers = Array.from({ length: 500 }, (_, i) => i + 1).filter(num => !removed.includes(num));
     setButtons(availableNumbers);
   }, [removed]);
 
   // The rest of your component code...
 
+
   // The rest of your component code...}
 
-  // big change here
+
+// big change here 
 
   return (
     <div>
@@ -120,6 +82,7 @@ export default function Buttons() {
       <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">
         <InfiniteScroll
           dataLength={buttons.length}
+          // next={fetchMoreData}
           hasMore={hasMore}
           loader={<h4 className="animate-pulse">Loading...</h4>}
           endMessage={
@@ -128,26 +91,23 @@ export default function Buttons() {
             </p>
           }
         >
-          {isLoading ? (
-            <h4 className="animate-pulse">Loading...</h4>
-          ) : (
-            <div className="grid grid-cols-4 gap-1 place-items-center py-4">
-              {buttons.map((number) => {
-                if (reserved?.includes(number) || removed?.includes(number)) {
-                  return null;
-                }
-                return (
-                  <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500 focus:outline-none active:translate-y-1 transform transition-all duration-100 ease-in-out"
-                    key={number}
-                    onClick={() => reserveTicket(number)}
-                  >
-                    {number}
-                  </button>
-                );
-              })}
-            </div>
-          )}
+          <div className="grid grid-cols-4 gap-1 place-items-center py-4">
+        {buttons.map((number) => {
+          if (reserved.includes(number) || removed.includes(number)) {
+            return null;
+          }
+          return (
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500 focus:outline-none active:translate-y-1 transform transition-all duration-100 ease-in-out"
+              key={number}
+              onClick={() => reserveTicket(number)}
+            >
+              {number}
+            </button>
+          );
+        })}
+      </div>
+          
         </InfiniteScroll>
       </section>
       {/*  */}
