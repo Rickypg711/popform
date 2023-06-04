@@ -10,6 +10,8 @@ export default function Buttons() {
   const [removed, setRemoved] = useState([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+
   const [isLoading, setIsLoading] = useState(true);
 
   // Create initial buttons array excluding the numbers already removed
@@ -60,7 +62,7 @@ export default function Buttons() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
-
+  
     try {
       // Send data to API route
       const res = await fetch("http://localhost:3000/api/reservedNumbers", {
@@ -71,26 +73,34 @@ export default function Buttons() {
         body: JSON.stringify({
           name,
           email,
+          phone, // Add phone here
           numbers: reserved,
         }),
       });
-
+  
       const result = await res.json();
-
+  
       if (res.ok) {
         // After reserving numbers, fetch the updated list of removed numbers
         await fetchRemovedNumbers();
         setReserved([]);
+  
+        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019!! \n \u{1F534} *1 BOLETO:* \n *${reserved.join(", ")}* \n\n *Nombre:* ${name} \n *Celular:* ${phone} \n \u{1F535}1 BOLETO POR $67 \n 2 BOLETOS POR $129 \n 3 BOLETOS POR $193 \n 4 BOLETOS POR $255 \n 5 BOLETOS POR $310 \n 10 BOLETOS POR $599 \n 100 BOLETOS POR $5,900 \n \u{1F6AF} *CUENTAS DE PAGO AQUÍ:* www.rifaseconomicaschihuahua.com/pagos \n\n El siguiente paso es enviar foto del comprobante de pago por aquí`;
+        let encodedMessage = encodeURIComponent(baseMessage);
+        window.location.href = `https://wa.me/+5216143736551?text=${encodedMessage}`; // Replace with your number
+        
       } else {
         console.error(result.error);
       }
     } catch (error) {
       console.error("Error:", error);
     }
-
+  
     setName("");
     setEmail("");
+    setPhone(""); // clear phone state
   };
+  
 
   //
 
@@ -217,6 +227,24 @@ export default function Buttons() {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
+            {/* phone */}
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="phone"
+              >
+                Phone
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="phone"
+                type="tel"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+            </div>
+            {/* email */}
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"

@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/app/lib/script";
 
 type Feedback = {
   name: string;
   email: string;
+  phone: string;  // add this line
   numbers: number[];
 };
 
@@ -20,13 +19,13 @@ export async function GET(request: Request) {
 
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }finally {
-      await prisma.$disconnect();
-    }
+    await prisma.$disconnect();
   }
+}
 
 export async function POST(request: Request) {
   const data: Feedback = await request.json();
-  const { name, email, numbers } = data;
+  const { name, email, phone, numbers } = data;  // update this line
 
   try {
     const reservedNumbers = await prisma.reservedNumber.findMany();
@@ -48,6 +47,7 @@ export async function POST(request: Request) {
       data: {
         name,
         email,
+        phone,  // add this line
         numbers: {
           set: availableNumbers,
         },
@@ -59,7 +59,7 @@ export async function POST(request: Request) {
 
     console.log("user", user);
 
-    return NextResponse.json({ name, email, numbers: availableNumbers });
+    return NextResponse.json({ name, email, phone, numbers: availableNumbers });  // update this line
   } catch (error) {
     console.error(error);
 
