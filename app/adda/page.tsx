@@ -1,4 +1,5 @@
-'use client'
+// 'use client'
+
 // import { useState, useEffect } from 'react';
 // import { FaCog } from 'react-icons/fa';
 // import SettModal from '../components/SettModal';
@@ -121,6 +122,11 @@
 
 // export default AdmiPage;
 
+
+
+'use client'
+
+
 import { useState, useEffect } from 'react';
 import { FaCog } from 'react-icons/fa';
 import SettModal from '../components/SettModal';
@@ -181,11 +187,23 @@ const AdmiPage = () => {
         return filter === 'paid' ? user.paid : !user.paid;
     });
 
+    const toUnicode = (str) => {
+        return str.split('').map(function (value, index, array) {
+            var temp = value.charCodeAt(0).toString(16).toUpperCase();
+            if (temp.length > 2) {
+                return '\\u' + temp;
+            }
+            return value;
+        }).join('');
+    }
+
     const sendWhatsAppReminder = () => {
         if (selectedUsers.length === 1) {
             const user = users.find(u => u.id === selectedUsers[0]);
-            const personalizedMessage = `Hola ${user.name}, te hablo de RIFAS CHIHUAHUA🔥. *❗️TE INVITO A MI RIFA DE LA ESCALADE ➕RAPTOR❗️*. *➖PROMOCION EXCLUSIVA PARA TI SÓLO HOY POR SER NUESTRO CLIENTE DE RIFAS ANTERIORES*. ❌PRECIO NORMAL 💲67😓. ✅PRECIO PROMO 💲59🔥. SORTEO 24: FORD RAPTOR➕ESCALADE(BONO)➕ $50,000 O CASI 3 MILLONES DE PESOS (lo que tú prefieras). *ULTIMOS BOLETOS AQUI* 🎟️: www.economicascuu.com/s24-lista. ➖*BONO EXCLUSIVO* IPHONE 14 PRO MAX➕PLAYSTATION 5➕PANTALLA SAMSUNG 85”. ⚠️IMPORTANTE⚠️. *SI NO ABRE EL ENLACE DE LOS BOLETOS AGRÉGAME A TUS CONTACTOS PARA ACTIVAR EN ENLACE*`;
-            const link = `https://wa.me/${user.phone}?text=${encodeURIComponent(personalizedMessage)}`;
+            const message = `Hola ${user.name} te hablo de RIFAS CHIHUAHUA🔥 ...`; // rest of the message
+            const unicodeMessage = toUnicode(message);
+            const encodedMessage = encodeURIComponent(unicodeMessage);
+            const link = `https://wa.me/${user.phone}?text=${encodedMessage}`;
             window.open(link, '_blank');
         }
     };
@@ -254,4 +272,3 @@ const AdmiPage = () => {
 };
 
 export default AdmiPage;
-

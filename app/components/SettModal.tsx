@@ -15,19 +15,45 @@ export default function SettModal({ isVisible, onClose }) {
         });
     };
 
-    const handleSubmit = async () => {
-        const res1 = await fetch('/api/title', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ title: config.drawDate }),
-        });
-
-        if (res1.ok) {
-            onClose();
+    const handleSubmit = async (e) => {
+        e.preventDefault();  // prevent form from reloading the page
+    
+        if (config.drawDate !== '') {
+            // Only send the request if drawDate is not empty
+            const res1 = await fetch('/api/title', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ title: config.drawDate }),
+            });
+    
+            if (!res1.ok) {
+                console.error("Failed to post drawDate");
+                return;
+            }
         }
+    
+        if (config.whatsapp !== '') {
+            // Only send the request if whatsapp is not empty
+            const res2 = await fetch('/api/whatsappmessage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: config.whatsapp }),
+            });
+    
+            if (!res2.ok) {
+                console.error("Failed to post whatsapp message");
+                return;
+            }
+        }
+    
+        // Close the modal only if no errors occurred
+        onClose();
     };
+    
     
     if (!isVisible) {
         return null;
