@@ -87,7 +87,7 @@ export default function Buttons() {
   
         let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019!! \n \u{1F534} *1 BOLETO:* \n *${reserved.join(", ")}* \n\n *Nombre:* ${name} \n *Celular:* ${phone} \n \u{1F535}1 BOLETO POR $67 \n 2 BOLETOS POR $129 \n 3 BOLETOS POR $193 \n 4 BOLETOS POR $255 \n 5 BOLETOS POR $310 \n 10 BOLETOS POR $599 \n 100 BOLETOS POR $5,900 \n \u{1F6AF} *CUENTAS DE PAGO AQUÍ:* www.rifaseconomicaschihuahua.com/pagos \n\n El siguiente paso es enviar foto del comprobante de pago por aquí`;
         let encodedMessage = encodeURIComponent(baseMessage);
-        window.location.href = `https://wa.me/+5216143736551?text=${encodedMessage}`; // Replace with your number
+        window.location.href = `https://wa.me/17026751900?text=${encodedMessage}`; // Your number
         
       } else {
         console.error(result.error);
@@ -125,6 +125,8 @@ export default function Buttons() {
 
   return (
     <div>
+
+      <h1>titulo por cambiar </h1>
       <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
 
       <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">

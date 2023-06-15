@@ -8,18 +8,29 @@ datasource db {
 }
 
 model User {
-  id      Int      @id @default(autoincrement())
-  name    String
-  email   String
-  phone   String?  // Make the phone field optional 
-  numbers Int[]
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String
+  numbers         Int[]
+  phone           String?
+  paid            Boolean          @default(false)
   reservedNumbers ReservedNumber[]
 }
 
-
 model ReservedNumber {
+  id     Int  @id @default(autoincrement())
+  number Int
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}
+
+model Title {
+  id    Int    @id @default(autoincrement())
+  title String
+}
+
+// This is your new model
+model Message {
   id      Int    @id @default(autoincrement())
-  number  Int
-  user    User   @relation(fields: [userId], references: [id])
-  userId  Int
+  content String @db.VarChar(2000)
 }
