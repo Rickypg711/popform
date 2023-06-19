@@ -29,8 +29,14 @@ model Title {
   title String
 }
 
-// This is your new model
 model Message {
   id      Int    @id @default(autoincrement())
   content String @db.VarChar(2000)
+}
+
+// This is your new model for configuration
+model Config {
+  id       Int    @id @default(autoincrement())
+  blackOut Boolean @default(false)
+  
 }

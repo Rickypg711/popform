@@ -15,12 +15,27 @@ export default function Buttons() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Create initial buttons array excluding the numbers already removed
-  const [buttons, setButtons] = useState(
-    Array.from({ length: 500 }, (_, i) => i + 1).filter((num) =>
-      removed ? !removed.includes(num) : true
-    )
-  );
+  // const [buttons, setButtons] = useState(
+  //   Array.from({ length: 500 }, (_, i) => i + 1).filter((num) =>
+  //     removed ? !removed.includes(num) : true
+  //   )
+  // );
+  const [buttons, setButtons] = useState(Array.from({ length: 500 }, (_, i) => i + 1));
+
   //
+
+  const [blackOut, setBlackOut] = useState(null);
+
+  const fetchBlackOut = async () => {
+    const res = await fetch("/api/displayRemoved");
+    const data = await res.json();
+    console.log('BlackOut value from server:', data.blackOut);
+    setBlackOut(data.blackOut);
+  };
+  
+  useEffect(() => {
+    fetchBlackOut();
+  }, []);
 
   // useEffect(() => {
   const fetchRemovedNumbers = async () => {
@@ -62,7 +77,7 @@ export default function Buttons() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
-  
+
     try {
       // Send data to API route
       const res = await fetch("http://localhost:3000/api/reservedNumbers", {
@@ -77,55 +92,85 @@ export default function Buttons() {
           numbers: reserved,
         }),
       });
-  
+
       const result = await res.json();
-  
+
       if (res.ok) {
         // After reserving numbers, fetch the updated list of removed numbers
         await fetchRemovedNumbers();
         setReserved([]);
-  
-        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019!! \n \u{1F534} *1 BOLETO:* \n *${reserved.join(", ")}* \n\n *Nombre:* ${name} \n *Celular:* ${phone} \n \u{1F535}1 BOLETO POR $67 \n 2 BOLETOS POR $129 \n 3 BOLETOS POR $193 \n 4 BOLETOS POR $255 \n 5 BOLETOS POR $310 \n 10 BOLETOS POR $599 \n 100 BOLETOS POR $5,900 \n \u{1F6AF} *CUENTAS DE PAGO AQUÍ:* www.rifaseconomicaschihuahua.com/pagos \n\n El siguiente paso es enviar foto del comprobante de pago por aquí`;
+
+        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019!! \n \u{1F534} *1 BOLETO:* \n *${reserved.join(
+          ", "
+        )}* \n\n *Nombre:* ${name} \n *Celular:* ${phone} \n \u{1F535}1 BOLETO POR $67 \n 2 BOLETOS POR $129 \n 3 BOLETOS POR $193 \n 4 BOLETOS POR $255 \n 5 BOLETOS POR $310 \n 10 BOLETOS POR $599 \n 100 BOLETOS POR $5,900 \n \u{1F6AF} *CUENTAS DE PAGO AQUÍ:* www.rifaseconomicaschihuahua.com/pagos \n\n El siguiente paso es enviar foto del comprobante de pago por aquí`;
         let encodedMessage = encodeURIComponent(baseMessage);
         window.location.href = `https://wa.me/17026751900?text=${encodedMessage}`; // Your number
-        
       } else {
         console.error(result.error);
       }
     } catch (error) {
       console.error("Error:", error);
     }
-  
+
     setName("");
     setEmail("");
     setPhone(""); // clear phone state
   };
-  
+
+  // // new adittion handle display shwo or no shwo
+  // const fetchDisplayRemoved = async () => {
+  //   try {
+  //     const res = await fetch("http://localhost:3000/api/displayRemoved");
+  //     const data = await res.json();
+
+  //     if (res.ok) {
+  //       setDisplayRemoved(data.displayRemoved);
+  //     } else {
+  //       console.error(data.error);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchDisplayRemoved();
+  // }, []);
 
   //
 
   //
-
+  // this here controols list update and color
   // Watch for changes in 'removed' state and update 'buttons' state accordingly
-  useEffect(() => {
-    const availableNumbers = Array.from(
-      { length: 500 },
-      (_, i) => i + 1
-    ).filter((num) => (removed ? !removed.includes(num) : true));
-    console.log("Available numbers:", availableNumbers);
+  // useEffect(() => {
+  //   const availableNumbers = Array.from(
+  //     { length: 500 },
+  //     (_, i) => i + 1
+  //   ).filter((num) => (removed ? !removed.includes(num) : true));
+  //   console.log("Available numbers:", availableNumbers);
 
-    setButtons(availableNumbers);
-  }, [removed]);
+  //   setButtons(availableNumbers);
+  // }, [removed]);
+// Watch for changes in 'removed' state and update 'buttons' state accordingly
+// useEffect(() => {
+//   const availableNumbers = Array.from(
+//     { length: 500 },
+//     (_, i) => i + 1
+//   ).filter((num) => (removed ? !removed.includes(num) : true));
+//   console.log("Available numbers:", availableNumbers);
 
-  // The rest of your component code...
-
-  // The rest of your component code...}
+//   setButtons(availableNumbers);
+// }, [removed]);
 
   // big change here
 
+  // useEffect(() => {
+  //   setButtons((prevButtons) => prevButtons.filter((num) => !removed.includes(num)));
+  // }, [removed]);
+  
+
   return (
     <div>
-
       <h1>titulo por cambiar </h1>
       <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
 
@@ -144,7 +189,7 @@ export default function Buttons() {
             <h4 className="animate-pulse">Loading...</h4>
           ) : (
             <div className="grid grid-cols-4 gap-1 place-items-center py-4">
-              {buttons.map((number) => {
+              {/* {buttons.map((number) => {
                 if (reserved?.includes(number) || removed?.includes(number)) {
                   return null;
                 }
@@ -157,7 +202,69 @@ export default function Buttons() {
                     {number}
                   </button>
                 );
-              })}
+              })} */}
+
+
+
+              {/* {buttons.map((number) => {
+  const isReserved = reserved?.includes(number);
+  const isRemoved = removed?.includes(number);
+
+  if (!displayRemoved && (isReserved || isRemoved)) {
+    return null;  // If displayRemoved is false, don't display removed or reserved numbers
+  }
+
+  return (
+    <button
+      className={
+        isReserved || isRemoved
+          ? "bg-black text-white px-4 py-2 rounded-full"
+          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500"
+      }
+      key={number}
+      onClick={() => !isRemoved && reserveTicket(number)}
+      disabled={isReserved || isRemoved}
+    >
+      {number}
+    </button>
+  );
+})} */}
+
+
+
+{buttons.map((number) => {
+  const isReserved = reserved?.includes(number);
+  const isRemoved = removed?.includes(number);
+
+  if (blackOut === false && isRemoved) {
+    return null; // Don't display removed numbers when blackout is false
+  }
+
+  const buttonClass = blackOut && isRemoved
+      ? "bg-black text-white px-4 py-2 rounded-full"
+      : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
+
+  const handleOnClick = blackOut && isRemoved
+      ? null
+      : () => !isRemoved && reserveTicket(number);
+
+  return (
+    <button
+      className={buttonClass}
+      key={number}
+      onClick={handleOnClick}
+      disabled={blackOut && isRemoved || isReserved}
+    >
+      {number}
+    </button>
+  );
+})}
+
+
+
+
+
+
             </div>
           )}
         </InfiniteScroll>

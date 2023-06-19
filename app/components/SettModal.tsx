@@ -5,17 +5,18 @@ export default function SettModal({ isVisible, onClose }) {
     accounts: "",
     reservationTime: 5,
     drawDate: "",
+    blackOut: false, // Added new state for blackout
   });
   const [message, setMessage] = useState("");
   const [placeholderMessage, setPlaceholderMessage] = useState("");
 
   useEffect(() => {
     const fetchPlaceholderMessage = async () => {
-      const res = await fetch("/api/whatsappmessage"); // Make sure to replace with the actual endpoint
+      const res = await fetch("/api/whatsappmessage");
       if (res.ok) {
         const data = await res.json();
         setPlaceholderMessage(data.message);
-        setMessage(data.message); // initialize the message with the placeholder
+        setMessage(data.message);
       } else {
         console.error("Failed to fetch placeholder message");
       }
@@ -35,9 +36,16 @@ export default function SettModal({ isVisible, onClose }) {
     setMessage(e.target.value);
   };
 
+  const handleBlackOutChange = (e) => {
+    setConfig({
+      ...config,
+      blackOut: e.target.value === "Yes", // blackOut will be true if value is "Yes", and false otherwise
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent form from reloading the page
-  
+
     if (config.drawDate !== "") {
       // Only send the request if drawDate is not empty
       const res1 = await fetch("/api/title", {
@@ -47,13 +55,13 @@ export default function SettModal({ isVisible, onClose }) {
         },
         body: JSON.stringify({ title: config.drawDate }),
       });
-  
+
       if (!res1.ok) {
         console.error("Failed to post drawDate");
         return;
       }
     }
-  
+
     if (message !== "") {
       // Only send the request if the message is not empty
       const formattedMessage = message
@@ -61,7 +69,7 @@ export default function SettModal({ isVisible, onClose }) {
         .replace(/\\u([\d\w]{4})/gi, (match, grp) =>
           String.fromCharCode(parseInt(grp, 16))
         );
-  
+
       const res2 = await fetch("/api/whatsappmessage", {
         method: "POST",
         headers: {
@@ -69,17 +77,30 @@ export default function SettModal({ isVisible, onClose }) {
         },
         body: JSON.stringify({ message: formattedMessage }),
       });
-  
+
       if (!res2.ok) {
         console.error("Failed to post whatsapp message");
         return;
       }
     }
-  
+
+    // Post blackOut value to /api/displayRemoved
+    const res3 = await fetch("/api/displayRemoved", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ blackOut: config.blackOut }),
+    });
+
+    if (!res3.ok) {
+      console.error("Failed to post blackOut value");
+      return;
+    }
+
     // Close the modal only if no errors occurred
     onClose();
   }; // This was missing
-  
 
   if (!isVisible) {
     return null;
@@ -161,6 +182,37 @@ export default function SettModal({ isVisible, onClose }) {
                   className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
                 />
               </div>
+              <div className="col-span-6 sm:col-span-3">
+                <label
+                  htmlFor="blackOut"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  BlackOut
+                </label>
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="Yes"
+                      name="blackOut"
+                      checked={config.blackOut === true} // checked if blackOut is true
+                      onChange={handleBlackOutChange}
+                    />{" "}
+                    Yes
+                  </label>
+                  <label>
+                    <input
+                      type="radio"
+                      value="No"
+                      name="blackOut"
+                      checked={config.blackOut === false} // checked if blackOut is false
+                      onChange={handleBlackOutChange}
+                    />{" "}
+                    No
+                  </label>
+                </div>
+              </div>
+
               <div className="col-span-6 sm:col-span-3">
                 <label
                   htmlFor="drawDate"
