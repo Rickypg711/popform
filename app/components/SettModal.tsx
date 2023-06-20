@@ -1,21 +1,22 @@
 import { useState, useEffect } from "react";
+import AccountsForm from "./AccountsForm";
 
 export default function SettModal({ isVisible, onClose }) {
   const [config, setConfig] = useState({
     accounts: "",
-    reservationTime: 5,
+    reservationTime: "",
     drawDate: "",
-    blackOut: false, // Added new state for blackout
+    blackOut: true,
   });
+
   const [message, setMessage] = useState("");
-  const [placeholderMessage, setPlaceholderMessage] = useState("");
+  const [showAccountsForm, setShowAccountsForm] = useState(false);
 
   useEffect(() => {
     const fetchPlaceholderMessage = async () => {
       const res = await fetch("/api/whatsappmessage");
       if (res.ok) {
         const data = await res.json();
-        setPlaceholderMessage(data.message);
         setMessage(data.message);
       } else {
         console.error("Failed to fetch placeholder message");
@@ -39,15 +40,14 @@ export default function SettModal({ isVisible, onClose }) {
   const handleBlackOutChange = (e) => {
     setConfig({
       ...config,
-      blackOut: e.target.value === "Yes", // blackOut will be true if value is "Yes", and false otherwise
+      blackOut: e.target.value === "Yes",
     });
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); // prevent form from reloading the page
+    e.preventDefault();
 
     if (config.drawDate !== "") {
-      // Only send the request if drawDate is not empty
       const res1 = await fetch("/api/title", {
         method: "POST",
         headers: {
@@ -63,7 +63,6 @@ export default function SettModal({ isVisible, onClose }) {
     }
 
     if (message !== "") {
-      // Only send the request if the message is not empty
       const formattedMessage = message
         .replace(/ENTER ENTER/g, "\n")
         .replace(/\\u([\d\w]{4})/gi, (match, grp) =>
@@ -84,7 +83,6 @@ export default function SettModal({ isVisible, onClose }) {
       }
     }
 
-    // Post blackOut value to /api/displayRemoved
     const res3 = await fetch("/api/displayRemoved", {
       method: "POST",
       headers: {
@@ -98,19 +96,35 @@ export default function SettModal({ isVisible, onClose }) {
       return;
     }
 
-    // Close the modal only if no errors occurred
     onClose();
-  }; // This was missing
-
-  if (!isVisible) {
-    return null;
-  }
+  };
 
   const handleClose = (e) => {
     if (e.target.id === "wrapper") {
       onClose();
     }
   };
+
+  const handleBankInfoSubmit = async (bankInfo) => {
+    const resBankInfo = await fetch("/api/bankInfo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bankInfo),
+    });
+
+    if (!resBankInfo.ok) {
+      console.error("Failed to post bank info");
+      return;
+    }
+
+    onClose(); // close the modal if required
+  };
+
+  if (!isVisible) {
+    return null;
+  }
 
   return (
     isVisible && (
@@ -121,9 +135,24 @@ export default function SettModal({ isVisible, onClose }) {
       >
         <div className="bg-white w-[600px] rounded-lg overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle">
           <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
-            <h2 className="text-lg leading-6 font-medium text-gray-900">
-              Config
-            </h2>
+            <div>
+              <button
+                onClick={() => setShowAccountsForm(false)}
+                className={`text-lg leading-6 font-medium ${
+                  !showAccountsForm ? "text-blue-500" : "text-gray-400"
+                }`}
+              >
+                Config
+              </button>
+              <button
+                onClick={() => setShowAccountsForm(true)}
+                className={`ml-4 text-lg leading-6 font-medium ${
+                  showAccountsForm ? "text-blue-500" : "text-gray-400"
+                }`}
+              >
+                Accounts
+              </button>
+            </div>
             <button
               className="text-gray-400 hover:text-gray-500"
               onClick={onClose}
@@ -133,103 +162,114 @@ export default function SettModal({ isVisible, onClose }) {
             </button>
           </div>
           <div className="px-4 py-5 sm:p-6">
-            <div className="grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="accounts"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Cuentas
-                </label>
-                <input
-                  type="text"
-                  name="accounts"
-                  id="accounts"
-                  value={config.accounts}
-                  onChange={handleChange}
-                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
-                />
-              </div>
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="whatsapp"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Whatsapp
-                </label>
-                <input
-                  type="text"
-                  name="whatsapp"
-                  id="whatsapp"
-                  value={message}
-                  onChange={handleMessageChange}
-                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
-                />
-              </div>
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="reservationTime"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Tiempo de reserva
-                </label>
-                <input
-                  type="number"
-                  name="reservationTime"
-                  id="reservationTime"
-                  value={config.reservationTime}
-                  onChange={handleChange}
-                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
-                />
-              </div>
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="blackOut"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  BlackOut
-                </label>
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Yes"
-                      name="blackOut"
-                      checked={config.blackOut === true} // checked if blackOut is true
-                      onChange={handleBlackOutChange}
-                    />{" "}
-                    Yes
+            {showAccountsForm ? (
+              <AccountsForm handleBankInfoSubmit={handleBankInfoSubmit} />
+            ) : (
+              // ...
+
+              // Your existing form JSX...
+
+              <div className="grid grid-cols-6 gap-6">
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="accounts"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Cuentas
                   </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="No"
-                      name="blackOut"
-                      checked={config.blackOut === false} // checked if blackOut is false
-                      onChange={handleBlackOutChange}
-                    />{" "}
-                    No
+                  <input
+                    type="text"
+                    name="accounts"
+                    id="accounts"
+                    value={config.accounts}
+                    onChange={handleChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="whatsapp"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Whatsapp
                   </label>
+                  <input
+                    type="text"
+                    name="whatsapp"
+                    id="whatsapp"
+                    value={message}
+                    onChange={handleMessageChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="reservationTime"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Tiempo de reserva
+                  </label>
+                  <input
+                    type="number"
+                    name="reservationTime"
+                    id="reservationTime"
+                    value={config.reservationTime}
+                    onChange={handleChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="blackOut"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    BlackOut
+                  </label>
+                  <div>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Yes"
+                        name="blackOut"
+                        checked={config.blackOut === true}
+                        onChange={handleBlackOutChange}
+                      />{" "}
+                      Yes
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="No"
+                        name="blackOut"
+                        checked={config.blackOut === false}
+                        onChange={handleBlackOutChange}
+                      />{" "}
+                      No
+                    </label>
+                  </div>
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="drawDate"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Fecha de sorteo
+                  </label>
+                  <input
+                    type="date"
+                    name="drawDate"
+                    id="drawDate"
+                    value={config.drawDate}
+                    onChange={handleChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
                 </div>
               </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="drawDate"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Fecha de sorteo
-                </label>
-                <input
-                  type="date"
-                  name="drawDate"
-                  id="drawDate"
-                  value={config.drawDate}
-                  onChange={handleChange}
-                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
-                />
-              </div>
-            </div>
+            )}
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
             <button

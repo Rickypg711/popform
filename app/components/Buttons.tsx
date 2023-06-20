@@ -20,7 +20,9 @@ export default function Buttons() {
   //     removed ? !removed.includes(num) : true
   //   )
   // );
-  const [buttons, setButtons] = useState(Array.from({ length: 500 }, (_, i) => i + 1));
+  const [buttons, setButtons] = useState(
+    Array.from({ length: 500 }, (_, i) => i + 1)
+  );
 
   //
 
@@ -29,10 +31,10 @@ export default function Buttons() {
   const fetchBlackOut = async () => {
     const res = await fetch("/api/displayRemoved");
     const data = await res.json();
-    console.log('BlackOut value from server:', data.blackOut);
+    console.log("BlackOut value from server:", data.blackOut);
     setBlackOut(data.blackOut);
   };
-  
+
   useEffect(() => {
     fetchBlackOut();
   }, []);
@@ -117,57 +119,9 @@ export default function Buttons() {
     setPhone(""); // clear phone state
   };
 
-  // // new adittion handle display shwo or no shwo
-  // const fetchDisplayRemoved = async () => {
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/displayRemoved");
-  //     const data = await res.json();
-
-  //     if (res.ok) {
-  //       setDisplayRemoved(data.displayRemoved);
-  //     } else {
-  //       console.error(data.error);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchDisplayRemoved();
-  // }, []);
-
-  //
-
-  //
-  // this here controols list update and color
-  // Watch for changes in 'removed' state and update 'buttons' state accordingly
-  // useEffect(() => {
-  //   const availableNumbers = Array.from(
-  //     { length: 500 },
-  //     (_, i) => i + 1
-  //   ).filter((num) => (removed ? !removed.includes(num) : true));
-  //   console.log("Available numbers:", availableNumbers);
-
-  //   setButtons(availableNumbers);
-  // }, [removed]);
-// Watch for changes in 'removed' state and update 'buttons' state accordingly
-// useEffect(() => {
-//   const availableNumbers = Array.from(
-//     { length: 500 },
-//     (_, i) => i + 1
-//   ).filter((num) => (removed ? !removed.includes(num) : true));
-//   console.log("Available numbers:", availableNumbers);
-
-//   setButtons(availableNumbers);
-// }, [removed]);
-
-  // big change here
-
   // useEffect(() => {
   //   setButtons((prevButtons) => prevButtons.filter((num) => !removed.includes(num)));
   // }, [removed]);
-  
 
   return (
     <div>
@@ -189,82 +143,35 @@ export default function Buttons() {
             <h4 className="animate-pulse">Loading...</h4>
           ) : (
             <div className="grid grid-cols-4 gap-1 place-items-center py-4">
-              {/* {buttons.map((number) => {
-                if (reserved?.includes(number) || removed?.includes(number)) {
-                  return null;
+              {buttons.map((number) => {
+                const isReserved = reserved?.includes(number);
+                const isRemoved = removed?.includes(number);
+
+                if (blackOut === false && isRemoved) {
+                  return null; // Don't display removed numbers when blackout is false
                 }
+
+                const buttonClass =
+                  blackOut && isRemoved
+                    ? "bg-black text-white px-4 py-2 rounded-full"
+                    : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
+
+                const handleOnClick =
+                  blackOut && isRemoved
+                    ? null
+                    : () => !isRemoved && reserveTicket(number);
+
                 return (
                   <button
-                    className="bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500 focus:outline-none active:translate-y-1 transform transition-all duration-100 ease-in-out"
+                    className={buttonClass}
                     key={number}
-                    onClick={() => reserveTicket(number)}
+                    onClick={handleOnClick}
+                    disabled={(blackOut && isRemoved) || isReserved}
                   >
                     {number}
                   </button>
                 );
-              })} */}
-
-
-
-              {/* {buttons.map((number) => {
-  const isReserved = reserved?.includes(number);
-  const isRemoved = removed?.includes(number);
-
-  if (!displayRemoved && (isReserved || isRemoved)) {
-    return null;  // If displayRemoved is false, don't display removed or reserved numbers
-  }
-
-  return (
-    <button
-      className={
-        isReserved || isRemoved
-          ? "bg-black text-white px-4 py-2 rounded-full"
-          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500"
-      }
-      key={number}
-      onClick={() => !isRemoved && reserveTicket(number)}
-      disabled={isReserved || isRemoved}
-    >
-      {number}
-    </button>
-  );
-})} */}
-
-
-
-{buttons.map((number) => {
-  const isReserved = reserved?.includes(number);
-  const isRemoved = removed?.includes(number);
-
-  if (blackOut === false && isRemoved) {
-    return null; // Don't display removed numbers when blackout is false
-  }
-
-  const buttonClass = blackOut && isRemoved
-      ? "bg-black text-white px-4 py-2 rounded-full"
-      : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
-
-  const handleOnClick = blackOut && isRemoved
-      ? null
-      : () => !isRemoved && reserveTicket(number);
-
-  return (
-    <button
-      className={buttonClass}
-      key={number}
-      onClick={handleOnClick}
-      disabled={blackOut && isRemoved || isReserved}
-    >
-      {number}
-    </button>
-  );
-})}
-
-
-
-
-
-
+              })}
             </div>
           )}
         </InfiniteScroll>

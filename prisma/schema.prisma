@@ -40,3 +40,14 @@ model Config {
   blackOut Boolean @default(false)
   
 }
+
+model BankInfo {
+  id              Int     @id @default(autoincrement())
+  paymentMethod   String
+  bank            String
+  cardNumber      String?
+  routingNumber   String?
+  accountName     String?
+  cardHolderName  String? // Add this line
+}
+
