@@ -119,7 +119,7 @@ export default function SettModal({ isVisible, onClose }) {
       return;
     }
 
-    onClose(); // close the modal if required
+    // onClose(); // close the modal if required
   };
 
   if (!isVisible) {
