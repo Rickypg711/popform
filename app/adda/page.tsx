@@ -46,11 +46,17 @@ const AdmiPage = () => {
 
   const deleteUser = async () => {
     for (const id of selectedUsers) {
-      await fetch(`/api/users/${id}`, {
+      const res = await fetch(`/api/users/${id}`, {
         method: "DELETE",
       });
+
+      if (res.ok) {
+        setUsers(users.filter((u) => !selectedUsers.includes(u.id)));
+      } else {
+        // Handle any error response here.
+        // You can get the error message with const data = await res.json();
+      }
     }
-    setUsers(users.filter((u) => !selectedUsers.includes(u.id)));
     setSelectedUsers([]); // Clear selection
   };
 
@@ -77,7 +83,7 @@ const AdmiPage = () => {
     if (selectedUsers.length === 1) {
       const user = users.find((u) => u.id === selectedUsers[0]);
       // fetch the message from the database
-      const res = await fetch('/api/whatsappmessage');
+      const res = await fetch("/api/whatsappmessage");
       const data = await res.json();
       const message = `Hola ${user.name}, ${data.message}`;
       const encodedMessage = encodeURIComponent(message);
@@ -85,8 +91,6 @@ const AdmiPage = () => {
       window.open(link, "_blank");
     }
   };
-  
-
 
   return (
     <div>
