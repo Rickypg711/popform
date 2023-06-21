@@ -105,22 +105,22 @@ export default function SettModal({ isVisible, onClose }) {
     }
   };
 
-  const handleBankInfoSubmit = async (bankInfo) => {
-    const resBankInfo = await fetch("/api/bankInfo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bankInfo),
-    });
+  // const handleBankInfoSubmit = async (bankInfo) => {
+  //   const resBankInfo = await fetch("/api/bankInfo", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(bankInfo),
+  //   });
 
-    if (!resBankInfo.ok) {
-      console.error("Failed to post bank info");
-      return;
-    }
+  //   if (!resBankInfo.ok) {
+  //     console.error("Failed to post bank info");
+  //     return;
+  //   }
 
-    // onClose(); // close the modal if required
-  };
+  //   // onClose(); // close the modal if required
+  // };
 
   if (!isVisible) {
     return null;
@@ -163,7 +163,9 @@ export default function SettModal({ isVisible, onClose }) {
           </div>
           <div className="px-4 py-5 sm:p-6">
             {showAccountsForm ? (
-              <AccountsForm handleBankInfoSubmit={handleBankInfoSubmit} />
+              <AccountsForm 
+              // handleBankInfoSubmit={handleBankInfoSubmit} 
+              />
             ) : (
               // ...
 
@@ -272,14 +274,17 @@ export default function SettModal({ isVisible, onClose }) {
             )}
           </div>
           <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              Submit
-            </button>
+            {!showAccountsForm && (
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                Submit
+              </button>
+            )}
           </div>
+
         </div>
       </div>
     )

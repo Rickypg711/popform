@@ -56,3 +56,27 @@ export async function POST(request: NextRequest) {
     return new NextResponse({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+// export async function DELETE(request: NextRequest) {
+//   if (request.method !== 'DELETE') {
+//     return new NextResponse({ error: 'Method Not Allowed' }, { status: 405 });
+//   }
+
+//   const bankId = request.query.id;
+
+//   try {
+//     await prisma.bankInfo.delete({
+//       where: {
+//         id: Number(bankId),
+//       },
+//     });
+
+//     await prisma.$disconnect();
+
+//     return new NextResponse({ message: 'Bank account information deleted successfully.' });
+//   } catch (error) {
+//     console.error('Delete operation failed with error:', error);
+//     return new NextResponse({ error: 'Internal Server Error' }, { status: 500 });
+//   }
+// }
+

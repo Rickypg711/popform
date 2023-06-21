@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { TiDelete } from 'react-icons/ti';
+import { TiDelete } from "react-icons/ti";
+import { FaSave } from "react-icons/fa";
 
-
-export default function AccountForm({ handleBankInfoSubmit }) {
+export default function AccountForm() {
   const [bankInfo, setBankInfo] = useState({
     paymentMethod: "",
     bank: "",
@@ -12,30 +12,26 @@ export default function AccountForm({ handleBankInfoSubmit }) {
     cardHolderName: "",
   });
 
-  // An array to store all submitted bank information
   const [submittedBanks, setSubmittedBanks] = useState([]);
-  //
+  const [editingBankId, setEditingBankId] = useState(null); // Initialize the editingBankId state
 
-  useEffect(() => {
-    const fetchBankInfo = async () => {
-      const res = await fetch("/api/bankInfo"); // Adjust this to your actual API endpoint
+  const fetchBankInfo = async () => {
+    try {
+      const res = await fetch("/api/bankInfo");
       if (res.ok) {
-        try {
-          const data = await res.json();
-          console.log("Data:", data);
-          setSubmittedBanks(data); // Assuming the data is an array of bank info
-        } catch (error) {
-          console.error("Failed to parse JSON response:", error);
-        }
+        const data = await res.json();
+        setSubmittedBanks(data);
       } else {
         console.error("Failed to fetch bank info. Status:", res.status);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching bank info:", error);
+    }
+  };
 
+  useEffect(() => {
     fetchBankInfo();
   }, []);
-
-  //
 
   const handleBankInfoChange = (e) => {
     setBankInfo({
@@ -44,39 +40,104 @@ export default function AccountForm({ handleBankInfoSubmit }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    handleBankInfoSubmit(bankInfo);
-    // Add the current bankInfo to the array of submitted banks
-    setSubmittedBanks([...submittedBanks, bankInfo]);
-    setBankInfo({
-      paymentMethod: "",
-      bank: "",
-      cardNumber: "",
-      routingNumber: "",
-      accountName: "",
-      cardHolderName: "",
-    });
+  
+    // Only make the request if the current bankInfo doesn't have an id
+    // meaning it's a new bank, not an update
+    if (!bankInfo.id) {
+      try {
+        const res = await fetch("/api/bankInfo", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bankInfo),
+        });
+    
+        if (res.ok) {
+          // Reset the bankInfo state to its initial values
+          setBankInfo({
+            paymentMethod: "",
+            bank: "",
+            cardNumber: "",
+            routingNumber: "",
+            accountName: "",
+            cardHolderName: "",
+          });
+  
+          // Call the handleBankInfoSubmit function with the current bankInfo
+          // handleBankInfoSubmit(bankInfo);
+    
+          // Fetch the latest bank info from the server
+          fetchBankInfo();
+        } else {
+          console.error("Failed to add bank info. Status:", res.status);
+        }
+      } catch (error) {
+        console.error("Error adding bank info:", error);
+      }
+    } else {
+      // If it's an update, use the saveBank function instead
+      saveBank();
+    }
   };
 
-  //
-  // New useEffect hook
-  useEffect(() => {
-    console.log(submittedBanks);
-  }, [submittedBanks]);
-  // End of new useEffect hook
-  //
-
-  function deleteBank(bankId) {
-    // Delete the bank from your database
-    fetch(`/api/bankInfo/${bankId}`, { method: "DELETE" })
+  
+  const deleteBank = (bankId) => {
+    fetch(`/api/bankInfo/${bankId}`, {
+      method: "DELETE",
+    })
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
-        // If delete was successful, update the state
-        setSubmittedBanks(submittedBanks.filter((bank) => bank.id !== bankId));
+        setSubmittedBanks((prevSubmittedBanks) =>
+          prevSubmittedBanks.filter((bank) => bank.id !== bankId)
+        );
       })
       .catch((error) => console.error("Error:", error));
-  }
+  };
+
+  const editBank = (bankId) => {
+    const selectedBank = submittedBanks.find((bank) => bank.id === bankId);
+    setBankInfo(selectedBank);
+    setEditingBankId(bankId); // Set the editingBankId state when editing a bank
+  };
+
+  const saveBank = async () => {
+    try {
+      const res = await fetch(`/api/bankInfo/${bankInfo.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bankInfo),
+      });
+
+      if (res.ok) {
+        // Update the submitted banks state with the edited bank info
+        const updatedSubmittedBanks = submittedBanks.map((bank) => {
+          if (bank.id === bankInfo.id) {
+            return bankInfo;
+          }
+          return bank;
+        });
+
+        setSubmittedBanks(updatedSubmittedBanks);
+        setBankInfo({
+          paymentMethod: "",
+          bank: "",
+          cardNumber: "",
+          routingNumber: "",
+          accountName: "",
+          cardHolderName: "",
+        });
+      } else {
+        console.error("Failed to update bank info. Status:", res.status);
+      }
+    } catch (error) {
+      console.error("Error updating bank info:", error);
+    }
+  };
 
   return (
     <form className="mt-3 border rounded p-3" onSubmit={handleSubmit}>
@@ -216,24 +277,150 @@ export default function AccountForm({ handleBankInfoSubmit }) {
       </div>
 
       <details className="mb-3">
-        <summary>Submitted Banks</summary>
-        {submittedBanks.map((bank, index) => (
-          <details key={bank.id} className="mb-3">
-            <summary className="text-capitalize">
-              {bank.bank}
-              <span>{bank.bank}</span>
+        <summary className="text-blue-500">Submitted Banks</summary>
+        {submittedBanks.map((bank) => (
+        
+          <details
+  key={bank.id}
+  className="mb-3"
+  onToggle={(e) => {
+    if (!e.target.open) {
+      setEditingBankId(null);
+      // Reset the bankInfo state to its initial values
+      setBankInfo({
+        paymentMethod: "",
+        bank: "",
+        cardNumber: "",
+        routingNumber: "",
+        accountName: "",
+        cardHolderName: "",
+      });
+    } else if (editingBankId !== bank.id) {
+      editBank(bank.id);
+    }
+  }}
+>
+
+            <summary className="text-capitalize text-blue-500">
+              {editingBankId === bank.id ? (
+                <select
+                  id="bank"
+                  name="bank"
+                  onChange={(e) => handleBankInfoChange(e, bank.id)}
+                  value={bankInfo.bank}
+                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize"
+                >
+                  <option value="Bbva">Bbva</option>
+                  <option value="Santander">Santander</option>
+                  <option value="Scotiabank">Scotiabank</option>
+                  <option value="HSBC">HSBC</option>
+                </select>
+              ) : (
+                <span>{bank.bank}</span>
+                // {bank.bank}
+              )}
+
+              {/* </span> */}
+
               <button
+                type="button"
                 onClick={() => deleteBank(bank.id)}
                 className="text-red-500 ml-2"
               >
                 <TiDelete className="inline-block align-middle" />
               </button>
+              <button
+                type="button"
+                onClick={() => editBank(bank.id)}
+                className="text-green-500 ml-2"
+              >
+                <FaSave className="inline-block align-middle" />
+              </button>
             </summary>
-            <p>Tipo: {bank.paymentMethod}</p>
-            <p>Tarjeta (opcional): {bank.cardNumber}</p>
-            <p>Clabe (opcional): {bank.routingNumber}</p>
-            <p>Cuenta (opcional): {bank.accountName}</p>
-            <p>Titular (opcional): {bank.cardHolderName}</p>
+            <div className="text-red-500">
+              <p>
+                Tipo:
+                {editingBankId === bank.id ? (
+                  <select
+                    name="paymentMethod"
+                    value={bankInfo.paymentMethod}
+                    onChange={(e) => handleBankInfoChange(e, bank.id)}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  >
+                    <option value="Transferencias">Transferencias</option>
+                    <option value="Oxxo">Oxxo</option>
+                    <option value="Extranjero">Extranjero</option>
+                  </select>
+                ) : (
+                  <span>{bank.paymentMethod}</span>
+                )}
+              </p>
+              <p>
+                Tarjeta (opcional):
+                {editingBankId === bank.id ? (
+                  <input
+                    type="text"
+                    name="cardNumber"
+                    value={bankInfo.cardNumber}
+                    onChange={(e) => handleBankInfoChange(e, bank.id)}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
+                ) : (
+                  <span>{bank.cardNumber}</span>
+                )}
+              </p>
+              <p>
+                Clabe (opcional):
+                {editingBankId === bank.id ? (
+                  <input
+                    type="text"
+                    name="routingNumber"
+                    value={bankInfo.routingNumber}
+                    onChange={(e) => handleBankInfoChange(e, bank.id)}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
+                ) : (
+                  <span>{bank.routingNumber}</span>
+                )}
+              </p>
+              <p>
+                Cuenta (opcional):
+                {editingBankId === bank.id ? (
+                  <input
+                    type="text"
+                    name="accountName"
+                    value={bankInfo.accountName}
+                    onChange={(e) => handleBankInfoChange(e, bank.id)}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
+                ) : (
+                  <span>{bank.accountName}</span>
+                )}
+              </p>
+              <p>
+                Titular (opcional):
+                {editingBankId === bank.id ? (
+                  <input
+                    type="text"
+                    name="cardHolderName"
+                    value={bankInfo.cardHolderName}
+                    onChange={(e) => handleBankInfoChange(e, bank.id)}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                  />
+                ) : (
+                  <span>{bank.cardHolderName}</span>
+                )}
+              </p>
+              {editingBankId === bank.id && (
+                <button
+                  type="button"
+                  onClick={() => saveBank(bank.id)}
+                  className="text-green-500 ml-2"
+                >
+                  <FaSave className="inline-block align-middle" />
+                </button>
+              )}
+            </div>
           </details>
         ))}
       </details>
