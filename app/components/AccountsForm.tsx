@@ -42,7 +42,7 @@ export default function AccountForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Only make the request if the current bankInfo doesn't have an id
     // meaning it's a new bank, not an update
     if (!bankInfo.id) {
@@ -54,7 +54,7 @@ export default function AccountForm() {
           },
           body: JSON.stringify(bankInfo),
         });
-    
+
         if (res.ok) {
           // Reset the bankInfo state to its initial values
           setBankInfo({
@@ -65,10 +65,10 @@ export default function AccountForm() {
             accountName: "",
             cardHolderName: "",
           });
-  
+
           // Call the handleBankInfoSubmit function with the current bankInfo
           // handleBankInfoSubmit(bankInfo);
-    
+
           // Fetch the latest bank info from the server
           fetchBankInfo();
         } else {
@@ -83,7 +83,6 @@ export default function AccountForm() {
     }
   };
 
-  
   const deleteBank = (bankId) => {
     fetch(`/api/bankInfo/${bankId}`, {
       method: "DELETE",
@@ -276,31 +275,31 @@ export default function AccountForm() {
         </button>
       </div>
 
+      {/* under here is the accordion shit */}
+
       <details className="mb-3">
         <summary className="text-blue-500">Submitted Banks</summary>
         {submittedBanks.map((bank) => (
-        
           <details
-  key={bank.id}
-  className="mb-3"
-  onToggle={(e) => {
-    if (!e.target.open) {
-      setEditingBankId(null);
-      // Reset the bankInfo state to its initial values
-      setBankInfo({
-        paymentMethod: "",
-        bank: "",
-        cardNumber: "",
-        routingNumber: "",
-        accountName: "",
-        cardHolderName: "",
-      });
-    } else if (editingBankId !== bank.id) {
-      editBank(bank.id);
-    }
-  }}
->
-
+            key={bank.id}
+            className="mb-3"
+            onToggle={(e) => {
+              if (!e.target.open) {
+                setEditingBankId(null);
+                // Reset the bankInfo state to its initial values
+                setBankInfo({
+                  paymentMethod: "",
+                  bank: "",
+                  cardNumber: "",
+                  routingNumber: "",
+                  accountName: "",
+                  cardHolderName: "",
+                });
+              } else if (editingBankId !== bank.id) {
+                editBank(bank.id);
+              }
+            }}
+          >
             <summary className="text-capitalize text-blue-500">
               {editingBankId === bank.id ? (
                 <select
@@ -322,20 +321,29 @@ export default function AccountForm() {
 
               {/* </span> */}
 
-              <button
-                type="button"
-                onClick={() => deleteBank(bank.id)}
-                className="text-red-500 ml-2"
-              >
-                <TiDelete className="inline-block align-middle" />
-              </button>
-              <button
-                type="button"
-                onClick={() => editBank(bank.id)}
-                className="text-green-500 ml-2"
-              >
-                <FaSave className="inline-block align-middle" />
-              </button>
+              {editingBankId !== bank.id && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => deleteBank(bank.id)}
+                    className="text-red-500 ml-2"
+                  >
+                    <TiDelete className="inline-block align-middle" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => saveBank(bank.id)}
+                    className={`ml-2 ${
+                      editingBankId === bank.id
+                        ? "text-green-500"
+                        : "text-gray-300"
+                    }`}
+                    disabled={editingBankId !== bank.id}
+                  >
+                    <FaSave className="inline-block align-middle" />
+                  </button>
+                </>
+              )}
             </summary>
             <div className="text-red-500">
               <p>
@@ -411,14 +419,24 @@ export default function AccountForm() {
                   <span>{bank.cardHolderName}</span>
                 )}
               </p>
+              {/* Save button */}
               {editingBankId === bank.id && (
-                <button
-                  type="button"
-                  onClick={() => saveBank(bank.id)}
-                  className="text-green-500 ml-2"
-                >
-                  <FaSave className="inline-block align-middle" />
-                </button>
+                <div className="mt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => saveBank(bank.id)}
+                    className={`text-green-500 ml-2 text-lg`}
+                  >
+                    <FaSave className="inline-block align-middle" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => deleteBank(bank.id)}
+                    className="text-red-500 ml-2 text-lg"
+                  >
+                    <TiDelete className="inline-block align-middle" />
+                  </button>
+                </div>
               )}
             </div>
           </details>
