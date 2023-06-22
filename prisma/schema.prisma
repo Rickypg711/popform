@@ -14,6 +14,7 @@ model User {
   numbers         Int[]
   phone           String?
   paid            Boolean          @default(false)
+  state           String? //@default("DefaultState") // Here, "DefaultState" is a placeholder. Replace it with an appropriate default value for your use case.
   reservedNumbers ReservedNumber[]
 }
 
@@ -36,18 +37,16 @@ model Message {
 
 // This is your new model for configuration
 model Config {
-  id       Int    @id @default(autoincrement())
+  id       Int     @id @default(autoincrement())
   blackOut Boolean @default(false)
-  
 }
 
 model BankInfo {
-  id              Int     @id @default(autoincrement())
-  paymentMethod   String
-  bank            String
-  cardNumber      String?
-  routingNumber   String?
-  accountName     String?
-  cardHolderName  String? // Add this line
+  id             Int     @id @default(autoincrement())
+  paymentMethod  String
+  bank           String
+  cardNumber     String?
+  routingNumber  String?
+  accountName    String?
+  cardHolderName String? // Add this line
 }
-

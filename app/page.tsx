@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Buttons from "./components/Buttons";
 import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // I
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
 
 export default function Home() {
@@ -30,39 +30,62 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <h1 className="text-red-300">{title}</h1>
       <details></details>
-      <summary></summary>
+      <summary>perro</summary>
 
-      <Carousel autoPlay showThumbs={false}>
-        <div>
-          <Image
-            src="/ima/hutchilopostly.png"
-            alt="Car Image 1"
-            width={400}
-            height={400}
-          />
-          <p className="legend">Legend 1</p>
-        </div>
-        <div>
-          <Image
-            src="/ima/solmadre.png"
-            alt="Car Image 2"
-            width={400}
-            height={400}
-          />
-          <p className="legend">Legend 2</p>
-        </div>
-        <div>
-          <Image
-            src="/ima/weofthesun.png"
-            alt="Car Image 3"
-            width={400}
-            height={400}
-          />
-          <p className="legend">Legend 3</p>
-        </div>
-      </Carousel>
+      <div className="carouselContainer">
+        <Carousel
+          autoPlay
+          showThumbs={false}
+          infiniteLoop={true}
+          interval={4000}
+        >
+          <div className="imageContainer">
+            <Image
+              src="/ima/hutchilopostly.png"
+              alt="Car Image 1"
+              width={300}
+              height={300}
+              layout="responsive"
+            />
+            <p className="legend">Legend 1</p>
+          </div>
+          <div className="imageContainer">
+            <Image
+              src="/ima/solmadre.png"
+              alt="Car Image 2"
+              width={300}
+              height={300}
+              layout="responsive"
+            />
+            <p className="legend">Legend 2</p>
+          </div>
+          <div className="imageContainer">
+            <Image
+              src="/ima/weofthesun.png"
+              alt="Car Image 3"
+              width={300}
+              height={300}
+              layout="responsive"
+            />
+            <p className="legend">Legend 3</p>
+          </div>
+        </Carousel>
+      </div>
 
       <Buttons />
+
+      <style jsx>{`
+        .carouselContainer {
+          width: 100%;
+          max-width: 300px;
+        }
+
+        @media (min-width: 600px) {
+          .carouselContainer {
+            max-width: 200px;
+          }
+        }
+      `}</style>
     </main>
   );
 }

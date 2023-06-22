@@ -6,6 +6,7 @@ type Feedback = {
   email: string;
   phone: string;  // add this line
   numbers: number[];
+  state: string;
 };
 
 export async function GET(request: Request) {
@@ -25,7 +26,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const data: Feedback = await request.json();
-  const { name, email, phone, numbers } = data;  // update this line
+  const { name, email, phone, numbers, state} = data;  // update this line
 
   try {
     const reservedNumbers = await prisma.reservedNumber.findMany();
@@ -48,6 +49,7 @@ export async function POST(request: Request) {
         name,
         email,
         phone,  // add this line
+        state,
         numbers: {
           set: availableNumbers,
         },
@@ -59,7 +61,7 @@ export async function POST(request: Request) {
 
     console.log("user", user);
 
-    return NextResponse.json({ name, email, phone, numbers: availableNumbers });  // update this line
+    return NextResponse.json({ name, email, phone, state, numbers: availableNumbers });  // update this line
   } catch (error) {
     console.error(error);
 

@@ -11,15 +11,11 @@ export default function Buttons() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState(""); // Add the message state
+  const [state, setState] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
 
-  // Create initial buttons array excluding the numbers already removed
-  // const [buttons, setButtons] = useState(
-  //   Array.from({ length: 500 }, (_, i) => i + 1).filter((num) =>
-  //     removed ? !removed.includes(num) : true
-  //   )
-  // );
   const [buttons, setButtons] = useState(
     Array.from({ length: 500 }, (_, i) => i + 1)
   );
@@ -75,10 +71,19 @@ export default function Buttons() {
   };
 
   // let see handle submit
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
+
+    let countryCode;
+    if (state === "ESTADOS UNIDOS") {
+      countryCode = "+1";
+    } else {
+      countryCode = "+52 1";
+    }
+
+    // append country code to phone number
+    const phoneNumber = `${countryCode}${phone}`;
 
     try {
       // Send data to API route
@@ -90,8 +95,9 @@ export default function Buttons() {
         body: JSON.stringify({
           name,
           email,
-          phone, // Add phone here
+          phone: phoneNumber, // Use the phoneNumber with the country code
           numbers: reserved,
+          state,
         }),
       });
 
@@ -102,11 +108,36 @@ export default function Buttons() {
         await fetchRemovedNumbers();
         setReserved([]);
 
-        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019!! \n \u{1F534} *1 BOLETO:* \n *${reserved.join(
-          ", "
-        )}* \n\n *Nombre:* ${name} \n *Celular:* ${phone} \n \u{1F535}1 BOLETO POR $67 \n 2 BOLETOS POR $129 \n 3 BOLETOS POR $193 \n 4 BOLETOS POR $255 \n 5 BOLETOS POR $310 \n 10 BOLETOS POR $599 \n 100 BOLETOS POR $5,900 \n \u{1F6AF} *CUENTAS DE PAGO AQUÍ:* www.rifaseconomicaschihuahua.com/pagos \n\n El siguiente paso es enviar foto del comprobante de pago por aquí`;
-        let encodedMessage = encodeURIComponent(baseMessage);
-        window.location.href = `https://wa.me/17026751900?text=${encodedMessage}`; // Your number
+        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019! 🎟️
+  \n✨ *1 BOLETO RESERVADO:*
+  *${reserved.join(", ")}*
+  \n✏️ *Nombre:* ${name}
+  ☎️ *Teléfono:* ${phone}
+  💲 *PRECIOS DE LOS BOLETOS:*
+  1 BOLETO: $67
+  2 BOLETOS: $129
+  3 BOLETOS: $193
+  4 BOLETOS: $255
+  5 BOLETOS: $310
+  10 BOLETOS: $599
+  100 BOLETOS: $5,900
+  🌐 *PAGO EN LÍNEA:* www.rifaseconomicaschihuahua.com/pagos
+  \n📸 Una vez realizado el pago, por favor envía una foto del comprobante de pago aquí.`;
+
+        let encodedMessage = encodeURI(baseMessage);
+
+        // Format the message with emojis and newlines
+        if (message !== "") {
+          const formattedMessage = message
+            .replace(/ENTER ENTER/g, "\n")
+            .replace(/\\u([\d\w]{4})/gi, (match, grp) =>
+              String.fromCharCode(parseInt(grp, 16))
+            );
+
+          encodedMessage += formattedMessage;
+        }
+
+        window.open(`https://wa.me/17026751900?text=${encodedMessage}`); // Open in a new tab
       } else {
         console.error(result.error);
       }
@@ -118,10 +149,6 @@ export default function Buttons() {
     setEmail("");
     setPhone(""); // clear phone state
   };
-
-  // useEffect(() => {
-  //   setButtons((prevButtons) => prevButtons.filter((num) => !removed.includes(num)));
-  // }, [removed]);
 
   return (
     <div>
@@ -276,6 +303,57 @@ export default function Buttons() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+            </div>
+            {/* estado */}
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="state"
+              >
+                State
+              </label>
+              <select
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="state"
+                value={state}
+                onChange={(e) => setState(e.target.value)}
+              >
+                <option value="">SELECCIONA ESTADO</option>
+                <option value="ESTADOS UNIDOS">ESTADOS UNIDOS</option>
+                <option value="OTRO PAIS">OTRO PAIS</option>
+                <option value="AGUASCALIENTES">AGUASCALIENTES</option>
+                <option value="BAJA CALIFORNIA">BAJA CALIFORNIA</option>
+                <option value="BAJA CALIFORNIA SUR">BAJA CALIFORNIA SUR</option>
+                <option value="CAMPECHE">CAMPECHE</option>
+                <option value="CIUDAD DE MÉXICO">CIUDAD DE MÉXICO</option>
+                <option value="COAHUILA">COAHUILA</option>
+                <option value="COLIMA">COLIMA</option>
+                <option value="CHIAPAS">CHIAPAS</option>
+                <option value="CHIHUAHUA">CHIHUAHUA</option>
+                <option value="DURANGO">DURANGO</option>
+                <option value="ESTADO DE MÉXICO">ESTADO DE MÉXICO</option>
+                <option value="GUANAJUATO">GUANAJUATO</option>
+                <option value="GUERRERO">GUERRERO</option>
+                <option value="HIDALGO">HIDALGO</option>
+                <option value="JALISCO">JALISCO</option>
+                <option value="MICHOACÁN">MICHOACÁN</option>
+                <option value="MORELOS">MORELOS</option>
+                <option value="NAYARIT">NAYARIT</option>
+                <option value="NUEVO LEÓN">NUEVO LEÓN</option>
+                <option value="OAXACA">OAXACA</option>
+                <option value="PUEBLA">PUEBLA</option>
+                <option value="QUERÉTARO">QUERÉTARO</option>
+                <option value="QUINTANA ROO">QUINTANA ROO</option>
+                <option value="SAN LUIS POTOSÍ">SAN LUIS POTOSÍ</option>
+                <option value="SINALOA">SINALOA</option>
+                <option value="SONORA">SONORA</option>
+                <option value="TABASCO">TABASCO</option>
+                <option value="TAMAULIPAS">TAMAULIPAS</option>
+                <option value="TLAXCALA">TLAXCALA</option>
+                <option value="VERACRUZ">VERACRUZ</option>
+                <option value="YUCATÁN">YUCATÁN</option>
+                <option value="ZACATECAS">ZACATECAS</option>
+              </select>
             </div>
             <div className="bg-white p-2 rounded">
               <p>These numbers have been reserved:</p>
