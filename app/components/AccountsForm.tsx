@@ -102,9 +102,9 @@ export default function AccountForm() {
     setEditingBankId(bankId); // Set the editingBankId state when editing a bank
   };
 
-  const saveBank = async () => {
+  const saveBank = async (bankId) => {
     try {
-      const res = await fetch(`/api/bankInfo/${bankInfo.id}`, {
+      const res = await fetch(`/api/bankInfo/${bankId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -115,7 +115,7 @@ export default function AccountForm() {
       if (res.ok) {
         // Update the submitted banks state with the edited bank info
         const updatedSubmittedBanks = submittedBanks.map((bank) => {
-          if (bank.id === bankInfo.id) {
+          if (bank.id === bankId) {
             return bankInfo;
           }
           return bank;
@@ -130,6 +130,7 @@ export default function AccountForm() {
           accountName: "",
           cardHolderName: "",
         });
+        setEditingBankId(null); // Reset editing bank id after saving
       } else {
         console.error("Failed to update bank info. Status:", res.status);
       }

@@ -9,19 +9,26 @@ export async function DELETE(request: NextRequest) {
   const url = new URL(request.nextUrl);
   const userId = url.pathname.split('/').pop();
 
-  console.log('url', url); // for debugging
-  console.log('userId', userId); // for debugging
-
   if (!Number.isInteger(Number(userId))) {
     return new NextResponse({ error: 'Bad Request' }, { status: 400 });
   }
 
   try {
-    await prisma.user.delete({
-      where: {
-        id: Number(userId),
-      },
-    });
+    // Begin a transaction
+    const transaction = prisma.$transaction([
+      prisma.reservedNumber.deleteMany({
+        where: {
+          userId: Number(userId),
+        },
+      }),
+      prisma.user.delete({
+        where: {
+          id: Number(userId),
+        },
+      }),
+    ]);
+
+    await transaction;
 
     return new NextResponse({ message: 'User deleted successfully.' });
   } catch (error) {
@@ -31,3 +38,4 @@ export async function DELETE(request: NextRequest) {
     await prisma.$disconnect();
   }
 }
+
