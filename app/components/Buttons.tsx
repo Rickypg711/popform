@@ -18,7 +18,7 @@ export default function Buttons() {
   const [isLoading, setIsLoading] = useState(true);
 
   const [buttons, setButtons] = useState(
-    Array.from({ length: 500 }, (_, i) => i + 1)
+    Array.from({ length: 35000 }, (_, i) => i + 1)
   );
 
   const [blackOut, setBlackOut] = useState(null);
@@ -154,7 +154,7 @@ export default function Buttons() {
       <h1>titulo por cambiar </h1>
       <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
 
-      <Ruleta onSelection={handleSelection} />
+      <Ruleta onSelection={handleSelection} Butt={buttons} />
 
       {reserved.length > 0 && (
         <div className="flex flex-col items-center mt-4">

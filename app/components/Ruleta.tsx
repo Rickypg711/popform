@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-const Ruleta = ({ onSelection }) => {
+const Ruleta = ({ onSelection, Butt }) => {
   const [showRandomOptions, setShowRandomOptions] = useState(false);
   const [randomCount, setRandomCount] = useState(0);
   const [selectedRandomTickets, setSelectedRandomTickets] = useState([]);
@@ -16,10 +16,15 @@ const Ruleta = ({ onSelection }) => {
 
   const reserveRandomTickets = () => {
     const randomTickets = [];
+    let availableTickets = [...Butt]; // pass this as a prop
 
     for (let i = 0; i < randomCount; i++) {
-      const randomTicket = Math.floor(Math.random() * 500) + 1;
-      randomTickets.push(randomTicket);
+      if (availableTickets.length === 0) break; // no available tickets left
+
+      const randomIndex = Math.floor(Math.random() * Butt.length) + 1;
+      randomTickets.push(availableTickets[randomIndex]);
+
+      // randomTickets.push(randomTicket);
     }
 
     setSelectedRandomTickets(randomTickets);
