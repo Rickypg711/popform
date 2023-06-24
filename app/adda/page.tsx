@@ -5,10 +5,33 @@ import { FaCog } from "react-icons/fa";
 import SettModal from "../components/SettModal";
 
 const AdmiPage = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
+
   const [filter, setFilter] = useState("all");
   const [isModalVisible, setIsModalVisible] = useState(false);
+
+  // interface
+
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+    numbers: number[];
+    phone?: string;
+    paid: boolean;
+    state?: string;
+    reservedNumbers: ReservedNumber[];
+  }
+
+  interface ReservedNumber {
+    id: number;
+    number: number;
+    userId: number;
+    user: User;
+  }
+
+  //
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -20,7 +43,7 @@ const AdmiPage = () => {
     fetchUsers();
   }, []);
 
-  const toggleSelectedUser = (user) => {
+  const toggleSelectedUser = (user: User) => {
     if (selectedUsers.includes(user.id)) {
       setSelectedUsers(selectedUsers.filter((u) => u !== user.id));
     } else {
@@ -28,7 +51,7 @@ const AdmiPage = () => {
     }
   };
 
-  const changePaidStatus = async (paid) => {
+  const changePaidStatus = async (paid: boolean) => {
     for (const id of selectedUsers) {
       const res = await fetch(`/api/users/${id}`, {
         method: "PATCH",
@@ -66,31 +89,31 @@ const AdmiPage = () => {
     return filter === "paid" ? user.paid : !user.paid;
   });
 
-  const toUnicode = (str) => {
-    return str
-      .split("")
-      .map(function (value, index, array) {
-        var temp = value.charCodeAt(0).toString(16).toUpperCase();
-        if (temp.length > 2) {
-          return "\\u" + temp;
-        }
-        return value;
-      })
-      .join("");
-  };
-
   const sendWhatsAppReminder = async () => {
     if (selectedUsers.length === 1) {
       const user = users.find((u) => u.id === selectedUsers[0]);
       // fetch the message from the database
       const res = await fetch("/api/whatsappmessage");
       const data = await res.json();
-      const message = `Hola ${user.name}, ${data.message}`;
+      const message = `Hola ${user?.name}, ${data.message}`;
       const encodedMessage = encodeURIComponent(message);
-      const link = `https://api.whatsapp.com/send/?phone=${user.phone}&text=${encodedMessage}`;
+      const link = `https://api.whatsapp.com/send/?phone=${user?.phone}&text=${encodedMessage}`;
       window.open(link, "_blank");
     }
   };
+
+  // const sendWhatsAppReminder = async () => {
+  //   if (selectedUsers.length === 1) {
+  //     const user = users.find((u) => u.id === selectedUsers[0]);
+  //     // fetch the message from the database
+  //     const res = await fetch("/api/whatsappmessage");
+  //     const data = await res.json();
+  //     const message = `Hola ${user.name}, ${data.message}`;
+  //     const encodedMessage = encodeURIComponent(message);
+  //     const link = `https://api.whatsapp.com/send/?phone=${user.phone}&text=${encodedMessage}`;
+  //     window.open(link, "_blank");
+  //   }
+  // };
 
   return (
     <div>
