@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 const Ruleta = ({ onSelection }) => {
   const [showRandomOptions, setShowRandomOptions] = useState(false);
-  const [randomCount, setRandomCount] = useState(1);
+  const [randomCount, setRandomCount] = useState(0);
   const [selectedRandomTickets, setSelectedRandomTickets] = useState([]);
 
   const toggleRandomOptions = () => {
@@ -19,6 +19,12 @@ const Ruleta = ({ onSelection }) => {
 
     setSelectedRandomTickets(randomTickets);
   };
+
+  // const confirmSelection = () => {
+  //   setReserved([...reserved, ...selectedRandomTickets]);
+  //   setSelectedRandomTickets([]);
+  //   setShowModal(true); // Open the modal form
+  // };
 
   const confirmSelection = () => {
     onSelection(selectedRandomTickets);

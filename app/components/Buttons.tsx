@@ -138,15 +138,12 @@ export default function Buttons() {
 
   const handleSelection = (selectedTickets) => {
     setReserved([...reserved, ...selectedTickets]);
+
+    // setReserved([...reserved, ...selectedRandomTickets]);
+    // setSelectedRandomTickets([]);
+    setShowModal(true); // Open the modal form
   };
 
-  // useEffect(() => {
-  //   // this effect will run whenever randomCount changes
-  //   if (randomCount > 0) {
-  //     // add a check to prevent running at initial render
-  //     reserveRandomTickets();
-  //   }
-  // }, [randomCount]);
   return (
     <div>
       <h1>titulo por cambiar </h1>
