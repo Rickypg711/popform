@@ -3,12 +3,14 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "./modal";
 import Ruleta from "./Ruleta";
 import Estados from "./Estados";
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 
 export default function Buttons() {
   const [hasMore, setHasMore] = useState(true);
-  const [reserved, setReserved] = useState([]);
+  const [reserved, setReserved] = useState<number[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [removed, setRemoved] = useState([]);
+  const [removed, setRemoved] = useState<number[]>([]);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -22,6 +24,11 @@ export default function Buttons() {
   );
 
   const [blackOut, setBlackOut] = useState(null);
+
+  interface Size {
+    height: number;
+    width: number;
+  }
 
   const fetchBlackOut = async () => {
     const res = await fetch("/api/displayRemoved");
@@ -54,7 +61,7 @@ export default function Buttons() {
     fetchRemovedNumbers();
   }, []);
 
-  const reserveTicket = (number) => {
+  const reserveTicket = (number: number) => {
     if (reserved.includes(number)) {
       setReserved(reserved.filter((i) => i !== number));
     } else {
@@ -62,11 +69,11 @@ export default function Buttons() {
     }
   };
 
-  const handleStateChange = (e) => {
+  const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
 
@@ -141,13 +148,32 @@ export default function Buttons() {
     setPhone("");
   };
 
-  const handleSelection = (selectedTickets) => {
+  const handleSelection = (selectedTickets: number[]) => {
     setReserved([...reserved, ...selectedTickets]);
-
-    // setReserved([...reserved, ...selectedRandomTickets]);
-    // setSelectedRandomTickets([]);
     setShowModal(true); // Open the modal form
   };
+
+  //
+
+  const groupSize = 4; // number of items per row
+
+  // This will give you an array of arrays, where each inner array has groupSize elements
+  const groupedButtons = buttons.reduce<number[][]>(
+    (grouped, button, index) => {
+      const groupIndex = Math.floor(index / groupSize);
+
+      if (!grouped[groupIndex]) {
+        grouped[groupIndex] = [];
+      }
+
+      grouped[groupIndex].push(button);
+
+      return grouped;
+    },
+    []
+  );
+
+  //
 
   return (
     <div>
@@ -160,14 +186,14 @@ export default function Buttons() {
         <div className="flex flex-col items-center mt-4">
           <h2 className="text-center">Selected tickets:</h2>
           <p className="text-center">{reserved.join(", ")}</p>
-          <button className="mt-4" onClick={handleSubmit}>
+          <button className="mt-4" onClick={() => setShowModal(true)}>
             Confirm selection
           </button>
         </div>
       )}
 
       <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">
-        <InfiniteScroll
+        {/* <InfiniteScroll
           dataLength={buttons.length}
           hasMore={hasMore}
           loader={<h4 className="animate-pulse">Loading...</h4>}
@@ -212,7 +238,60 @@ export default function Buttons() {
               })}
             </div>
           )}
-        </InfiniteScroll>
+        </InfiniteScroll> */}
+
+        <AutoSizer>
+          {({ height, width }: Size) => (
+            <List
+              className="List"
+              height={height}
+              itemCount={groupedButtons.length}
+              itemSize={35}
+              width={width}
+            >
+              {({ index, style }) => {
+                const group = groupedButtons[index];
+
+                return (
+                  <div
+                    className="grid grid-cols-4 gap-1 place-items-center py-4"
+                    style={style}
+                  >
+                    {group.map((number) => {
+                      const isReserved = reserved?.includes(number);
+                      const isRemoved = removed?.includes(number);
+
+                      if (blackOut === false && isRemoved) {
+                        return null; // Don't display removed numbers when blackout is false
+                      }
+
+                      const buttonClass =
+                        blackOut && isRemoved
+                          ? "bg-black text-white px-4 py-2 rounded-full"
+                          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
+
+                      const handleOnClick =
+                        blackOut && isRemoved
+                          ? undefined
+                          : () => !isRemoved && reserveTicket(number);
+
+                      return (
+                        <button
+                          className={buttonClass}
+                          key={number}
+                          onClick={handleOnClick}
+                          disabled={(blackOut && isRemoved) || isReserved}
+                        >
+                          {number}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              }}
+            </List>
+          )}
+        </AutoSizer>
       </section>
       {/*  */}
       {/*  */}
