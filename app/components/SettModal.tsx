@@ -37,10 +37,10 @@ export default function SettModal({ isVisible, onClose }) {
     setMessage(e.target.value);
   };
 
-  const handleBlackOutChange = (e) => {
+  const handleBlackOutChange = () => {
     setConfig({
       ...config,
-      blackOut: e.target.value === "Yes",
+      blackOut: !config.blackOut,
     });
   };
 
@@ -105,23 +105,6 @@ export default function SettModal({ isVisible, onClose }) {
     }
   };
 
-  // const handleBankInfoSubmit = async (bankInfo) => {
-  //   const resBankInfo = await fetch("/api/bankInfo", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(bankInfo),
-  //   });
-
-  //   if (!resBankInfo.ok) {
-  //     console.error("Failed to post bank info");
-  //     return;
-  //   }
-
-  //   // onClose(); // close the modal if required
-  // };
-
   if (!isVisible) {
     return null;
   }
@@ -163,8 +146,8 @@ export default function SettModal({ isVisible, onClose }) {
           </div>
           <div className="px-4 py-5 sm:p-6">
             {showAccountsForm ? (
-              <AccountsForm 
-              // handleBankInfoSubmit={handleBankInfoSubmit} 
+              <AccountsForm
+              // handleBankInfoSubmit={handleBankInfoSubmit}
               />
             ) : (
               // ...
@@ -188,7 +171,6 @@ export default function SettModal({ isVisible, onClose }) {
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="whatsapp"
@@ -205,7 +187,6 @@ export default function SettModal({ isVisible, onClose }) {
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
                   />
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="reservationTime"
@@ -222,7 +203,6 @@ export default function SettModal({ isVisible, onClose }) {
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
                   />
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="blackOut"
@@ -231,29 +211,17 @@ export default function SettModal({ isVisible, onClose }) {
                     BlackOut
                   </label>
                   <div>
-                    <label>
+                    <label className="text-blue-500">
                       <input
-                        type="radio"
-                        value="Yes"
+                        type="checkbox"
                         name="blackOut"
-                        checked={config.blackOut === true}
+                        checked={config.blackOut}
                         onChange={handleBlackOutChange}
                       />{" "}
-                      Yes
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="No"
-                        name="blackOut"
-                        checked={config.blackOut === false}
-                        onChange={handleBlackOutChange}
-                      />{" "}
-                      No
+                      Enabled
                     </label>
                   </div>
                 </div>
-
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="drawDate"
@@ -284,7 +252,6 @@ export default function SettModal({ isVisible, onClose }) {
               </button>
             )}
           </div>
-
         </div>
       </div>
     )

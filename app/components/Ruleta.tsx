@@ -6,6 +6,11 @@ const Ruleta = ({ onSelection }) => {
   const [selectedRandomTickets, setSelectedRandomTickets] = useState([]);
 
   const toggleRandomOptions = () => {
+    if (showRandomOptions) {
+      // If closing the options, reset the states
+      setRandomCount(0);
+      setSelectedRandomTickets([]);
+    }
     setShowRandomOptions(!showRandomOptions);
   };
 
@@ -20,21 +25,15 @@ const Ruleta = ({ onSelection }) => {
     setSelectedRandomTickets(randomTickets);
   };
 
-  // const confirmSelection = () => {
-  //   setReserved([...reserved, ...selectedRandomTickets]);
-  //   setSelectedRandomTickets([]);
-  //   setShowModal(true); // Open the modal form
-  // };
-
   const confirmSelection = () => {
     onSelection(selectedRandomTickets);
     setSelectedRandomTickets([]);
   };
 
   useEffect(() => {
-    // this effect will run whenever randomCount changes
+    // This effect will run whenever randomCount changes
     if (randomCount > 0) {
-      // add a check to prevent running at initial render
+      // Add a check to prevent running at initial render
       reserveRandomTickets();
     }
   }, [randomCount]);
@@ -103,7 +102,7 @@ const Ruleta = ({ onSelection }) => {
       )}
 
       {/* Randomly selected tickets */}
-      {selectedRandomTickets.length > 0 && (
+      {showRandomOptions && selectedRandomTickets.length > 0 && (
         <div className="flex flex-col items-center mt-4">
           <h2 className="text-center">Randomly selected tickets:</h2>
           <p className="text-center">{selectedRandomTickets.join(", ")}</p>
