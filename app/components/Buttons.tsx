@@ -1,7 +1,7 @@
-// big change here
 import { useState, useEffect, FormEvent } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Modal from "./modal";
+import Ruleta from "./Ruleta";
 
 export default function Buttons() {
   const [hasMore, setHasMore] = useState(true);
@@ -11,7 +11,7 @@ export default function Buttons() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [message, setMessage] = useState(""); // Add the message state
+  const [message, setMessage] = useState("");
   const [state, setState] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
@@ -19,8 +19,6 @@ export default function Buttons() {
   const [buttons, setButtons] = useState(
     Array.from({ length: 500 }, (_, i) => i + 1)
   );
-
-  //
 
   const [blackOut, setBlackOut] = useState(null);
 
@@ -35,7 +33,6 @@ export default function Buttons() {
     fetchBlackOut();
   }, []);
 
-  // useEffect(() => {
   const fetchRemovedNumbers = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/reservedNumbers");
@@ -43,7 +40,6 @@ export default function Buttons() {
 
       if (res.ok) {
         setRemoved(data);
-        // Set isLoading to false when data has been successfully fetched
         setIsLoading(false);
       } else {
         console.error(data.error);
@@ -57,11 +53,6 @@ export default function Buttons() {
     fetchRemovedNumbers();
   }, []);
 
-  //
-  console.log("Reserved: ", reserved);
-  console.log("Removed: ", removed);
-  console.log("Buttons: ", buttons);
-
   const reserveTicket = (number) => {
     if (reserved.includes(number)) {
       setReserved(reserved.filter((i) => i !== number));
@@ -70,7 +61,6 @@ export default function Buttons() {
     }
   };
 
-  // let see handle submit
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
@@ -82,11 +72,9 @@ export default function Buttons() {
       countryCode = "+52 1";
     }
 
-    // append country code to phone number
     const phoneNumber = `${countryCode}${phone}`;
 
     try {
-      // Send data to API route
       const res = await fetch("http://localhost:3000/api/reservedNumbers", {
         method: "POST",
         headers: {
@@ -95,7 +83,7 @@ export default function Buttons() {
         body: JSON.stringify({
           name,
           email,
-          phone: phoneNumber, // Use the phoneNumber with the country code
+          phone: phoneNumber,
           numbers: reserved,
           state,
         }),
@@ -104,7 +92,6 @@ export default function Buttons() {
       const result = await res.json();
 
       if (res.ok) {
-        // After reserving numbers, fetch the updated list of removed numbers
         await fetchRemovedNumbers();
         setReserved([]);
 
@@ -126,7 +113,6 @@ export default function Buttons() {
 
         let encodedMessage = encodeURI(baseMessage);
 
-        // Format the message with emojis and newlines
         if (message !== "") {
           const formattedMessage = message
             .replace(/ENTER ENTER/g, "\n")
@@ -137,7 +123,7 @@ export default function Buttons() {
           encodedMessage += formattedMessage;
         }
 
-        window.open(`https://wa.me/17026751900?text=${encodedMessage}`); // Open in a new tab
+        window.open(`https://wa.me/17026751900?text=${encodedMessage}`);
       } else {
         console.error(result.error);
       }
@@ -147,13 +133,36 @@ export default function Buttons() {
 
     setName("");
     setEmail("");
-    setPhone(""); // clear phone state
+    setPhone("");
   };
 
+  const handleSelection = (selectedTickets) => {
+    setReserved([...reserved, ...selectedTickets]);
+  };
+
+  // useEffect(() => {
+  //   // this effect will run whenever randomCount changes
+  //   if (randomCount > 0) {
+  //     // add a check to prevent running at initial render
+  //     reserveRandomTickets();
+  //   }
+  // }, [randomCount]);
   return (
     <div>
       <h1>titulo por cambiar </h1>
       <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
+
+      <Ruleta onSelection={handleSelection} />
+
+      {reserved.length > 0 && (
+        <div className="flex flex-col items-center mt-4">
+          <h2 className="text-center">Selected tickets:</h2>
+          <p className="text-center">{reserved.join(", ")}</p>
+          <button className="mt-4" onClick={handleSubmit}>
+            Confirm selection
+          </button>
+        </div>
+      )}
 
       <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">
         <InfiniteScroll
