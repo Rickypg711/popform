@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react";
 import AccountsForm from "./AccountsForm";
 
-export default function SettModal({ isVisible, onClose }) {
+interface SettModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+}
+
+const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
   const [config, setConfig] = useState({
     accounts: "",
     reservationTime: "",
@@ -26,14 +31,14 @@ export default function SettModal({ isVisible, onClose }) {
     fetchPlaceholderMessage();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfig({
       ...config,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleMessageChange = (e) => {
+  const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   };
 
@@ -44,7 +49,7 @@ export default function SettModal({ isVisible, onClose }) {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     if (config.drawDate !== "") {
@@ -99,8 +104,15 @@ export default function SettModal({ isVisible, onClose }) {
     onClose();
   };
 
-  const handleClose = (e) => {
-    if (e.target.id === "wrapper") {
+  // const handleClose = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   if (e.target.id === "wrapper") {
+  //     onClose();
+  //   }
+  // };
+
+  const handleClose = (e: React.MouseEvent<HTMLElement>) => {
+    const target = e.target as HTMLElement;
+    if (target.id === "wrapper") {
       onClose();
     }
   };
@@ -256,4 +268,5 @@ export default function SettModal({ isVisible, onClose }) {
       </div>
     )
   );
-}
+};
+export default SettModal;
