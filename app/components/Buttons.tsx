@@ -69,7 +69,7 @@ export default function Buttons() {
     }
   };
 
-  const handleStateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setState(e.target.value);
   };
 
