@@ -1,9 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC, useCallback } from "react";
 
-const Ruleta = ({ onSelection, Butt }) => {
+interface RuletaProps {
+  onSelection: (selectedTickets: any[]) => void;
+  Butt: any[]; // Replace 'any' with the appropriate type if possible.
+}
+
+const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
   const [showRandomOptions, setShowRandomOptions] = useState(false);
   const [randomCount, setRandomCount] = useState(0);
-  const [selectedRandomTickets, setSelectedRandomTickets] = useState([]);
+  const [selectedRandomTickets, setSelectedRandomTickets] = useState<number[]>(
+    []
+  );
 
   const toggleRandomOptions = () => {
     if (showRandomOptions) {
@@ -14,8 +21,24 @@ const Ruleta = ({ onSelection, Butt }) => {
     setShowRandomOptions(!showRandomOptions);
   };
 
-  const reserveRandomTickets = () => {
-    const randomTickets = [];
+  // const reserveRandomTickets = () => {
+  //   const randomTickets: number[] = [];
+  //   let availableTickets = [...Butt]; // pass this as a prop
+
+  //   for (let i = 0; i < randomCount; i++) {
+  //     if (availableTickets.length === 0) break; // no available tickets left
+
+  //     const randomIndex = Math.floor(Math.random() * Butt.length) + 1;
+  //     randomTickets.push(availableTickets[randomIndex]);
+
+  //     // randomTickets.push(randomTicket);
+  //   }
+
+  //   setSelectedRandomTickets(randomTickets);
+  // };
+
+  const reserveRandomTickets = useCallback(() => {
+    const randomTickets: number[] = [];
     let availableTickets = [...Butt]; // pass this as a prop
 
     for (let i = 0; i < randomCount; i++) {
@@ -23,25 +46,29 @@ const Ruleta = ({ onSelection, Butt }) => {
 
       const randomIndex = Math.floor(Math.random() * Butt.length) + 1;
       randomTickets.push(availableTickets[randomIndex]);
-
-      // randomTickets.push(randomTicket);
     }
 
     setSelectedRandomTickets(randomTickets);
-  };
+  }, [randomCount, Butt]);
+
+  useEffect(() => {
+    if (randomCount > 0) {
+      reserveRandomTickets();
+    }
+  }, [randomCount, reserveRandomTickets]);
 
   const confirmSelection = () => {
     onSelection(selectedRandomTickets);
     setSelectedRandomTickets([]);
   };
 
-  useEffect(() => {
-    // This effect will run whenever randomCount changes
-    if (randomCount > 0) {
-      // Add a check to prevent running at initial render
-      reserveRandomTickets();
-    }
-  }, [randomCount]);
+  // useEffect(() => {
+  //   // This effect will run whenever randomCount changes
+  //   if (randomCount > 0) {
+  //     // Add a check to prevent running at initial render
+  //     reserveRandomTickets();
+  //   }
+  // }, [randomCount]);
 
   return (
     <>
