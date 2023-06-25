@@ -1,4 +1,11 @@
-const Estados = ({ value, onChange }) => {
+import React, { ChangeEvent } from "react";
+
+interface EstadosProps {
+  value: string;
+  onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+}
+
+const Estados: React.FC<EstadosProps> = ({ value, onChange }) => {
   return (
     <select
       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
