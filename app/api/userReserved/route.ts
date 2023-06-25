@@ -1,7 +1,7 @@
 import { prisma } from "@/app/lib/script";
 import { NextResponse } from "next/server";
 
-export async function POST(request) {
+export async function POST(request: Request) {
   const { id, email } = await request.json();
 
   if (!id || !email) {
