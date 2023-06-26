@@ -17,12 +17,6 @@ export default function Modal({
     return null;
   }
 
-  // const handleClose = (e: MouseEvent) => {
-  //   if (e.target.id === "wrapper") {
-  //     onClose();
-  //   }
-  // };
-
   const handleClose = (e: MouseEvent) => {
     const target = e.target as Element;
     if (target.id === "wrapper") {

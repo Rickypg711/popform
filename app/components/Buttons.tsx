@@ -180,7 +180,7 @@ export default function Buttons() {
       <h1>titulo por cambiar </h1>
       <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
 
-      <Ruleta onSelection={handleSelection} Butt={buttons} />
+      <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} />
 
       {reserved.length > 0 && (
         <div className="flex flex-col items-center mt-4">

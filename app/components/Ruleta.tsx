@@ -3,9 +3,10 @@ import { useState, useEffect, FC, useCallback } from "react";
 interface RuletaProps {
   onSelection: (selectedTickets: any[]) => void;
   Butt: any[]; // Replace 'any' with the appropriate type if possible.
+  removed: any[]; // Replace 'any' with the appropriate type if possible.
 }
 
-const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
+const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
   const [showRandomOptions, setShowRandomOptions] = useState(false);
   const [randomCount, setRandomCount] = useState(0);
   const [selectedRandomTickets, setSelectedRandomTickets] = useState<number[]>(
@@ -21,35 +22,20 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
     setShowRandomOptions(!showRandomOptions);
   };
 
-  // const reserveRandomTickets = () => {
-  //   const randomTickets: number[] = [];
-  //   let availableTickets = [...Butt]; // pass this as a prop
-
-  //   for (let i = 0; i < randomCount; i++) {
-  //     if (availableTickets.length === 0) break; // no available tickets left
-
-  //     const randomIndex = Math.floor(Math.random() * Butt.length) + 1;
-  //     randomTickets.push(availableTickets[randomIndex]);
-
-  //     // randomTickets.push(randomTicket);
-  //   }
-
-  //   setSelectedRandomTickets(randomTickets);
-  // };
-
   const reserveRandomTickets = useCallback(() => {
     const randomTickets: number[] = [];
-    let availableTickets = [...Butt]; // pass this as a prop
+    let availableTickets = Butt.filter((ticket) => !removed.includes(ticket));
 
     for (let i = 0; i < randomCount; i++) {
       if (availableTickets.length === 0) break; // no available tickets left
 
-      const randomIndex = Math.floor(Math.random() * Butt.length) + 1;
+      const randomIndex = Math.floor(Math.random() * availableTickets.length);
       randomTickets.push(availableTickets[randomIndex]);
+      availableTickets.splice(randomIndex, 1); // remove the selected ticket from available tickets
     }
 
     setSelectedRandomTickets(randomTickets);
-  }, [randomCount, Butt]);
+  }, [randomCount, Butt, removed]);
 
   useEffect(() => {
     if (randomCount > 0) {
@@ -61,14 +47,6 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
     onSelection(selectedRandomTickets);
     setSelectedRandomTickets([]);
   };
-
-  // useEffect(() => {
-  //   // This effect will run whenever randomCount changes
-  //   if (randomCount > 0) {
-  //     // Add a check to prevent running at initial render
-  //     reserveRandomTickets();
-  //   }
-  // }, [randomCount]);
 
   return (
     <>
@@ -130,6 +108,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
           >
             50 tickets
           </button>
+          {/* Buttons for random ticket counts */}
         </div>
       )}
 
@@ -138,6 +117,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt }) => {
         <div className="flex flex-col items-center mt-4">
           <h2 className="text-center">Randomly selected tickets:</h2>
           <p className="text-center">{selectedRandomTickets.join(", ")}</p>
+          {/* Display randomly selected tickets */}
           <button className="mt-4" onClick={confirmSelection}>
             Confirm selection
           </button>
