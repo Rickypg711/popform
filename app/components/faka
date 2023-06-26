@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { TiDelete } from "react-icons/ti";
 import { FaSave } from "react-icons/fa";
 
 interface BankInfo {
-  id: number;
+  id?: string;
   paymentMethod: string;
   bank: string;
-  cardNumber: string | null;
-  routingNumber: string | null;
-  accountName: string | null;
-  cardHolderName: string | null;
+  cardNumber: string;
+  routingNumber: string;
+  accountName: string;
+  cardHolderName: string;
 }
+
+// interface SubmittedBank extends BankInfo {
+//   id: string;
+// }
 
 export default function AccountForm() {
   const [bankInfo, setBankInfo] = useState<BankInfo>({
-    id: 0,
+    // id: "",
+
     paymentMethod: "",
     bank: "",
-    cardNumber: "" ?? "",
-    routingNumber: "" ?? "",
-    accountName: "" ?? "",
-    cardHolderName: "" ?? "",
+    cardNumber: "",
+    routingNumber: "",
+    accountName: "",
+    cardHolderName: "",
   });
 
   const [submittedBanks, setSubmittedBanks] = useState<BankInfo[]>([]);
-  const [editingBankId, setEditingBankId] = useState<number | null>(null);
+  const [editingBankId, setEditingBankId] = useState<string | null>(null);
 
   const fetchBankInfo = async () => {
     try {
       const res = await fetch("/api/bankInfo");
       if (res.ok) {
-        const data = await res.json();
+        const data: BankInfo[] = await res.json();
         setSubmittedBanks(data);
       } else {
         console.error("Failed to fetch bank info. Status:", res.status);
@@ -45,41 +50,44 @@ export default function AccountForm() {
   }, []);
 
   const handleBankInfoChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
-    setBankInfo((prevBankInfo) => ({
-      ...prevBankInfo,
-      [name]: value === "" ? null : value,
-    }));
+    setBankInfo({
+      ...bankInfo,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEdit = (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>,
+    bankId: string | undefined
+  ) => {
+    if (typeof bankId === "string") {
+      setBankInfo({
+        ...bankInfo,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Only make the request if the current bankInfo doesn't have an id
-    // meaning it's a new bank, not an update
     if (!bankInfo.id) {
+      // New bank, make a POST request
       try {
         const res = await fetch("/api/bankInfo", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            paymentMethod: bankInfo.paymentMethod,
-            bank: bankInfo.bank,
-            cardNumber: bankInfo.cardNumber,
-            routingNumber: bankInfo.routingNumber,
-            accountName: bankInfo.accountName,
-            cardHolderName: bankInfo.cardHolderName,
-          }),
+          body: JSON.stringify(bankInfo),
         });
 
         if (res.ok) {
           // Reset the bankInfo state to its initial values
           setBankInfo({
-            id: 0,
+            // id: "",
 
             paymentMethod: "",
             bank: "",
@@ -97,56 +105,50 @@ export default function AccountForm() {
         } else {
           console.error("Failed to add bank info. Status:", res.status);
         }
+
+        // Rest of the code...
       } catch (error) {
         console.error("Error adding bank info:", error);
       }
     } else {
-      // If it's an update, use the saveBank function instead
+      // Existing bank, make a PUT request
       saveBank(bankInfo.id);
     }
   };
 
-  const deleteBank = (bankId: number) => {
+  const deleteBank = (bankId: string) => {
     fetch(`/api/bankInfo/${bankId}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (!response.ok) throw new Error(response.statusText);
-        setSubmittedBanks((prevSubmittedBanks: BankInfo[]) =>
+        setSubmittedBanks((prevSubmittedBanks) =>
           prevSubmittedBanks.filter((bank) => bank.id !== bankId)
         );
       })
       .catch((error) => console.error("Error:", error));
   };
 
-  const editBank = (bankId: number) => {
-    setEditingBankId(bankId);
-
-    // Find the bank with the corresponding ID in the submittedBanks array
-    const bankToEdit = submittedBanks.find((bank) => bank.id === bankId);
-
-    if (bankToEdit) {
-      setBankInfo(bankToEdit);
+  const editBank = (bankId: string) => {
+    const selectedBank = submittedBanks.find((bank) => bank.id === bankId);
+    if (selectedBank) {
+      setBankInfo(selectedBank);
+      setEditingBankId(bankId); // Set the editingBankId state when editing a bank
+    } else {
+      console.error(`Bank with id ${bankId} not found.`);
     }
   };
 
-  const saveBank = async (bankId: number) => {
+  // save bank
+  const saveBank = async (bankId: string) => {
+    // s;
     try {
-      console.log("Saving bank info:", bankInfo); // Add this line
       const res = await fetch(`/api/bankInfo/${bankId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        // just changed this
-        body: JSON.stringify({
-          paymentMethod: bankInfo.paymentMethod,
-          bank: bankInfo.bank,
-          cardNumber: bankInfo.cardNumber,
-          routingNumber: bankInfo.routingNumber,
-          accountName: bankInfo.accountName,
-          cardHolderName: bankInfo.cardHolderName,
-        }),
+        body: JSON.stringify(bankInfo),
       });
 
       if (res.ok) {
@@ -160,7 +162,7 @@ export default function AccountForm() {
 
         setSubmittedBanks(updatedSubmittedBanks);
         setBankInfo({
-          id: 0,
+          // id: "",
 
           paymentMethod: "",
           bank: "",
@@ -169,7 +171,6 @@ export default function AccountForm() {
           accountName: "",
           cardHolderName: "",
         });
-
         setEditingBankId(null); // Reset editing bank id after saving
       } else {
         console.error("Failed to update bank info. Status:", res.status);
@@ -234,7 +235,24 @@ export default function AccountForm() {
           name="cardNumber"
           id="cardNumber"
           onChange={handleBankInfoChange}
-          value={bankInfo.cardNumber ?? ""}
+          value={bankInfo.cardNumber}
+          className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+        />
+      </div>
+
+      <div className="col-span-6 sm:col-span-3">
+        <label
+          htmlFor="cardHolderName"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Titular (opcional)
+        </label>
+        <input
+          type="text"
+          name="cardHolderName"
+          id="cardHolderName"
+          onChange={handleBankInfoChange}
+          value={bankInfo.cardHolderName}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         />
       </div>
@@ -251,7 +269,7 @@ export default function AccountForm() {
           name="routingNumber"
           id="routingNumber"
           onChange={handleBankInfoChange}
-          value={bankInfo.routingNumber ?? ""}
+          value={bankInfo.routingNumber}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         />
       </div>
@@ -268,7 +286,7 @@ export default function AccountForm() {
           name="accountName"
           id="accountName"
           onChange={handleBankInfoChange}
-          value={bankInfo.accountName ?? ""}
+          value={bankInfo.accountName}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         />
       </div>
@@ -285,7 +303,7 @@ export default function AccountForm() {
           name="cardHolderName"
           id="cardHolderName"
           onChange={handleBankInfoChange}
-          value={bankInfo.cardHolderName ?? ""}
+          value={bankInfo.cardHolderName}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         />
       </div>
@@ -305,15 +323,14 @@ export default function AccountForm() {
         <summary className="text-blue-500">Submitted Banks</summary>
         {submittedBanks.map((bank) => (
           <details
-            key={`${bank.id}-inner`} // Use a unique key for the inner details element
+            key={bank.id}
             className="mb-3"
             onToggle={(e) => {
               if (!e.target.open) {
                 setEditingBankId(null);
                 // Reset the bankInfo state to its initial values
                 setBankInfo({
-                  id: 0,
-
+                  // id: "",
                   paymentMethod: "",
                   bank: "",
                   cardNumber: "",
@@ -331,7 +348,7 @@ export default function AccountForm() {
                 <select
                   id="bank"
                   name="bank"
-                  onChange={handleBankInfoChange}
+                  onChange={(e) => handleEdit(e, bank.id)}
                   value={bankInfo.bank}
                   className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize"
                 >
@@ -342,7 +359,10 @@ export default function AccountForm() {
                 </select>
               ) : (
                 <span>{bank.bank}</span>
+                // {bank.bank}
               )}
+
+              {/* </span> */}
 
               {editingBankId !== bank.id && (
                 <>
@@ -375,7 +395,7 @@ export default function AccountForm() {
                   <select
                     name="paymentMethod"
                     value={bankInfo.paymentMethod}
-                    onChange={handleBankInfoChange}
+                    onChange={(e) => handleEdit(e, bank.id)}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   >
                     <option value="Transferencias">Transferencias</option>
@@ -392,8 +412,8 @@ export default function AccountForm() {
                   <input
                     type="text"
                     name="cardNumber"
-                    value={bankInfo.cardNumber ?? ""}
-                    onChange={handleBankInfoChange}
+                    value={bankInfo.cardNumber}
+                    onChange={(e) => handleEdit(e, bank.id)}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />
                 ) : (
@@ -406,8 +426,8 @@ export default function AccountForm() {
                   <input
                     type="text"
                     name="routingNumber"
-                    value={bankInfo.routingNumber ?? ""}
-                    onChange={handleBankInfoChange}
+                    value={bankInfo.routingNumber}
+                    onChange={(e) => handleEdit(e, bank.id)}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />
                 ) : (
@@ -420,8 +440,8 @@ export default function AccountForm() {
                   <input
                     type="text"
                     name="accountName"
-                    value={bankInfo.accountName ?? ""}
-                    onChange={handleBankInfoChange}
+                    value={bankInfo.accountName}
+                    onChange={(e) => handleEdit(e, bank.id)}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />
                 ) : (
@@ -434,8 +454,8 @@ export default function AccountForm() {
                   <input
                     type="text"
                     name="cardHolderName"
-                    value={bankInfo.cardHolderName ?? ""}
-                    onChange={handleBankInfoChange}
+                    value={bankInfo.cardHolderName}
+                    onChange={(e) => handleEdit(e, bank.id)}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />
                 ) : (
