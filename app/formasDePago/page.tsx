@@ -1,9 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
 import Image from "next/image";
 
+interface BankInfo {
+  id: number;
+  paymentMethod: string;
+  bank: string;
+  cardNumber: string | null;
+  routingNumber: string | null;
+  accountName: string | null;
+  cardHolderName: string | null;
+}
+
 export default function FormasDePago() {
-  const [bankInfo, setBankInfo] = useState(null);
+  const [bankInfo, setBankInfo] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -23,12 +34,6 @@ export default function FormasDePago() {
 
   return (
     <section className="payments bg-blue-700 text-white">
-      {/* <Image
-        src="https://cdn.builder.io/api/v1/image/assets%2F2505d249531c4f23a777e263cc8ada88%2Feae00687018941f5a40b8bcfbac69134"
-        alt="logo"
-        width={400}
-        height={400}
-      /> */}
       <section className="payments_container">
         <div className="payments_heading">
           <h2 className="text-blue-700">exclusivo transferencias y cajero</h2>
@@ -38,7 +43,7 @@ export default function FormasDePago() {
         </div>
         <section className="payments_type-section">
           <ul>
-            {bankInfo.map((bank) => (
+            {bankInfo.map((bank: BankInfo) => (
               <li key={bank.id} className="text-red-500">
                 Banco:{" "}
                 {/* <img
