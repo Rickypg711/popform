@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-
+import Footer from "../components/Footer";
 import Image from "next/image";
 
 interface BankInfo {
@@ -14,8 +14,8 @@ interface BankInfo {
 }
 
 export default function FormasDePago() {
-  const [bankInfo, setBankInfo] = useState([]);
-  const [error, setError] = useState(null);
+  const [bankInfo, setBankInfo] = useState<BankInfo[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/bankInfo")
@@ -33,31 +33,33 @@ export default function FormasDePago() {
   if (!bankInfo) return <div>Loading...</div>;
 
   return (
-    <section className="payments bg-blue-700 text-white">
-      <section className="payments_container">
-        <div className="payments_heading">
-          <h2 className="text-blue-700">exclusivo transferencias y cajero</h2>
-          <h3 className="text-sm underline">
-            en concepto de pago: numero de boleto
-          </h3>
+    <div>
+      <section className="flex items-center justify-center bg-red-500 text-white h-screen">
+        <div className="text-center">
+          <h1 className="text-3xl mb-4 flex items-center justify-center">
+            <span className="gold-text">INFORMACIÓN DE PAGO</span>
+          </h1>
+          <p>
+            Debes realizar el pago por alguna de éstas opciones y enviar tu
+            comprobante de pago al <span className="gold-text">whatsapp</span>
+          </p>
+          <section className="mt-8">
+            <ul>
+              {bankInfo.map((bank: BankInfo) => (
+                <li
+                  key={bank.id}
+                  className="text-white bg-gold bg-opacity-25 p-4 rounded-md mb-4 border-4 border-yellow-300 "
+                >
+                  <p className="font-bold gold-text">Banco: {bank.bank}</p>
+                  <p className="">Tipo: {bank.paymentMethod}</p>
+                  {/* Render other bank details */}
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
-        <section className="payments_type-section">
-          <ul>
-            {bankInfo.map((bank: BankInfo) => (
-              <li key={bank.id} className="text-red-500">
-                Banco:{" "}
-                {/* <img
-                  src={`data:image/png;base64,${bank.logo}`}
-                  alt={bank.bank}
-                /> */}
-                <p>Tipo: {bank.paymentMethod}</p>
-                <p>Banco: {bank.bank}</p>
-                {/* Render other bank details */}
-              </li>
-            ))}
-          </ul>
-        </section>
       </section>
-    </section>
+      <Footer />
+    </div>
   );
 }
