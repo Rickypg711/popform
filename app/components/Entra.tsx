@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import AdmiPage from "../adda/page";
 
@@ -18,11 +17,11 @@ const Entra = () => {
     }
   };
 
-  const handleUsernameChange = (e) => {
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
   };
 

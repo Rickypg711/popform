@@ -21,7 +21,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request) {
+export async function POST(request: Request) {
   try {
     const data = await request.json();
     const newTitle = data.title;
