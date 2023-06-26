@@ -119,6 +119,17 @@ export default function AccountForm() {
       .catch((error) => console.error("Error:", error));
   };
 
+  // const editBank = (bankId: number) => {
+  //   setEditingBankId(bankId);
+
+  //   // Find the bank with the corresponding ID in the submittedBanks array
+  //   const bankToEdit = submittedBanks.find((bank) => bank.id === bankId);
+
+  //   if (bankToEdit) {
+  //     setBankInfo(bankToEdit);
+  //   }
+  // };\
+
   const editBank = (bankId: number) => {
     setEditingBankId(bankId);
 
@@ -127,6 +138,27 @@ export default function AccountForm() {
 
     if (bankToEdit) {
       setBankInfo(bankToEdit);
+    }
+  };
+
+  // handle toggle
+  const handleToggle = (e: React.ChangeEvent<HTMLDetailsElement>) => {
+    const isOpen = e.target.open;
+    const bankId = parseInt(e.target.dataset.bankId as string, 10);
+
+    if (!isOpen) {
+      setEditingBankId(null);
+      setBankInfo({
+        id: 0,
+        paymentMethod: "",
+        bank: "",
+        cardNumber: "",
+        routingNumber: "",
+        accountName: "",
+        cardHolderName: "",
+      });
+    } else {
+      editBank(bankId);
     }
   };
 
@@ -307,24 +339,8 @@ export default function AccountForm() {
           <details
             key={`${bank.id}-inner`} // Use a unique key for the inner details element
             className="mb-3"
-            onToggle={(e) => {
-              if (!e.target.open) {
-                setEditingBankId(null);
-                // Reset the bankInfo state to its initial values
-                setBankInfo({
-                  id: 0,
-
-                  paymentMethod: "",
-                  bank: "",
-                  cardNumber: "",
-                  routingNumber: "",
-                  accountName: "",
-                  cardHolderName: "",
-                });
-              } else if (editingBankId !== bank.id) {
-                editBank(bank.id);
-              }
-            }}
+            onToggle={handleToggle}
+            data-bank-id={bank.id}
           >
             <summary className="text-capitalize text-blue-500">
               {editingBankId === bank.id ? (
