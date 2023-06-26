@@ -6,6 +6,7 @@ import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <div>
+      <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
         <h1 className="text-red-300">{title}</h1>
         <details></details>
