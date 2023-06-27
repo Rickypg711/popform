@@ -25,6 +25,35 @@ export default function Buttons() {
 
   const [blackOut, setBlackOut] = useState(null);
 
+  // ruleta handling show numbers
+  const [groupSize, setGroupSize] = useState(getGroupSize());
+
+  function getGroupSize() {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 768) {
+        return 4; // For small screens
+      } else if (window.innerWidth < 1024) {
+        return 8; // For medium screens
+      } else {
+        return 12; // For large screens
+      }
+    } else {
+      return 4; // Default to large screens if window is undefined
+    }
+  }
+  useEffect(() => {
+    function handleResize() {
+      setGroupSize(getGroupSize());
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  // setting states up
+
   interface Size {
     height: number;
     width: number;
@@ -155,8 +184,6 @@ export default function Buttons() {
 
   //
 
-  const groupSize = 4; // number of items per row
-
   // This will give you an array of arrays, where each inner array has groupSize elements
   const groupedButtons = buttons.reduce<number[][]>(
     (grouped, button, index) => {
@@ -176,14 +203,40 @@ export default function Buttons() {
   //
 
   return (
-    <div>
-      <h1>titulo por cambiar </h1>
-      <p>HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE</p>
+    <div
+      className="
+       px-4 
+      buttons-container "
+      style={{ border: "1px solid black" }}
+    >
+      <h1
+        className="
+    text-4xl sm:text-5xl lg:text-6xl font-bold text-center text-yellow-300
+    mt-8 mb-4
+  "
+      >
+        Elige una Opcion
+      </h1>
+      <p
+        className="
+    text-lg sm:text-xl lg:text-2xl text-center text-white font-semibold 
+    bg-indigo-600 p-2 rounded shadow-md
+  "
+      >
+        HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE
+      </p>
+      <div className="flex justify-center mt-4">
+        <span className="text-4xl animate-bounce">&#8595;</span>
+      </div>
 
+      {/* <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} /> */}
       <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} />
 
       {reserved.length > 0 && (
-        <div className="flex flex-col items-center mt-4">
+        <div
+          className="
+        flex flex-col items-center mt-4"
+        >
           <h2 className="text-center">Selected tickets:</h2>
           <p className="text-center">{reserved.join(", ")}</p>
           <button className="mt-4" onClick={() => setShowModal(true)}>
@@ -191,63 +244,8 @@ export default function Buttons() {
           </button>
         </div>
       )}
+      {/*  aqui reserveas o eliminas buttons*/}
 
-      <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">
-        <AutoSizer>
-          {({ height, width }: Size) => (
-            <List
-              className="List"
-              height={height}
-              itemCount={groupedButtons.length}
-              itemSize={35}
-              width={width}
-            >
-              {({ index, style }) => {
-                const group = groupedButtons[index];
-
-                return (
-                  <div
-                    className="grid grid-cols-4 gap-1 place-items-center py-4"
-                    style={style}
-                  >
-                    {group.map((number) => {
-                      const isReserved = reserved?.includes(number);
-                      const isRemoved = removed?.includes(number);
-
-                      if (blackOut === false && isRemoved) {
-                        return null; // Don't display removed numbers when blackout is false
-                      }
-
-                      const buttonClass =
-                        blackOut && isRemoved
-                          ? "bg-black text-white px-4 py-2 rounded-full"
-                          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
-
-                      const handleOnClick =
-                        blackOut && isRemoved
-                          ? undefined
-                          : () => !isRemoved && reserveTicket(number);
-
-                      return (
-                        <button
-                          className={buttonClass}
-                          key={number}
-                          onClick={handleOnClick}
-                          disabled={(blackOut && isRemoved) || isReserved}
-                        >
-                          {number}
-                        </button>
-                      );
-                    })}
-                  </div>
-                );
-              }}
-            </List>
-          )}
-        </AutoSizer>
-      </section>
-      {/*  */}
-      {/*  */}
       {reserved.length > 0 && (
         <aside
           className="list__tickets show"
@@ -286,7 +284,63 @@ export default function Buttons() {
         </aside>
       )}
 
+      <div className="h-96 overflow-y-scroll mt-5 px-4 w-full">
+        <AutoSizer>
+          {({ height, width }: Size) => (
+            <List
+              className="List"
+              height={height}
+              itemCount={groupedButtons.length}
+              itemSize={35}
+              width={width}
+            >
+              {({ index, style }) => {
+                const group = groupedButtons[index];
+
+                return (
+                  <div
+                    className="grid gap-1 place-items-center py-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11"
+                    style={style}
+                  >
+                    {group.map((number) => {
+                      const isReserved = reserved?.includes(number);
+                      const isRemoved = removed?.includes(number);
+
+                      if (blackOut === false && isRemoved) {
+                        return null; // Don't display removed numbers when blackout is false
+                      }
+
+                      const buttonClass =
+                        blackOut && isRemoved
+                          ? "bg-black text-white px-4 py-2 rounded-full"
+                          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
+
+                      const handleOnClick =
+                        blackOut && isRemoved
+                          ? undefined
+                          : () => !isRemoved && reserveTicket(number);
+
+                      return (
+                        <button
+                          className={buttonClass}
+                          key={number}
+                          onClick={handleOnClick}
+                          disabled={(blackOut && isRemoved) || isReserved}
+                        >
+                          {number}
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              }}
+            </List>
+          )}
+        </AutoSizer>
+      </div>
       {/*  */}
+      {/*  */}
+
       <Modal
         isVisible={showModal}
         onClose={() => setShowModal(false)}

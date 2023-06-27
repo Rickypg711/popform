@@ -18,9 +18,12 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
       // If closing the options, reset the states
       setRandomCount(0);
       setSelectedRandomTickets([]);
+      removed.length = 0; // Clear the 'removed' array
     }
     setShowRandomOptions(!showRandomOptions);
   };
+
+
 
   const reserveRandomTickets = useCallback(() => {
     const randomTickets: number[] = [];
@@ -35,6 +38,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
     }
 
     setSelectedRandomTickets(randomTickets);
+    removed.length = 0; // Clear the 'removed' array
   }, [randomCount, Butt, removed]);
 
   useEffect(() => {
@@ -49,11 +53,18 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
   };
 
   return (
-    <>
+    <div
+      className="ruleta-container  mx-auto "
+      style={{ border: "1px solid black" }}
+    >
       {/* Ruleta button */}
-      <div className="flex items-center justify-center mt-4">
+      <div
+        className="flex items-center justify-center mt-4   mb-3 "
+        style={{ border: "1px solid black" }}
+      >
         <button
-          className="bg-pink-200 hover:bg-pink-300 text-black py-2 px-4 rounded-full focus:outline-none"
+          className="bg-pink-200 hover:bg-pink-300 text-black py-2 px-4 rounded-full focus:outline-none           "
+          style={{ border: "1px solid black" }}
           onClick={toggleRandomOptions}
         >
           RULETA
@@ -62,9 +73,25 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
 
       {/* Random options */}
       {showRandomOptions && (
-        <div className="flex items-center justify-center mt-4 space-x-4">
+        <div
+          className="
+          flex 
+          flex-col
+          mt-4 
+          mb-3
+
+           items-center 
+           space-y-4
+
+          md:flex-row 
+          md:justify-center
+           md:items-center
+
+            md:space-x-4 md:space-y-0
+        "
+        >
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-2 px-4 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
             onClick={() => {
               setRandomCount(1);
               reserveRandomTickets();
@@ -73,7 +100,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             1 ticket
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-2 px-4 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
             onClick={() => {
               setRandomCount(2);
               reserveRandomTickets();
@@ -82,7 +109,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             2 tickets
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-2 px-4 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
             onClick={() => {
               setRandomCount(10);
               reserveRandomTickets();
@@ -91,7 +118,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             10 tickets
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-2 px-4 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
             onClick={() => {
               setRandomCount(30);
               reserveRandomTickets();
@@ -100,7 +127,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             30 tickets
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-2 px-4 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
             onClick={() => {
               setRandomCount(50);
               reserveRandomTickets();
@@ -108,7 +135,6 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
           >
             50 tickets
           </button>
-          {/* Buttons for random ticket counts */}
         </div>
       )}
 
@@ -123,7 +149,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
           </button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

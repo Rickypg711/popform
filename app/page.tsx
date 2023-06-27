@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Buttons from "./components/Buttons";
 import { Carousel } from "react-responsive-carousel";
@@ -32,10 +31,6 @@ export default function Home() {
     <div>
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <h1 className="text-red-300">{title}</h1>
-        <details></details>
-        <summary>perro</summary>
-
         <div className="carouselContainer">
           <Carousel
             autoPlay
@@ -51,7 +46,6 @@ export default function Home() {
                 height={300}
                 layout="responsive"
               />
-              <p className="legend">Legend 1</p>
             </div>
             <div className="imageContainer">
               <Image
@@ -61,7 +55,6 @@ export default function Home() {
                 height={300}
                 layout="responsive"
               />
-              <p className="legend">Legend 2</p>
             </div>
             <div className="imageContainer">
               <Image
@@ -71,25 +64,15 @@ export default function Home() {
                 height={300}
                 layout="responsive"
               />
-              <p className="legend">Legend 3</p>
             </div>
           </Carousel>
+          <div className="buttonContainer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
+            <button className="ticketsButton px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-lg rounded border border-white transition-all duration-300">
+              BOLETOS
+            </button>
+          </div>
         </div>
-
         <Buttons />
-
-        <style jsx>{`
-          .carouselContainer {
-            width: 100%;
-            max-width: 300px;
-          }
-
-          @media (min-width: 600px) {
-            .carouselContainer {
-              max-width: 200px;
-            }
-          }
-        `}</style>
       </main>
       <Footer />
     </div>

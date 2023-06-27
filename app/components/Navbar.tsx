@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaTicketAlt } from "react-icons/fa"; // Import the ticket icon
 
+// ...
+
 export default function Navbar() {
   const [isOpen, setOpen] = useState(false);
 
@@ -12,7 +14,8 @@ export default function Navbar() {
       <div className="flex flex-col mx-auto md:flex-row md:items-center md:justify-between md:max-w-4xl">
         <div className="flex justify-between items-center">
           <Link className="flex items-center" href="/botones">
-            <FaTicketAlt className=" text-8xl h-6 w-6 mr-2 text-red-200" />
+            <FaTicketAlt className=" text-9xl h-8 w-8 mr-2 text-red-200" />
+
             <div className="hidden md:block" />
           </Link>
           <div className="flex justify-center flex-grow">
@@ -57,15 +60,15 @@ export default function Navbar() {
             </Link>
             <Link
               className="my-1 text-sm text-gray-700 leading-5 hover:text-blue-500 md:mx-4 md:my-0"
-              href="/about"
+              href="/sorteo"
             >
-              About
+              Boletos
             </Link>
             <Link
               className="my-1 text-sm text-gray-700 leading-5 hover:text-blue-500 md:mx-4 md:my-0"
-              href="/services"
+              href="/formasDePago"
             >
-              Services
+              Formas De Pago
             </Link>
           </div>
         </div>

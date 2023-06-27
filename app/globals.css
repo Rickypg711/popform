@@ -29,3 +29,8 @@ body {
 .gold-text {
   color: gold;
 }
+.buttons-container {
+  width: 100%;
+}
+
+
