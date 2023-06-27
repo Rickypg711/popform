@@ -8,7 +8,12 @@ export default function Home() {
     <div className=" bg-red-300">
       <Navbar />
 
-      <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center py-20">
+      <main className="flex flex-col items-center justify-center w-full flex-1 px-2 sm:px-4 md:px-8 lg:px-20 text-center py-20">
+        <h1 className="text-6xl font-bold">
+          JEEP MOJAVE 2023 + CHEYENNE HIGH COUNTRY 2023
+        </h1>
+        <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2>
+
         <Buttons />
         <h1 className="text-6xl font-bold">
           JEEP MOJAVE 2023 + CHEYENNE HIGH COUNTRY 2023

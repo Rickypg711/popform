@@ -23,8 +23,6 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
     setShowRandomOptions(!showRandomOptions);
   };
 
-
-
   const reserveRandomTickets = useCallback(() => {
     const randomTickets: number[] = [];
     let availableTickets = Butt.filter((ticket) => !removed.includes(ticket));
@@ -63,11 +61,10 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
         style={{ border: "1px solid black" }}
       >
         <button
-          className="bg-pink-200 hover:bg-pink-300 text-black py-2 px-4 rounded-full focus:outline-none           "
-          style={{ border: "1px solid black" }}
+          className="lg:text-5xl bg-pink-200 hover:bg-pink-300 text-black py-2 px-4 rounded-full focus:outline-none border border-black transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-3 md:px-6"
           onClick={toggleRandomOptions}
         >
-          RULETA
+          RULETA DE LA SUERTE
         </button>
       </div>
 
@@ -91,60 +88,67 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
         "
         >
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(1);
               reserveRandomTickets();
             }}
           >
-            1 ticket
+            1 BOLETO POR $63{" "}
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
-              setRandomCount(2);
+              setRandomCount(3);
               reserveRandomTickets();
             }}
           >
-            2 tickets
+            3 BOLETOS POR $184
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            onClick={() => {
+              setRandomCount(5);
+              reserveRandomTickets();
+            }}
+          >
+            5 BOLETOS POR $298{" "}
+          </button>
+          <button
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(10);
               reserveRandomTickets();
             }}
           >
-            10 tickets
+            10 BOLETOS POR $595
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
+            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
-              setRandomCount(30);
+              setRandomCount(100);
               reserveRandomTickets();
             }}
           >
-            30 tickets
-          </button>
-          <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none"
-            onClick={() => {
-              setRandomCount(50);
-              reserveRandomTickets();
-            }}
-          >
-            50 tickets
+            100 BOLETOS POR $5,950{" "}
           </button>
         </div>
       )}
 
       {/* Randomly selected tickets */}
       {showRandomOptions && selectedRandomTickets.length > 0 && (
-        <div className="flex flex-col items-center mt-4">
-          <h2 className="text-center">Randomly selected tickets:</h2>
-          <p className="text-center">{selectedRandomTickets.join(", ")}</p>
+        <div className="flex flex-col items-center mt-8 space-y-3 bg-gray-100 bg-opacity-50 p-4 rounded-lg shadow-lg">
+          <h2 className="text-lg md:text-xl font-semibold text-center text-blue-600">
+            Randomly selected tickets:
+          </h2>
+          <p className="text-md md:text-lg text-center text-gray-800">
+            {selectedRandomTickets.join(", ")}
+          </p>
           {/* Display randomly selected tickets */}
-          <button className="mt-4" onClick={confirmSelection}>
+          <button
+            className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 focus:outline-none transition-colors duration-200 ease-in-out"
+            onClick={confirmSelection}
+          >
             Confirm selection
           </button>
         </div>
