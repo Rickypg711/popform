@@ -31,8 +31,8 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <main className=" flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="carouselContainer pt-20">
+      <main className=" flex min-h-screen flex-col items-center justify-between ">
+        <div className="carouselContainer  pt-16 md:pt-16 ">
           <Carousel
             autoPlay
             showThumbs={false}
@@ -73,8 +73,10 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <div className="faqContainer flex flex-col items-center">
-          <h2 className="text-2xl font-bold mb-4">PREGUNTAS FRECUENTES</h2>
+        <div className="faqContainer flex flex-col items-center pt-5">
+          <h2 className="bg-yellow-300 w-full text-4xl text-center font-bold mb-4">
+            PREGUNTAS FRECUENTES
+          </h2>
           <p className="text-center">
             ¿CÓMO SE ELIGE A LOS GANADORES?
             <br />

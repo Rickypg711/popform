@@ -10,7 +10,7 @@ export default function Navbar() {
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <div className="fixed  w-full bg-black py-3 z-10">
+    <div className="fixed  w-full bg-black py-3 z-10 mb-4">
       <nav
         className=" bg-yellow-300 px-4 py-2 shadow"
         // style={{ marginTop: "64px" }}
@@ -60,7 +60,7 @@ export default function Navbar() {
                 className="my-1 text-sm text-gray-700 leading-5 hover:underline hover:text-red-500 md:mx-4 md:my-0"
                 href="/"
               >
-                Home
+                Inicio
               </Link>
               <Link
                 className="my-1 text-sm text-gray-700 leading-5 hover:underline hover:text-red-500 md:mx-4 md:my-0"
