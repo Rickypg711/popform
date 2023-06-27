@@ -188,7 +188,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     htmlFor="whatsapp"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Whatsapp
+                    Whatsapp Recordatorio
                   </label>
                   <input
                     type="text"
