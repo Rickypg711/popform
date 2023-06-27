@@ -189,7 +189,7 @@ const AdmiPage = () => {
 
       {/* Rest of your page... */}
 
-      <div className="flex justify-center space-x-4 mt-4 px-2">
+      <div className="flex justify-center mx-2 space-x-4 mt-4 px-2">
         <button
           className={`px-4 py-2 rounded-md ${
             selectedUsers.length !== 1

@@ -34,9 +34,10 @@ export default function FormasDePago() {
   if (!bankInfo) return <div>Loading...</div>;
 
   return (
-    <div>
-      <Navbar />{" "}
-      <section className="flex items-center justify-center bg-red-500 text-white h-screen">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <section className="flex-1 flex items-center justify-center bg-red-500 text-white mt-14 pt-10">
+        {/* Add mt-16 (top margin) to the section */}
         <div className="text-center">
           <h1 className="text-3xl mb-4">
             <span className="text-gold">INFORMACIÓN DE PAGO</span>
@@ -54,6 +55,8 @@ export default function FormasDePago() {
                 >
                   <p className="font-bold text-gold">Banco: {bank.bank}</p>
                   <p className="">Tipo: {bank.paymentMethod}</p>
+                  <p>Nombre: {bank.cardHolderName}</p>
+                  <p>CardNumber: {bank.cardNumber}</p>
                   {/* Render other bank details */}
                 </li>
               ))}

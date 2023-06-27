@@ -12,7 +12,7 @@ export default function Navbar() {
       <div className="flex flex-col mx-auto md:flex-row md:items-center md:justify-between md:max-w-4xl">
         <div className="flex justify-between items-center">
           <Link className="flex items-center" href="/botones">
-            <FaTicketAlt className=" text-lg h-6 w-6 mr-2" />
+            <FaTicketAlt className=" text-8xl h-6 w-6 mr-2 text-red-200" />
             <div className="hidden md:block" />
           </Link>
           <div className="flex justify-center flex-grow">

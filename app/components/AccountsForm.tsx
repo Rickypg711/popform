@@ -204,6 +204,10 @@ export default function AccountForm() {
     <form
       className="mt-3 border rounded p-3 text-red-200"
       onSubmit={handleSubmit}
+      style={{
+        maxHeight: "calc(100vh - 80px)", // Adjust the value based on your layout
+        overflowY: "auto",
+      }}
     >
       <div className="col-span-6 sm:col-span-3">
         <label
@@ -217,11 +221,13 @@ export default function AccountForm() {
           name="paymentMethod"
           onChange={handleBankInfoChange}
           value={bankInfo.paymentMethod}
+          required
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         >
-          <option value="card">Transferencias</option>
-          <option value="oxxo">Oxxo</option>
-          <option value="usa">Extranjero</option>
+          <option value="">Seleccionar Tipo De Cuenta</option>{" "}
+          <option value="Transferencias">Transferencias</option>
+          <option value="Oxxo">Oxxo</option>
+          <option value="Extranjero">Extranjero</option>
         </select>
       </div>
 
@@ -238,7 +244,10 @@ export default function AccountForm() {
           onChange={handleBankInfoChange}
           value={bankInfo.bank}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize text-red-400"
+          required // Add the required attribute
         >
+          <option value="">Seleccionar banco</option>{" "}
+          {/* Add an empty option */}
           <option value="bbva">bbva</option>
           <option value="santander">santander</option>
           <option value="scotiabank">scotiabank</option>
@@ -351,7 +360,8 @@ export default function AccountForm() {
                   name="bank"
                   onChange={handleBankInfoChange}
                   value={bankInfo.bank}
-                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize"
+                  className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize text-red-400"
+                  required // Add the required attribute
                 >
                   <option value="bbva">bbva</option>
                   <option value="santander">santander</option>
@@ -401,11 +411,13 @@ export default function AccountForm() {
                 Tipo:
                 {editingBankId === bank.id ? (
                   <select
+                    required
                     name="paymentMethod"
                     value={bankInfo.paymentMethod}
                     onChange={handleBankInfoChange}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   >
+                    <option value="">Seleccionar Tipo De Cuenta</option>{" "}
                     <option value="Transferencias">Transferencias</option>
                     <option value="Oxxo">Oxxo</option>
                     <option value="Extranjero">Extranjero</option>
