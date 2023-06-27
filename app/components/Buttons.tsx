@@ -299,8 +299,7 @@ export default function Buttons() {
 
                 return (
                   <div
-                    className="grid gap-1 place-items-center py-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11"
-                    // className="grid gap-1 place-items-center py-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11"
+                    className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4"
                     style={style}
                   >
                     {group.map((number) => {
