@@ -70,7 +70,7 @@ export default function Home() {
           </Carousel>
           <div className="buttonContainer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
             <button className="ticketsButton px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-lg rounded border border-white transition-all duration-300">
-              <Link href="/sorteo">BOLETOS</Link>
+              <Link href="/sorteo">COMPRAR BOLETOS</Link>
             </button>
           </div>
         </div>
@@ -162,6 +162,11 @@ export default function Home() {
           pierdas!
         </p>
       </main>
+      <div>
+        <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold ">
+          contactanos
+        </h2>
+      </div>
       <Footer />
     </div>
   );
