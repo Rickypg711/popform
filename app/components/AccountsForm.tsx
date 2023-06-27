@@ -119,17 +119,6 @@ export default function AccountForm() {
       .catch((error) => console.error("Error:", error));
   };
 
-  // const editBank = (bankId: number) => {
-  //   setEditingBankId(bankId);
-
-  //   // Find the bank with the corresponding ID in the submittedBanks array
-  //   const bankToEdit = submittedBanks.find((bank) => bank.id === bankId);
-
-  //   if (bankToEdit) {
-  //     setBankInfo(bankToEdit);
-  //   }
-  // };\
-
   const editBank = (bankId: number) => {
     setEditingBankId(bankId);
 
@@ -212,7 +201,10 @@ export default function AccountForm() {
   };
 
   return (
-    <form className="mt-3 border rounded p-3" onSubmit={handleSubmit}>
+    <form
+      className="mt-3 border rounded p-3 text-red-200"
+      onSubmit={handleSubmit}
+    >
       <div className="col-span-6 sm:col-span-3">
         <label
           htmlFor="paymentMethod"
@@ -227,9 +219,9 @@ export default function AccountForm() {
           value={bankInfo.paymentMethod}
           className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
         >
-          <option value="Transferencias">Transferencias</option>
-          <option value="Oxxo">Oxxo</option>
-          <option value="Extranjero">Extranjero</option>
+          <option value="card">Transferencias</option>
+          <option value="oxxo">Oxxo</option>
+          <option value="usa">Extranjero</option>
         </select>
       </div>
 
@@ -245,12 +237,22 @@ export default function AccountForm() {
           name="bank"
           onChange={handleBankInfoChange}
           value={bankInfo.bank}
-          className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize"
+          className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize text-red-400"
         >
-          <option value="Bbva">Bbva</option>
-          <option value="Santander">Santander</option>
-          <option value="Scotiabank">Scotiabank</option>
-          <option value="HSBC">HSBC</option>
+          <option value="bbva">bbva</option>
+          <option value="santander">santander</option>
+          <option value="scotiabank">scotiabank</option>
+          <option value="hsbc">hsbc</option>
+          <option value="bancoAzteca">bancoAzteca</option>
+          <option value="banamex">banamex</option>
+          <option value="banorte">banorte</option>
+          <option value="bancoppel">bancoppel</option>
+          <option value="saldazo">saldazo</option>
+          <option value="spin">spin</option>
+          <option value="banbajio">banbajio</option>
+          <option value="banregio">banregio</option>
+          <option value="inbursa">inbursa</option>
+          <option value="paypal">paypal</option>
         </select>
       </div>
 
@@ -322,7 +324,7 @@ export default function AccountForm() {
         />
       </div>
 
-      <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
+      <div className="px-4 py-3 text-right sm:px-6">
         <button
           type="submit"
           className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -351,10 +353,20 @@ export default function AccountForm() {
                   value={bankInfo.bank}
                   className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-capitalize"
                 >
-                  <option value="Bbva">Bbva</option>
-                  <option value="Santander">Santander</option>
-                  <option value="Scotiabank">Scotiabank</option>
-                  <option value="HSBC">HSBC</option>
+                  <option value="bbva">bbva</option>
+                  <option value="santander">santander</option>
+                  <option value="scotiabank">scotiabank</option>
+                  <option value="hsbc">hsbc</option>
+                  <option value="bancoAzteca">bancoAzteca</option>
+                  <option value="banamex">banamex</option>
+                  <option value="banorte">banorte</option>
+                  <option value="bancoppel">bancoppel</option>
+                  <option value="saldazo">saldazo</option>
+                  <option value="spin">spin</option>
+                  <option value="banbajio">banbajio</option>
+                  <option value="banregio">banregio</option>
+                  <option value="inbursa">inbursa</option>
+                  <option value="paypal">paypal</option>
                 </select>
               ) : (
                 <span>{bank.bank}</span>
@@ -445,7 +457,7 @@ export default function AccountForm() {
                 )}
               </p>
               <p>
-                Titular (opcional):
+                Nombre (opcional):
                 {editingBankId === bank.id ? (
                   <input
                     type="text"
