@@ -110,6 +110,15 @@ const AdmiPage = () => {
     }
   };
 
+  // Calculate the ticket statistics
+  const reservedCount = users.reduce(
+    (count, user) => count + user.reservedNumbers.length,
+    0
+  );
+  const paidCount = users.filter((user) => user.paid).length;
+  const totalCount = 3500; // Total number of tickets
+  const availableCount = totalCount - reservedCount + paidCount;
+
   return (
     <div className="mx-4 md:mx-10 lg:mx-20 overflow-x-hidden bg-gray-800 text-white">
       <div className="flex justify-between items-center my-8">
@@ -118,6 +127,22 @@ const AdmiPage = () => {
           className="cursor-pointer text-xl"
           onClick={() => setIsModalVisible(!isModalVisible)}
         />
+      </div>
+
+      {/* Ticket Statistics */}
+      <div className="flex justify-center space-x-8 mb-4">
+        <div>
+          <p className="text-gray-300">Reserved:</p>
+          <p className="text-2xl font-bold">{reservedCount}</p>
+        </div>
+        <div>
+          <p className="text-gray-300">Paid:</p>
+          <p className="text-2xl font-bold">{paidCount}</p>
+        </div>
+        <div>
+          <p className="text-gray-300">Available:</p>
+          <p className="text-2xl font-bold">{availableCount}</p>
+        </div>
       </div>
 
       {/* Rest of your page... */}

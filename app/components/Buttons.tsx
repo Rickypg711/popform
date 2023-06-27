@@ -193,53 +193,6 @@ export default function Buttons() {
       )}
 
       <section className="h-96 overflow-y-scroll mt-5 px-4 w-full">
-        {/* <InfiniteScroll
-          dataLength={buttons.length}
-          hasMore={hasMore}
-          loader={<h4 className="animate-pulse">Loading...</h4>}
-          endMessage={
-            <p className="text-center font-bold mt-5">
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-        >
-          {isLoading ? (
-            <h4 className="animate-pulse">Loading...</h4>
-          ) : (
-            <div className="grid grid-cols-4 gap-1 place-items-center py-4">
-              {buttons.map((number) => {
-                const isReserved = reserved?.includes(number);
-                const isRemoved = removed?.includes(number);
-
-                if (blackOut === false && isRemoved) {
-                  return null; // Don't display removed numbers when blackout is false
-                }
-
-                const buttonClass =
-                  blackOut && isRemoved
-                    ? "bg-black text-white px-4 py-2 rounded-full"
-                    : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
-
-                const handleOnClick =
-                  blackOut && isRemoved
-                    ? null
-                    : () => !isRemoved && reserveTicket(number);
-
-                return (
-                  <button
-                    className={buttonClass}
-                    key={number}
-                    onClick={handleOnClick}
-                    disabled={(blackOut && isRemoved) || isReserved}
-                  >
-                    {number}
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </InfiniteScroll> */}
-
         <AutoSizer>
           {({ height, width }: Size) => (
             <List
