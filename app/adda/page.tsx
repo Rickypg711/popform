@@ -7,9 +7,9 @@ import SettModal from "../components/SettModal";
 const AdmiPage = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
-
   const [filter, setFilter] = useState("all");
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   // interface
 
@@ -61,17 +61,29 @@ const AdmiPage = () => {
 
   const changePaidStatus = async (paid: boolean) => {
     for (const id of selectedUsers) {
-      const res = await fetch(`/api/users/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ paid }),
-      });
+      try {
+        const res = await fetch(`/api/users/${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ paid }),
+        });
 
-      const updatedUser = await res.json();
-      setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+        if (!res.ok) {
+          throw new Error("Failed to update paid status.");
+        }
+
+        const updatedUser = await res.json();
+        console.log("Response from server:", updatedUser);
+
+        setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+      } catch (error) {
+        console.error("Failed to update paid status:", error);
+        // Handle error here
+      }
     }
+
     setSelectedUsers([]); // Clear selection
   };
 
@@ -92,10 +104,24 @@ const AdmiPage = () => {
   };
 
   // Filter users based on the payment status
-  const filteredUsers = users.filter((user) => {
-    if (filter === "all") return true;
-    return filter === "paid" ? user.paid : !user.paid;
-  });
+  // ...
+
+  const filteredUsers = users
+    .filter((user) => {
+      if (filter === "all") return true;
+      return filter === "paid" ? user.paid : !user.paid;
+    })
+    .filter((user) => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+      return (
+        user.name.toLowerCase().includes(lowerCaseQuery) ||
+        user.numbers.some((number) =>
+          number.toString().includes(lowerCaseQuery)
+        )
+      );
+    });
+
+  // ...
 
   const sendWhatsAppReminder = async () => {
     if (selectedUsers.length === 1) {
@@ -112,15 +138,20 @@ const AdmiPage = () => {
 
   // Calculate the ticket statistics
   const reservedCount = users.reduce(
-    (count, user) => count + user.reservedNumbers.length,
+    (count, user) => count + (user.reservedNumbers?.length ?? 0),
     0
   );
+
   const paidCount = users.filter((user) => user.paid).length;
   const totalCount = 3500; // Total number of tickets
   const availableCount = totalCount - reservedCount + paidCount;
 
   return (
-    <div className="mx-4 md:mx-10 lg:mx-20 overflow-x-hidden bg-gray-800 text-white">
+    <div
+      className="px-4 md:px-8 lg:px-10
+ 
+    overflow-x-hidden bg-gray-800 text-white"
+    >
       <div className="flex justify-between items-center my-8">
         <h1 className="text-3xl ">S17 CORVETTE 2022</h1>
         <FaCog
@@ -145,9 +176,20 @@ const AdmiPage = () => {
         </div>
       </div>
 
+      {/* Search bar */}
+      <div className="flex justify-center mt-4">
+        <input
+          type="text"
+          placeholder="Search by name or number"
+          className="px-4 py-2 rounded-md bg-gray-200 text-black"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       {/* Rest of your page... */}
 
-      <div className="flex justify-center space-x-4 mt-4">
+      <div className="flex justify-center space-x-4 mt-4 px-2">
         <button
           className={`px-4 py-2 rounded-md ${
             selectedUsers.length !== 1

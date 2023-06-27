@@ -14,7 +14,7 @@ model User {
   numbers         Int[]
   phone           String?
   paid            Boolean          @default(false)
-  state           String? //@default("DefaultState") // Here, "DefaultState" is a placeholder. Replace it with an appropriate default value for your use case.
+  state           String?
   reservedNumbers ReservedNumber[]
 }
 
