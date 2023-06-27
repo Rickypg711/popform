@@ -5,10 +5,12 @@ interface SettModalProps {
   isVisible: boolean;
   onClose: () => void;
 }
+const phoneRegEx =
+  /^((\+\d{1,2}\s?)?((\(\d{1,3}\))|\d{1,3})[-.\s]?)?(\d{3}[-.\s]?\d{4})$/;
 
 const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
   const [config, setConfig] = useState({
-    accounts: "",
+    phoneNumber: "",
     reservationTime: "",
     drawDate: "",
     blackOut: true,
@@ -51,7 +53,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
+    // fecha change
     if (config.drawDate !== "") {
       const res1 = await fetch("/api/title", {
         method: "POST",
@@ -66,7 +68,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
         return;
       }
     }
-
+    // message change
     if (message !== "") {
       const formattedMessage = message
         .replace(/ENTER ENTER/g, "\n")
@@ -87,7 +89,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
         return;
       }
     }
-
+    // blaxk out
     const res3 = await fetch("/api/displayRemoved", {
       method: "POST",
       headers: {
@@ -99,6 +101,27 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
     if (!res3.ok) {
       console.error("Failed to post blackOut value");
       return;
+    }
+    // 4 submit number
+    if (config.phoneNumber !== "") {
+      // Validate the phone number format
+      if (!phoneRegEx.test(config.phoneNumber)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+
+      const res4 = await fetch("/api/config/phoneNumber", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ phoneNumber: config.phoneNumber }),
+      });
+
+      if (!res4.ok) {
+        console.error("Failed to post phone number");
+        return;
+      }
     }
 
     onClose();
@@ -169,20 +192,21 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
               <div className="grid grid-cols-6 gap-6">
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="accounts"
+                    htmlFor="phoneNumber"
                     className="block text-sm font-medium text-gray-700"
                   >
-                    Cuentas
+                    Número de Teléfono
                   </label>
                   <input
                     type="text"
-                    name="accounts"
-                    id="accounts"
-                    value={config.accounts}
+                    name="phoneNumber"
+                    id="phoneNumber"
+                    value={config.phoneNumber}
                     onChange={handleChange}
-                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-black"
                   />
                 </div>
+
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="whatsapp"

@@ -102,6 +102,10 @@ export default function Home() {
           </p>
           <br />
           <br />
+          <div className="h-0.5 bg-black w-1/4"></div>
+
+          <br />
+
           <p className="text-center">
             <span className="text-yellow-300 text-3xl">
               ¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?
@@ -115,6 +119,9 @@ export default function Home() {
           </p>
           <br />
           <br />
+          <div className="h-0.5 bg-black w-1/4"></div>
+          <br />
+
           <p className="text-center">
             <span className="text-yellow-300 text-3xl">
               ¿DÓNDE SE PUBLICA A LOS GANADORES?
@@ -132,11 +139,28 @@ export default function Home() {
             así como las transmisiones en vivo con Lotería Nacional y las
             entregas de premios a los ganadores!
             <br />
-            Encuentra transmisión en vivo de los sorteos en nuestra página de
-            Facebook en las fechas indicadas a las 20:00 hrs CDMX. ¡No te lo
-            pierdas!
+            <br />
+            <br />
           </p>
         </div>
+        <section className="w-full ">
+          <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">
+            Sobre Nosotors
+          </h2>
+          <p className="text-center  md:text-2xl">
+            Sorteos ENTRE AMIGOS en base a LOTERIA NACIONAL ARRIESGA POCO Y GANA
+            MUCHO!
+          </p>
+        </section>
+        <br />
+        <div className="h-0.5 bg-black w-1/4"></div>
+        <br />
+        <p className="text-center">
+          {" "}
+          Encuentra transmisión en vivo de los sorteos en nuestra página de
+          Facebook en las fechas indicadas a las 20:00 hrs CDMX. ¡No te lo
+          pierdas!
+        </p>
       </main>
       <Footer />
     </div>
