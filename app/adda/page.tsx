@@ -35,20 +35,28 @@ const AdmiPage = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const res = await fetch("/api/users");
-      const data = await res.json();
-      setUsers(data);
+      try {
+        const res = await fetch("/api/users");
+        if (!res.ok) {
+          throw new Error("API response was not ok.");
+        }
+        const data = await res.json();
+
+        if (!Array.isArray(data)) {
+          throw new Error("API response data is not an array.");
+        }
+
+        setUsers(data);
+      } catch (error) {
+        console.error("Failed to fetch users:", error);
+      }
     };
 
     fetchUsers();
   }, []);
 
   const toggleSelectedUser = (user: User) => {
-    if (selectedUsers.includes(user.id)) {
-      setSelectedUsers(selectedUsers.filter((u) => u !== user.id));
-    } else {
-      setSelectedUsers([...selectedUsers, user.id]);
-    }
+    setSelectedUsers([user.id]);
   };
 
   const changePaidStatus = async (paid: boolean) => {
@@ -103,7 +111,7 @@ const AdmiPage = () => {
   };
 
   return (
-    <div className="mx-4 md:mx-10 lg:mx-20 overflow-x-hidden">
+    <div className="mx-4 md:mx-10 lg:mx-20 overflow-x-hidden bg-gray-800 text-white">
       <div className="flex justify-between items-center my-8">
         <h1 className="text-3xl ">S17 CORVETTE 2022</h1>
         <FaCog
@@ -113,8 +121,61 @@ const AdmiPage = () => {
       </div>
 
       {/* Rest of your page... */}
-      <div className="flex flex-col justify-between my-4">
-        <div className="my-2">
+
+      <div className="flex justify-center space-x-4 mt-4">
+        <button
+          className={`px-4 py-2 rounded-md ${
+            selectedUsers.length !== 1
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-green-500 text-white"
+          } focus:outline-none`}
+          onClick={sendWhatsAppReminder}
+          disabled={selectedUsers.length !== 1}
+        >
+          WhatsApp Reminder
+        </button>
+
+        <button
+          className={`px-4 py-2 rounded-md ${
+            selectedUsers.length === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white"
+          } focus:outline-none`}
+          onClick={() => changePaidStatus(true)}
+          disabled={selectedUsers.length === 0}
+        >
+          Mark as Paid
+        </button>
+
+        <button
+          className={`px-4 py-2 rounded-md ${
+            selectedUsers.length === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-yellow-500 text-white"
+          } focus:outline-none`}
+          onClick={() => changePaidStatus(false)}
+          disabled={selectedUsers.length === 0}
+        >
+          Mark as Unpaid
+        </button>
+
+        <button
+          className={`px-4 py-2 rounded-md ${
+            selectedUsers.length === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-red-500 text-white"
+          } focus:outline-none`}
+          onClick={deleteUser}
+          disabled={selectedUsers.length === 0}
+        >
+          Delete
+        </button>
+      </div>
+
+      {/* radio buttons  */}
+
+      <div className="flex justify-center sm:justify-start space-x-4 my-4">
+        <div>
           <input
             type="radio"
             id="all"
@@ -122,18 +183,17 @@ const AdmiPage = () => {
             value="all"
             checked={filter === "all"}
             onChange={(e) => setFilter(e.target.value)}
-            className=""
           />
           <label
             htmlFor="all"
-            className={`${
+            className={`px-4 py-2 rounded-md ${
               filter === "all" ? "bg-blue-500 text-white" : "bg-gray-500"
             } cursor-pointer`}
           >
             All
           </label>
         </div>
-        <div className="my-2">
+        <div>
           <input
             type="radio"
             id="paid"
@@ -141,7 +201,6 @@ const AdmiPage = () => {
             value="paid"
             checked={filter === "paid"}
             onChange={(e) => setFilter(e.target.value)}
-            className=""
           />
           <label
             htmlFor="paid"
@@ -152,7 +211,7 @@ const AdmiPage = () => {
             Paid
           </label>
         </div>
-        <div className="my-2">
+        <div>
           <input
             type="radio"
             id="notpaid"
@@ -160,7 +219,6 @@ const AdmiPage = () => {
             value="notpaid"
             checked={filter === "notpaid"}
             onChange={(e) => setFilter(e.target.value)}
-            className=""
           />
           <label
             htmlFor="notpaid"
@@ -173,19 +231,7 @@ const AdmiPage = () => {
         </div>
       </div>
 
-      <button
-        className={`px-4 py-2 rounded-md ${
-          selectedUsers.length !== 1
-            ? "bg-gray-300 cursor-not-allowed"
-            : "bg-blue-500 text-white"
-        } focus:outline-none`}
-        onClick={sendWhatsAppReminder}
-        disabled={selectedUsers.length !== 1}
-      >
-        Send WhatsApp Reminder
-      </button>
-
-      <div className="overflow-x-auto mt-4">
+      <div className="overflow-x-auto mt-4 bg-gray-200 bg-opacity-60 rounded-lg shadow-lg ml-3 mr-3">
         <table className="table-auto w-full">
           <thead>
             <tr>
@@ -194,29 +240,47 @@ const AdmiPage = () => {
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Phone</th>
+              <th className="px-4 py-2">Status</th> {/* New Column */}
             </tr>
           </thead>
           <tbody>
             {filteredUsers.map((user) => (
-              <tr
-                key={user.id}
-                className={`px-4 py-2 ${
-                  user.paid
-                    ? "bg-green-500 text-white"
-                    : "bg-red-500 text-white"
-                }`}
-              >
-                <td>
+              <tr key={user.id} className="border p-4">
+                <td className="px-6 border-r">
                   <input
-                    type="checkbox"
+                    type="radio"
+                    name="selectedUser"
+                    value={user.id}
                     checked={selectedUsers.includes(user.id)}
                     onChange={() => toggleSelectedUser(user)}
                   />
                 </td>
-                <td>{user.numbers.join(", ")}</td>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
+                <td className="px-6 border-r">
+                  <div
+                    style={{
+                      maxWidth: "100px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                    title={user.numbers.join(", ")} // full list on hover
+                  >
+                    {user.numbers.join(", ")}
+                  </div>
+                </td>
+                <td className="px-6 border-r">{user.name}</td>
+                <td className="px-6 border-r">{user.email}</td>
+                <td className="px-6 border-r">{user.phone}</td>
+                <td
+                  className={`px-6 ${
+                    user.paid
+                      ? "bg-blue-500 text-white"
+                      : "bg-yellow-500 text-white"
+                  }`}
+                >
+                  {user.paid ? "Paid" : "Not Paid"}
+                </td>{" "}
+                {/* New Column */}
               </tr>
             ))}
           </tbody>
