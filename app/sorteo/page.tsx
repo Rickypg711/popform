@@ -9,10 +9,13 @@ export default function Home() {
       <Navbar />
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-2 sm:px-4 md:px-8 lg:px-20 text-center py-20">
-        <h1 className="text-6xl font-bold">
+        <h1 className="text-3xl lg:text-6xl font-bold">
           JEEP MOJAVE 2023 + CHEYENNE HIGH COUNTRY 2023
         </h1>
-        <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2>
+        <p className="mt-3 text-2xl font-bold text-gray-500">
+          30 DE JUNIO 2023
+        </p>
+        {/* <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2> */}
 
         <Buttons />
         <h1 className="text-6xl font-bold">

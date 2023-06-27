@@ -35,7 +35,7 @@ export default function Buttons() {
       } else if (window.innerWidth < 1024) {
         return 8; // For medium screens
       } else {
-        return 12; // For large screens
+        return 11; // For large screens
       }
     } else {
       return 4; // Default to large screens if window is undefined
@@ -300,6 +300,7 @@ export default function Buttons() {
                 return (
                   <div
                     className="grid gap-1 place-items-center py-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11"
+                    // className="grid gap-1 place-items-center py-4 grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11"
                     style={style}
                   >
                     {group.map((number) => {
@@ -312,8 +313,8 @@ export default function Buttons() {
 
                       const buttonClass =
                         blackOut && isRemoved
-                          ? "bg-black text-white px-4 py-2 rounded-full"
-                          : "bg-red-500 text-white px-4 py-2 rounded-full hover:bg-white hover:text-red-500";
+                          ? "bg-black text-white px-4 py-2 my-2 rounded-md"
+                          : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
 
                       const handleOnClick =
                         blackOut && isRemoved
@@ -321,14 +322,15 @@ export default function Buttons() {
                           : () => !isRemoved && reserveTicket(number);
 
                       return (
-                        <button
-                          className={buttonClass}
-                          key={number}
-                          onClick={handleOnClick}
-                          disabled={(blackOut && isRemoved) || isReserved}
-                        >
-                          {number}
-                        </button>
+                        <div key={number} className="">
+                          <button
+                            className={buttonClass}
+                            onClick={handleOnClick}
+                            disabled={(blackOut && isRemoved) || isReserved}
+                          >
+                            {number}
+                          </button>
+                        </div>
                       );
                     })}
                   </div>
