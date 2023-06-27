@@ -94,7 +94,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
               reserveRandomTickets();
             }}
           >
-            1 BOLETO POR $63{" "}
+            1 BOLETO 🎟️ POR $63{" "}
           </button>
           <button
             className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
@@ -103,7 +103,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
               reserveRandomTickets();
             }}
           >
-            3 BOLETOS POR $184
+            3 BOLETOS 🎟️ POR $184
           </button>
           <button
             className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
@@ -112,7 +112,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
               reserveRandomTickets();
             }}
           >
-            5 BOLETOS POR $298{" "}
+            5 BOLETOS 🎟️ POR $298{" "}
           </button>
           <button
             className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
@@ -121,7 +121,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
               reserveRandomTickets();
             }}
           >
-            10 BOLETOS POR $595
+            10 BOLETOS 🎟️ POR $595
           </button>
           <button
             className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
@@ -130,7 +130,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
               reserveRandomTickets();
             }}
           >
-            100 BOLETOS POR $5,950{" "}
+            100 BOLETOS 🎟️ POR $5,950{" "}
           </button>
         </div>
       )}

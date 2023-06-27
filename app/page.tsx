@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Buttons from "./components/Buttons";
 import { Carousel } from "react-responsive-carousel";
@@ -30,8 +31,8 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <div className="carouselContainer">
+      <main className=" flex min-h-screen flex-col items-center justify-between p-24">
+        <div className="carouselContainer pt-20">
           <Carousel
             autoPlay
             showThumbs={false}
@@ -72,7 +73,41 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <Buttons />
+        <div className="faqContainer flex flex-col items-center">
+          <h2 className="text-2xl font-bold mb-4">PREGUNTAS FRECUENTES</h2>
+          <p className="text-center">
+            ¿CÓMO SE ELIGE A LOS GANADORES?
+            <br />
+            Todos nuestros sorteos se realizan en base a la Lotería Nacional
+            para la Asistencia Pública mexicana.​
+            <br />
+            El ganador de Rifas Economicas Chihuahua será el participante cuyo
+            número de boleto coincida con las últimas cifras del primer premio
+            ganador de la Lotería Nacional (las fechas serán publicadas en
+            nuestra página oficial).
+          </p>
+          <p className="text-center">
+            ¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?
+            <br />
+            Se elige un nuevo ganador realizando la misma dinámica en otra fecha
+            cercana (se anunciará la nueva fecha).
+            <br />
+            Esto significa que, ¡Tendrías el doble de oportunidades de ganar con
+            tu mismo boleto!
+          </p>
+          <p className="text-center">
+            ¿DÓNDE SE PUBLICA A LOS GANADORES?
+            <br />
+            En nuestra página oficial de Facebook Rifas Economicas Chihuahua
+            puedes encontrar todos y cada uno de nuestros sorteos anteriores,
+            así como las transmisiones en vivo con Lotería Nacional y las
+            entregas de premios a los ganadores!
+            <br />
+            Encuentra transmisión en vivo de los sorteos en nuestra página de
+            Facebook en las fechas indicadas a las 20:00 hrs CDMX. ¡No te lo
+            pierdas!
+          </p>
+        </div>
       </main>
       <Footer />
     </div>
