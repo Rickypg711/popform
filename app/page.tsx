@@ -7,6 +7,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Image from "next/image";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
+import Link from "next/link";
 
 export default function Home() {
   const [title, setTitle] = useState("");
@@ -69,27 +70,42 @@ export default function Home() {
           </Carousel>
           <div className="buttonContainer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
             <button className="ticketsButton px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-lg rounded border border-white transition-all duration-300">
-              BOLETOS
+              <Link href="/sorteo">BOLETOS</Link>
             </button>
           </div>
         </div>
-        <div className="faqContainer flex flex-col items-center pt-5">
-          <h2 className="bg-yellow-300 w-full text-4xl text-center font-bold mb-4">
-            PREGUNTAS FRECUENTES
-          </h2>
-          <p className="text-center">
-            ¿CÓMO SE ELIGE A LOS GANADORES?
+        <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">
+          PREGUNTAS FRECUENTES
+        </h2>
+        <div className=" faqContainer  flex flex-col items-center pt-5   md:w-1/2 ">
+          <p className="text-center  md:text-2xl">
             <br />
-            Todos nuestros sorteos se realizan en base a la Lotería Nacional
-            para la Asistencia Pública mexicana.​
+            <span className="text-yellow-300 text-3xl">
+              ¿COMO SE ELIGE A LOS GANADOES?
+            </span>
+            <br />
+            Todos nuestros sorteos se realizan en base a la{" "}
+            <Link
+              target="_blank"
+              href={"https://www.lotenal.gob.mx/Home/Resultados"}
+              className="text-yellow-300 hover:underline hover:text-white"
+            >
+              Lotería Nacional mexicana
+            </Link>{" "}
+            .​
+            <br />
             <br />
             El ganador de Rifas Economicas Chihuahua será el participante cuyo
             número de boleto coincida con las últimas cifras del primer premio
             ganador de la Lotería Nacional (las fechas serán publicadas en
             nuestra página oficial).
           </p>
+          <br />
+          <br />
           <p className="text-center">
-            ¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?
+            <span className="text-yellow-300 text-3xl">
+              ¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?
+            </span>
             <br />
             Se elige un nuevo ganador realizando la misma dinámica en otra fecha
             cercana (se anunciará la nueva fecha).
@@ -97,10 +113,21 @@ export default function Home() {
             Esto significa que, ¡Tendrías el doble de oportunidades de ganar con
             tu mismo boleto!
           </p>
+          <br />
+          <br />
           <p className="text-center">
-            ¿DÓNDE SE PUBLICA A LOS GANADORES?
+            <span className="text-yellow-300 text-3xl">
+              ¿DÓNDE SE PUBLICA A LOS GANADORES?
+            </span>
             <br />
-            En nuestra página oficial de Facebook Rifas Economicas Chihuahua
+            En nuestra página oficial de Facebook{" "}
+            <Link
+              target="_blank"
+              href={"https://www.facebook.com/"}
+              className="text-yellow-300 hover:underline hover:text-white"
+            >
+              Rifas Economicas Chihuahua
+            </Link>{" "}
             puedes encontrar todos y cada uno de nuestros sorteos anteriores,
             así como las transmisiones en vivo con Lotería Nacional y las
             entregas de premios a los ganadores!
