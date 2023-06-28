@@ -1,5 +1,6 @@
 "use client";
 import Buttons from "../components/Buttons";
+import CarroYfecha from "../components/CarroYfecha";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
@@ -9,22 +10,11 @@ export default function Home() {
       <Navbar />
 
       <main className="flex flex-col items-center justify-center w-full flex-1 px-2 sm:px-4 md:px-8 lg:px-20 text-center py-20">
-        <h1 className="text-3xl lg:text-6xl font-bold">
-          JEEP MOJAVE 2023 + CHEYENNE HIGH COUNTRY 2023
-        </h1>
-        <p className="mt-3 text-2xl font-bold text-gray-500">
-          30 DE JUNIO 2023
-        </p>
+        <CarroYfecha />
         {/* <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2> */}
 
         <Buttons />
-        <h1 className="text-6xl font-bold">
-          JEEP MOJAVE 2023 + CHEYENNE HIGH COUNTRY 2023
-        </h1>
-
-        <p className="mt-3 text-2xl">$50,000 MXN</p>
-
-        <p className="mt-3 text-lg text-gray-500">30 DE JUNIO 2023</p>
+        <CarroYfecha />
 
         <div className="mt-5">
           <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2>

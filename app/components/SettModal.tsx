@@ -9,11 +9,14 @@ const phoneRegEx =
   /^((\+\d{1,2}\s?)?((\(\d{1,3}\))|\d{1,3})[-.\s]?)?(\d{3}[-.\s]?\d{4})$/;
 
 const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
+  // Add these fields to the initial state
   const [config, setConfig] = useState({
     phoneNumber: "",
     reservationTime: "",
     drawDate: "",
     blackOut: true,
+    rifa: "",
+    bono: "",
   });
 
   const [message, setMessage] = useState("");
@@ -124,6 +127,36 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
       }
     }
 
+    if (config.rifa !== "") {
+      const resRifa = await fetch("/api/config/rifaYbono", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ rifa: config.rifa }),
+      });
+
+      if (!resRifa.ok) {
+        console.error("Failed to post rifa");
+        return;
+      }
+    }
+
+    if (config.bono !== "") {
+      const resBono = await fetch("/api/config/rifaYbono", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ bono: config.bono }),
+      });
+
+      if (!resBono.ok) {
+        console.error("Failed to post bono");
+        return;
+      }
+    }
+
     onClose();
   };
 
@@ -190,6 +223,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
               // Your existing form JSX...
 
               <div className="grid grid-cols-6 gap-6">
+                {/* numero de telefono  */}
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="phoneNumber"
@@ -206,7 +240,42 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-black"
                   />
                 </div>
+                {/* rifa grande  */}
 
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="rifa"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Rifa
+                  </label>
+                  <input
+                    type="text"
+                    name="rifa"
+                    id="rifa"
+                    value={config.rifa}
+                    onChange={handleChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-black"
+                  />
+                </div>
+                {/* bono de rifa */}
+                <div className="col-span-6 sm:col-span-3">
+                  <label
+                    htmlFor="bono"
+                    className="block text-sm font-medium text-gray-700"
+                  >
+                    Bono
+                  </label>
+                  <input
+                    type="text"
+                    name="bono"
+                    id="bono"
+                    value={config.bono}
+                    onChange={handleChange}
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
+                  />
+                </div>
+                {/* whaast app mesage */}
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="whatsapp"
@@ -223,6 +292,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-red-300"
                   />
                 </div>
+                {/* tiempo de reserva  */}
                 <div className="col-span-6 sm:col-span-3">
                   <label
                     htmlFor="reservationTime"
@@ -244,6 +314,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     htmlFor="blackOut"
                     className="block text-sm font-medium text-gray-700"
                   >
+                    {/* mostrar numeros or no  */}
                     BlackOut
                   </label>
                   <div>
@@ -263,6 +334,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     htmlFor="drawDate"
                     className="block text-sm font-medium text-gray-700"
                   >
+                    {/* fecha de sorteo  */}
                     Fecha de sorteo
                   </label>
                   <input

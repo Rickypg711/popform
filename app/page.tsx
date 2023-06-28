@@ -41,15 +41,15 @@ export default function Home() {
             showStatus={false}
             infiniteLoop={true}
             interval={4000}
-            className="border border-red-300  "
+            className=" "
           >
             <div className="imageContainer">
               <Image
                 src="/ima/hutchilopostly.png"
                 alt="Car Image 1"
-                // width={300}
-                // height={300}
-                layout="fill"
+                width={300}
+                height={100} // fixed height
+                layout="fixed"
               />
             </div>
             <div className="imageContainer">
@@ -57,8 +57,8 @@ export default function Home() {
                 src="/ima/solmadre.png"
                 alt="Car Image 2"
                 width={300}
-                height={100}
-                layout="responsive"
+                height={100} // fixed height
+                layout="fixed"
               />
             </div>
             <div className="imageContainer">
@@ -66,8 +66,8 @@ export default function Home() {
                 src="/ima/weofthesun.png"
                 alt="Car Image 3"
                 width={300}
-                height={300}
-                layout="responsive"
+                height={100} // fixed height
+                layout="fixed"
               />
             </div>
           </Carousel>
