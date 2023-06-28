@@ -18,8 +18,9 @@ import {
 } from "react-icons/ai";
 import CarroYfecha from "./components/CarroYfecha";
 import CountdownTimer from "./components/CountdownTimer";
+import { ImTicket } from "react-icons/im";
+import { BiHappyHeartEyes } from "react-icons/bi";
 
-const targetDate = "2023-07-11T00:00:00.000Z";
 export default function Home() {
   // Then set up polling
 
@@ -56,11 +57,9 @@ export default function Home() {
               Lotería Nacional mexicana
             </Link>
             <br />
+            <div className="text-center"></div>
             <br />
-            El ganador de Rifas Económicas Chihuahua será el participante cuyo
-            número de boleto coincida con las últimas cifras del primer premio
-            ganador de la Lotería Nacional (las fechas serán publicadas en
-            nuestra página oficial).
+            <br />
           </p>
           <Image
             alt="loteria nacional"
@@ -68,6 +67,20 @@ export default function Home() {
             width={200}
             height={200}
           />
+          <p className="text-center md:text-2xl">
+            El ganador de{" "}
+            <Link
+              target="_blank"
+              href={"https://www.facebook.com/"}
+              className="text-yellow-300 hover:underline hover:text-white"
+            >
+              RIFAS ECONOMICAS CHIHUAUHA
+            </Link>{" "}
+            será el participante cuyo número de boleto coincida con las últimas
+            cifras del primer premio ganador de la Lotería Nacional (las fechas
+            serán publicadas en nuestra página oficial).
+          </p>
+
           <br />
           <br />
           <div className="h-0.5 bg-black w-1/4"></div>
@@ -86,7 +99,15 @@ export default function Home() {
             Esto significa que ¡tendrías el doble de oportunidades de ganar con
             tu mismo boleto!
           </p>
+
           <br />
+          <div className="flex justify-center">
+            <div className="flex items-center justify-between">
+              <BiHappyHeartEyes className="text-4xl text-yellow-300" />
+              <ImTicket className="text-4xl text-black" />
+              <BiHappyHeartEyes className="text-4xl text-yellow-300" />
+            </div>
+          </div>
           <br />
           <div className="h-0.5 bg-black w-1/4"></div>
           <br />
@@ -103,7 +124,7 @@ export default function Home() {
               href={"https://www.facebook.com/"}
               className="text-yellow-300 hover:underline hover:text-white"
             >
-              Rifas Económicas Chihuahua
+              RIFAS ECONOMICAS CHIHUAUHA
             </Link>{" "}
             puedes encontrar todos y cada uno de nuestros sorteos anteriores,
             así como las transmisiones en vivo con Lotería Nacional y las
@@ -194,10 +215,13 @@ export default function Home() {
             GANA MUCHO!
           </p>
         </section>
+
         <br />
         <div className="h-0.5 bg-black w-1/4"></div>
         <br />
       </main>
+      <CountdownTimer />
+
       <div>
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold">
           Contáctanos
