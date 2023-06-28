@@ -19,6 +19,7 @@ import {
 import CarroYfecha from "./components/CarroYfecha";
 import CountdownTimer from "./components/CountdownTimer";
 
+const targetDate = "2023-07-11T00:00:00.000Z";
 export default function Home() {
   // Then set up polling
 
@@ -30,13 +31,13 @@ export default function Home() {
 
       <main className="flex min-h-screen flex-col items-center justify-between">
         <CarroYfecha />
-        <CountdownTimer />
 
         <FotoCarrosel />
 
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">
           PREGUNTAS FRECUENTES
         </h2>
+        <CountdownTimer />
         {/* FAQ section */}
         <div className="faqContainer flex flex-col items-center pt-5 md:w-1/2">
           {/* FAQ question 1 */}
