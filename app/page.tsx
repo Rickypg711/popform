@@ -17,6 +17,7 @@ import {
   AiOutlineWhatsApp,
 } from "react-icons/ai";
 import CarroYfecha from "./components/CarroYfecha";
+import CountdownTimer from "./components/CountdownTimer";
 
 export default function Home() {
   // Then set up polling
@@ -26,8 +27,11 @@ export default function Home() {
   return (
     <div>
       <Navbar />
+
       <main className="flex min-h-screen flex-col items-center justify-between">
         <CarroYfecha />
+        <CountdownTimer />
+
         <FotoCarrosel />
 
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">

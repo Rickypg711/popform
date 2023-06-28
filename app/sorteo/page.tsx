@@ -16,7 +16,9 @@ export default function Home() {
 
         <Buttons />
 
-        <p className="mt-5">Con tu boleto liquidado participas por:</p>
+        <p className="text-center mt-5 text-3xl text-white">
+          CON TU BOLETO LIQUIDADO PARTICIPAS POR
+        </p>
         <CarroYfecha />
         <FotoCarrosel />
         <p className="mt-5 text-3xl font-bold">COMBO - 30 JUNIO</p>

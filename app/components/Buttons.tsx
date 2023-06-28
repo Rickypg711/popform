@@ -204,10 +204,9 @@ export default function Buttons() {
 
   return (
     <div
-      className="
+      className=" w-full
        px-4 
       buttons-container "
-      style={{ border: "1px solid black" }}
     >
       <h1
         className="

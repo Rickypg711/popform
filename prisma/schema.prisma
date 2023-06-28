@@ -25,11 +25,6 @@ model ReservedNumber {
   user   User @relation(fields: [userId], references: [id])
 }
 
-model Title {
-  id    Int    @id @default(autoincrement())
-  title String
-}
-
 model Message {
   id      Int    @id @default(autoincrement())
   content String @db.VarChar(2000)
@@ -37,11 +32,12 @@ model Message {
 
 // This is your new model for configuration
 model Config {
-  id          Int     @id @default(autoincrement())
-  blackOut    Boolean @default(false)
-  phoneNumber String?
-  rifa        String? // new field for rifa
-  bono        String? // new field for bono
+  id            Int       @id @default(autoincrement())
+  blackOut      Boolean   @default(false)
+  phoneNumber   String?
+  rifa          String? // new field for rifa
+  bono          String? // new field for bono
+  fechaDeSorteo DateTime? // new field for fecha de sorteo
 }
 
 model BankInfo {

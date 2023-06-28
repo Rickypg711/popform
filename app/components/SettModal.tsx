@@ -1,3 +1,4 @@
+"sue client";
 import { useState, useEffect } from "react";
 import AccountsForm from "./AccountsForm";
 
@@ -13,7 +14,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
   const [config, setConfig] = useState({
     phoneNumber: "",
     reservationTime: "",
-    drawDate: "",
+    fechaDeSorteo: "", // <-- Field name is fechaDeSorteo
     blackOut: true,
     rifa: "",
     bono: "",
@@ -56,21 +57,23 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     // fecha change
-    if (config.drawDate !== "") {
-      const res1 = await fetch("/api/title", {
+    if (config.fechaDeSorteo !== "") {
+      const res1 = await fetch("/api/config/fechaDeSorteo", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title: config.drawDate }),
+        body: JSON.stringify({ fechaDeSorteo: config.fechaDeSorteo }),
       });
 
       if (!res1.ok) {
-        console.error("Failed to post drawDate");
+        console.error("Failed to post fechaDeSorteo");
         return;
       }
     }
+
     // message change
     if (message !== "") {
       const formattedMessage = message
@@ -331,7 +334,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                 </div>
                 <div className="col-span-6 sm:col-span-3">
                   <label
-                    htmlFor="drawDate"
+                    htmlFor="fechaDeSorteo"
                     className="block text-sm font-medium text-gray-700"
                   >
                     {/* fecha de sorteo  */}
@@ -339,9 +342,9 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                   </label>
                   <input
                     type="date"
-                    name="drawDate"
-                    id="drawDate"
-                    value={config.drawDate}
+                    name="fechaDeSorteo"
+                    id="fechaDeSorteo"
+                    value={config.fechaDeSorteo}
                     onChange={handleChange}
                     className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
                   />

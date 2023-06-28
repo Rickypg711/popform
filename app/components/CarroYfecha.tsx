@@ -1,9 +1,11 @@
+"use client";
 import React, { useEffect, useState } from "react";
 
 export default function CarroYfecha() {
   const [rifa, setRifa] = useState("");
   const [bono, setBono] = useState("");
-  const [title, setTitle] = useState("");
+  const [fechaDeSorteo, setFechaDeSorteo] = useState("");
+  // Inside your fetchData function
 
   useEffect(() => {
     async function fetchData() {
@@ -16,9 +18,15 @@ export default function CarroYfecha() {
         const bonoData = await bonoRes.json();
         setBono(bonoData.bono);
 
-        const titleRes = await fetch("/api/title");
-        const titleData = await titleRes.json();
-        setTitle(titleData.title);
+        const fechaDeSorteoRes = await fetch("/api/config/fechaDeSorteo");
+        const fechaDeSorteoData = await fechaDeSorteoRes.json();
+        const fechaDeSorteoDate = new Date(fechaDeSorteoData.fechaDeSorteo);
+        const formattedDate =
+          `${fechaDeSorteoDate.getDate()} ${fechaDeSorteoDate.toLocaleString(
+            "es",
+            { month: "long" }
+          )} ${fechaDeSorteoDate.getFullYear()}`.toUpperCase();
+        setFechaDeSorteo(formattedDate);
       } catch (error) {
         console.error("Failed to fetch data: ", error);
       }
@@ -35,8 +43,8 @@ export default function CarroYfecha() {
       <p className="bono mt-3 text-2xl font-bold text-center text-red-500">
         {bono}
       </p>
-      <p className="title mt-3 text-2xl font-bold text-center text-yellow-300">
-        {title}
+      <p className="fecha-de-sorteo mt-3 text-2xl font-bold text-center text-yellow-300">
+        {fechaDeSorteo}
       </p>
     </div>
   );
