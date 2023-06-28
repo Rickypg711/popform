@@ -33,20 +33,23 @@ export default function Home() {
     <div>
       <Navbar />
       <main className=" flex min-h-screen flex-col items-center justify-between ">
-        <div className="carouselContainer  pt-16 md:pt-16 ">
+        <div className="carouselContainer  pt-16 md:pt-20 ">
           <Carousel
             autoPlay
             showThumbs={false}
+            showIndicators={false}
+            showStatus={false}
             infiniteLoop={true}
             interval={4000}
+            className="border border-red-300  "
           >
             <div className="imageContainer">
               <Image
                 src="/ima/hutchilopostly.png"
                 alt="Car Image 1"
-                width={300}
-                height={300}
-                layout="responsive"
+                // width={300}
+                // height={300}
+                layout="fill"
               />
             </div>
             <div className="imageContainer">
@@ -54,7 +57,7 @@ export default function Home() {
                 src="/ima/solmadre.png"
                 alt="Car Image 2"
                 width={300}
-                height={300}
+                height={100}
                 layout="responsive"
               />
             </div>
@@ -69,7 +72,7 @@ export default function Home() {
             </div>
           </Carousel>
           <div className="buttonContainer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex items-center">
-            <button className="ticketsButton px-4 py-2 bg-red-500 hover:bg-red-600 text-white text-lg rounded border border-white transition-all duration-300">
+            <button className="ticketsButton px-4 py-2 bg-red-500 text-white text-lg rounded-md border border-white transition-all duration-300 transform hover:scale-105">
               <Link href="/sorteo">COMPRAR BOLETOS</Link>
             </button>
           </div>
@@ -106,7 +109,7 @@ export default function Home() {
 
           <br />
 
-          <p className="text-center">
+          <p className="text-center  md:text-2xl">
             <span className="text-yellow-300 text-3xl">
               ¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?
             </span>
@@ -122,7 +125,7 @@ export default function Home() {
           <div className="h-0.5 bg-black w-1/4"></div>
           <br />
 
-          <p className="text-center">
+          <p className="text-center  md:text-2xl">
             <span className="text-yellow-300 text-3xl">
               ¿DÓNDE SE PUBLICA A LOS GANADORES?
             </span>
@@ -139,6 +142,12 @@ export default function Home() {
             así como las transmisiones en vivo con Lotería Nacional y las
             entregas de premios a los ganadores!
             <br />
+            <span className="text-center">
+              {" "}
+              Encuentra transmisión en vivo de los sorteos en nuestra página de
+              Facebook en las fechas indicadas a las 20:00 hrs CDMX. ¡No te lo
+              pierdas!
+            </span>
             <br />
             <br />
           </p>
@@ -155,12 +164,6 @@ export default function Home() {
         <br />
         <div className="h-0.5 bg-black w-1/4"></div>
         <br />
-        <p className="text-center">
-          {" "}
-          Encuentra transmisión en vivo de los sorteos en nuestra página de
-          Facebook en las fechas indicadas a las 20:00 hrs CDMX. ¡No te lo
-          pierdas!
-        </p>
       </main>
       <div>
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold ">
