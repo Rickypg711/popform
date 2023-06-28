@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 export default function FotoCarrosel() {
   return (
-    <div className="carouselContainer relative pt-16 md:pt-20 ">
+    <div className="carouselContainer relative  bg-black">
       <Carousel
         autoPlay
         showThumbs={false}
@@ -21,7 +21,7 @@ export default function FotoCarrosel() {
             alt="Car Image 1"
             width={300}
             height={100} // fixed height
-            layout="fixed"
+            layout="responsive"
           />
         </div>
         <div className="imageContainer">
@@ -30,7 +30,7 @@ export default function FotoCarrosel() {
             alt="Car Image 2"
             width={300}
             height={100} // fixed height
-            layout="fixed"
+            layout="responsive"
           />
         </div>
         <div className="imageContainer">
@@ -39,7 +39,7 @@ export default function FotoCarrosel() {
             alt="Car Image 3"
             width={300}
             height={100} // fixed height
-            layout="fixed"
+            layout="responsive"
           />
         </div>
       </Carousel>

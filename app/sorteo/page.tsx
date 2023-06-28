@@ -12,24 +12,12 @@ export default function Home() {
 
       <main className=" flex min-h-screen flex-col items-center justify-between pt-16 md:pt-20 ">
         <CarroYfecha />
+        <FotoCarrosel />
 
         <Buttons />
-        {/* <CarroYfecha /> */}
-
-        {/* <div className="mt-5"> */}
-        {/* <h2 className="text-4xl font-bold">LISTA DE BOLETOS ABAJO</h2> */}
-
-        <ul className="list-disc list-inside mt-3 text-left">
-          <li>1 BOLETO POR $63</li>
-          <li>2 BOLETOS POR $124</li>
-          <li>3 BOLETOS POR $184</li>
-          <li>4 BOLETOS POR $239</li>
-          <li>5 BOLETOS POR $298</li>
-          <li>10 BOLETOS POR $595</li>
-          <li>100 BOLETOS POR $5,950</li>
-        </ul>
 
         <p className="mt-5">Con tu boleto liquidado participas por:</p>
+        <CarroYfecha />
         <FotoCarrosel />
         <p className="mt-5 text-3xl font-bold">COMBO - 30 JUNIO</p>
 

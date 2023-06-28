@@ -16,6 +16,7 @@ import {
   AiFillInstagram,
   AiOutlineWhatsApp,
 } from "react-icons/ai";
+import CarroYfecha from "./components/CarroYfecha";
 
 export default function Home() {
   // Then set up polling
@@ -26,6 +27,7 @@ export default function Home() {
     <div>
       <Navbar />
       <main className="flex min-h-screen flex-col items-center justify-between">
+        <CarroYfecha />
         <FotoCarrosel />
 
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">

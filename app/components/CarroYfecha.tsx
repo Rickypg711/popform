@@ -28,12 +28,14 @@ export default function CarroYfecha() {
   }, []);
 
   return (
-    <div className="pt-4">
-      <h1 className="rifa text-3xl lg:text-6xl font-bold text-center">
+    <div className="pt-20 bg-black w-full">
+      <h1 className="rifa text-3xl lg:text-6xl font-bold text-center text-yellow-300">
         {rifa}
       </h1>
-      <p className="bono mt-3 text-2xl font-bold text-center">{bono}</p>
-      <p className="title mt-3 text-2xl font-bold text-center text-gray-500">
+      <p className="bono mt-3 text-2xl font-bold text-center text-red-500">
+        {bono}
+      </p>
+      <p className="title mt-3 text-2xl font-bold text-center text-yellow-300">
         {title}
       </p>
     </div>
