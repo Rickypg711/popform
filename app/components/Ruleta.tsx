@@ -51,17 +51,11 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
   };
 
   return (
-    <div
-      className="ruleta-container  mx-auto "
-      style={{ border: "1px solid black" }}
-    >
+    <div className="ruleta-container  mx-auto ">
       {/* Ruleta button */}
-      <div
-        className="flex items-center justify-center mt-4   mb-3 "
-        style={{ border: "1px solid black" }}
-      >
+      <div className="flex items-center justify-center mt-4   mb-3 ">
         <button
-          className="lg:text-5xl bg-pink-200 hover:bg-pink-300 text-black py-2 px-4 rounded-full focus:outline-none border border-black transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-3 md:px-6"
+          className="animate-bounce lg:text-5xl bg-yellow-300 hover:bg-black text-black hover:text-yellow-300 py-2 px-4 rounded-full focus:outline-none border-2 border-black  hover:border-2 hover:border-yellow-300 transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-3 md:px-6"
           onClick={toggleRandomOptions}
         >
           RULETA DE LA SUERTE
@@ -146,10 +140,11 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
           </p>
           {/* Display randomly selected tickets */}
           <button
-            className="mt-4 bg-green-500 text-white py-2 px-4 rounded-lg shadow-md hover:bg-green-600 focus:outline-none transition-colors duration-200 ease-in-out"
+            className="mt-4           bg-yellow-300 hover:bg-black text-black hover:text-yellow-300 border-black  hover:border-3 hover:border-yellow-300
+            py-2 px-4 rounded-lg shadow-md  focus:outline-none transition-colors duration-200 ease-in-out"
             onClick={confirmSelection}
           >
-            Confirm selection
+            Aparta y Gana
           </button>
         </div>
       )}

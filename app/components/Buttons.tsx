@@ -215,12 +215,12 @@ export default function Buttons() {
     mt-8 mb-4
   "
       >
-        Elige una Opcion
+        ELIGE UNA OPCION
       </h1>
       <p
         className="
-    text-lg sm:text-xl lg:text-2xl text-center text-white font-semibold 
-    bg-indigo-600 p-2 rounded shadow-md
+    text-lg sm:text-xl lg:text-2xl text-center text-black font-semibold 
+    bg-yellow-300 p-2 rounded shadow-md
   "
       >
         HAZ CLICK ABAJO EN TU NÚMERO DE LA SUERTE
@@ -231,6 +231,9 @@ export default function Buttons() {
 
       {/* <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} /> */}
       <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} />
+      {/* <div className="flex justify-center mt-4">
+        <span className="text-4xl animate-bounce">&#8593;</span>
+      </div> */}
 
       {reserved.length > 0 && (
         <div
