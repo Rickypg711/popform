@@ -173,7 +173,7 @@ export default function Home() {
             <br />
           </p>
           <Link
-            href="https://www.facebook.com/yourpage"
+            href="https://www.facebook.com/"
             target="_blank"
             rel="noopener noreferrer
             "

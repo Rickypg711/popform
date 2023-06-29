@@ -44,21 +44,21 @@ const Footer = () => {
       </p>
       <div className="flex justify-center mb-4">
         <Link
-          href="https://www.facebook.com/yourpage"
+          href="https://www.facebook.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <AiFillFacebook className="mx-2 text-2xl md:text-5xl text-black" />
         </Link>
         <Link
-          href="https://www.instagram.com/youraccount"
+          href="https://www.instagram.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
           <AiFillInstagram className="mx-2 text-2xl md:text-5xl text-black" />
         </Link>
         <Link
-          href="whatsapp://send?text=Hello&phone=+yourphonenumber"
+          href="whatsapp://send?text=Hello&phone=+17026751900"
           target="_blank"
           rel="noopener noreferrer"
         >
