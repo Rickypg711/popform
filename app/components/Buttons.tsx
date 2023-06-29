@@ -284,12 +284,39 @@ export default function Buttons() {
       {reserved.length > 0 && (
         <div
           className="
-        flex flex-col items-center mt-4"
+          flex flex-col 
+          items-center 
+          mt-4 
+          bg-white 
+          shadow-sm 
+          rounded-lg 
+          p-4"
         >
-          <h2 className="text-center">Selected tickets:</h2>
-          <p className="text-center">{reserved.join(", ")}</p>
-          <button className="mt-4" onClick={() => setShowModal(true)}>
-            Confirm selection
+          <h2 className="text-center text-2xl font-semibold text-gray-700 mb-2">
+            ESTOS SON TUS TICKETS :
+          </h2>
+          <p className="text-center text-gray-600 mb-4">
+            {reserved.join(", ")}
+          </p>
+          <button
+            className="
+            mt-1 
+            bg-red-500 
+            text-white 
+            block 
+            w-full 
+            rounded-md 
+            border-red-700 
+            shadow-sm 
+            hover:bg-red-700 
+            focus:border-red-300 
+            focus:ring focus:ring-red-200 
+            focus:ring-opacity-50 
+            transition-colors 
+            duration-200"
+            onClick={() => setShowModal(true)}
+          >
+            APARTA YA 👆
           </button>
         </div>
       )}
@@ -297,24 +324,23 @@ export default function Buttons() {
 
       {reserved.length > 0 && (
         <aside
-          className="list__tickets show"
+          className="list__tickets show mt-3 "
           style={{ borderColor: "rgb(55, 94, 151)" }}
         >
-          <button
+          {/* <button
             className="list__tickets-button"
             style={{ borderColor: "rgb(55, 94, 151)" }}
             onClick={() => setShowModal(true)}
           >
             Apartar
-          </button>
+          </button> */}
           <section
-            className="list__tickets-reserved-container"
+            className="list__tickets-reserved-container text-center my-3 mb-6 "
             style={{ overflow: "auto", maxHeight: "80px" }}
           >
             {reserved.map((index) => (
               <button
-                className="list__button"
-                style={{ borderColor: "rgb(55, 94, 151)", fontSize: "14px" }}
+                className="list__button m-2 bg-yellow-300 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg"
                 key={index}
                 onClick={() => reserveTicket(index)}
               >
@@ -322,14 +348,20 @@ export default function Buttons() {
               </button>
             ))}
           </section>
-          <section className="list__tickets-reserved-container">
+          <section className="list__tickets-reserved-container text-center">
             <small>
               {" "}
               {reserved.length} BOLETO{reserved.length > 1 ? "S" : ""}{" "}
               SELECCIONADO{reserved.length > 1 ? "S" : ""}
             </small>
+            <button
+              className="list__button m-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg"
+              onClick={() => setReserved([])}
+            >
+              Remover Todos
+            </button>
           </section>
-          <small>Para remover haz click en el boleto</small>
+          {/* <small>Para remover haz click en el boleto</small> */}
         </aside>
       )}
 
