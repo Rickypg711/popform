@@ -13,7 +13,7 @@ export default function Home() {
 
       <main className=" flex min-h-screen flex-col items-center justify-between pt-16 md:pt-20 ">
         <CarroYfecha />
-        <FotoCarrosel />
+        <FotoCarrosel showButton={false} />
 
         <Buttons />
         <CountdownTimer />
@@ -21,7 +21,7 @@ export default function Home() {
           CON TU BOLETO LIQUIDADO PARTICIPAS POR
         </p>
         <CarroYfecha />
-        <FotoCarrosel />
+        <FotoCarrosel showButton={false} />
         <div className="text-center text-2xl pb-2 ">
           <p className="mt-5 text-5xl font-bold my-5 bg-yellow-300 w-full ">
             COMBO - 30 JUNIO
