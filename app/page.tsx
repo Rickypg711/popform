@@ -63,7 +63,7 @@ export default function Home() {
     <div>
       <Navbar />
 
-      <main className="flex min-h-screen flex-col items-center justify-between">
+      <main className="flex min-h-screen flex-col items-center justify-between pt-16 md:pt-20">
         <CarroYfecha />
 
         <FotoCarrosel />
