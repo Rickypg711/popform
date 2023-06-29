@@ -82,7 +82,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
         "
         >
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            className="bg-green-700 hover:bg-green-800 text-white py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(1);
               reserveRandomTickets();
@@ -91,7 +91,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             1 BOLETO 🎟️ POR $63{" "}
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            className="bg-green-700 hover:bg-green-800 text-white py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(3);
               reserveRandomTickets();
@@ -100,7 +100,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             3 BOLETOS 🎟️ POR $184
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            className="bg-green-700 hover:bg-green-800 text-white py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(5);
               reserveRandomTickets();
@@ -109,7 +109,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             5 BOLETOS 🎟️ POR $298{" "}
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            className="bg-green-700 hover:bg-green-800 text-white py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(10);
               reserveRandomTickets();
@@ -118,7 +118,7 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             10 BOLETOS 🎟️ POR $595
           </button>
           <button
-            className="bg-green-200 hover:bg-green-300 text-black py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
+            className="bg-green-700 hover:bg-green-800 text-white py-1 px-3 rounded-lg focus:outline-none transform hover:scale-110 transition-transform duration-200 ease-in-out md:py-2 md:px-4"
             onClick={() => {
               setRandomCount(100);
               reserveRandomTickets();
@@ -132,8 +132,8 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
       {/* Randomly selected tickets */}
       {showRandomOptions && selectedRandomTickets.length > 0 && (
         <div className="flex flex-col items-center mt-8 space-y-3 bg-gray-100 bg-opacity-50 p-4 rounded-lg shadow-lg">
-          <h2 className="text-lg md:text-xl font-semibold text-center text-blue-600">
-            Randomly selected tickets:
+          <h2 className="text-lg md:text-xl font-semibold text-center text-yellow-300">
+            Estos son tus Tickets:
           </h2>
           <p className="text-md md:text-lg text-center text-gray-800">
             {selectedRandomTickets.join(", ")}

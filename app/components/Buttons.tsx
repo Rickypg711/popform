@@ -255,11 +255,11 @@ export default function Buttons() {
 
       {/* SEARCH BAR DOWN HERE  */}
 
-      <div>
+      <div className="">
         <input
-          className="text-center shadow appearance-none border rounded w-full py-2 px-3  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="text-center shadow appearance-none border rounded w-full   text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
-          placeholder="Search for a number"
+          placeholder="🍀  BUSCA TU NUMERO DE LA SUERTE 🍀"
           value={searchQuery}
           onChange={(e) => {
             const input = e.target.value;
@@ -334,6 +334,8 @@ export default function Buttons() {
           >
             Apartar
           </button> */}
+          <p className="text-center"> Para remover haz click en el boleto</p>
+
           <section
             className="list__tickets-reserved-container text-center my-3 mb-6 "
             style={{ overflow: "auto", maxHeight: "80px" }}
@@ -344,7 +346,7 @@ export default function Buttons() {
                 key={index}
                 onClick={() => reserveTicket(index)}
               >
-                remove {index}
+                {index}
               </button>
             ))}
           </section>
