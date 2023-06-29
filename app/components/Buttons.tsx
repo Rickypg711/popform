@@ -293,7 +293,7 @@ export default function Buttons() {
               className="List"
               height={height}
               itemCount={groupedButtons.length}
-              itemSize={35}
+              itemSize={55}
               width={width}
             >
               {({ index, style }) => {
@@ -325,7 +325,7 @@ export default function Buttons() {
                       return (
                         <div key={number} className="">
                           <button
-                            className={buttonClass}
+                            className={`${buttonClass} m-1`}
                             onClick={handleOnClick}
                             disabled={(blackOut && isRemoved) || isReserved}
                           >
