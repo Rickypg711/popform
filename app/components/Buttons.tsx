@@ -7,7 +7,7 @@ import { FixedSizeList as List } from "react-window";
 import AutoSizer from "react-virtualized-auto-sizer";
 
 export default function Buttons() {
-  const [hasMore, setHasMore] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [reserved, setReserved] = useState<number[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [removed, setRemoved] = useState<number[]>([]);
@@ -16,6 +16,7 @@ export default function Buttons() {
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
   const [state, setState] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,7 +59,7 @@ export default function Buttons() {
     height: number;
     width: number;
   }
-
+  // for black out
   const fetchBlackOut = async () => {
     const res = await fetch("/api/displayRemoved");
     const data = await res.json();
@@ -69,7 +70,7 @@ export default function Buttons() {
   useEffect(() => {
     fetchBlackOut();
   }, []);
-
+  // to check numbes on data base
   const fetchRemovedNumbers = async () => {
     try {
       const res = await fetch("http://localhost:3000/api/reservedNumbers");
@@ -183,9 +184,12 @@ export default function Buttons() {
   };
 
   //
-
   // This will give you an array of arrays, where each inner array has groupSize elements
-  const groupedButtons = buttons.reduce<number[][]>(
+  const filteredButtons = buttons.filter((number) =>
+    number.toString().includes(searchQuery)
+  );
+
+  const groupedButtons = filteredButtons.reduce<number[][]>(
     (grouped, button, index) => {
       const groupIndex = Math.floor(index / groupSize);
 
@@ -200,8 +204,27 @@ export default function Buttons() {
     []
   );
 
-  //
+  const handleSearch = () => {
+    const numberExists = buttons.some((button) =>
+      button.toString().includes(searchQuery)
+    );
 
+    if (!numberExists) {
+      setErrorMessage(
+        "¡Ese número no existe! 🎟️🤷🏽‍♂️ ¡Inténtalo de nuevo con otro número de la suerte! 🍀"
+      );
+    } else {
+      setErrorMessage(""); // Limpiar el mensaje de error si no hay errores
+    }
+  };
+
+  // uUI  dounw here
+  //
+  //
+  //
+  //
+  //
+  //
   return (
     <div
       className=" w-full
@@ -228,11 +251,29 @@ export default function Buttons() {
         <span className="text-4xl animate-bounce">&#8595;</span>
       </div>
 
-      {/* <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} /> */}
       <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} />
-      {/* <div className="flex justify-center mt-4">
-        <span className="text-4xl animate-bounce">&#8593;</span>
-      </div> */}
+
+      {/* SEARCH BAR DOWN HERE  */}
+
+      <div>
+        <input
+          className="text-center shadow appearance-none border rounded w-full py-2 px-3  text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          placeholder="Search for a number"
+          value={searchQuery}
+          onChange={(e) => {
+            const input = e.target.value;
+            const regex = /^[0-9]*$/; // Regular expression to match numbers only
+
+            if (regex.test(input)) {
+              setSearchQuery(input);
+            }
+          }}
+        />
+        <p>{errorMessage}</p>
+      </div>
+
+      {/* SEARCH BAR */}
 
       {reserved.length > 0 && (
         <div
@@ -286,7 +327,7 @@ export default function Buttons() {
         </aside>
       )}
 
-      <div className="h-96 overflow-y-scroll mt-5 px-4 w-full">
+      <div className="h-96 overflow-y-scroll mt-5 px-4 w-full mb-1">
         <AutoSizer>
           {({ height, width }: Size) => (
             <List
@@ -300,40 +341,43 @@ export default function Buttons() {
                 const group = groupedButtons[index];
 
                 return (
-                  <div
-                    className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4"
-                    style={style}
-                  >
-                    {group.map((number) => {
-                      const isReserved = reserved?.includes(number);
-                      const isRemoved = removed?.includes(number);
+                  <div style={style}>
+                    {filteredButtons.length === 0 ? (
+                      <p>No matching numbers found.</p>
+                    ) : (
+                      <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4">
+                        {group.map((number) => {
+                          const isReserved = reserved?.includes(number);
+                          const isRemoved = removed?.includes(number);
 
-                      if (blackOut === false && isRemoved) {
-                        return null; // Don't display removed numbers when blackout is false
-                      }
+                          if (blackOut === false && isRemoved) {
+                            return null; // Don't display removed numbers when blackout is false
+                          }
 
-                      const buttonClass =
-                        blackOut && isRemoved
-                          ? "bg-black text-white px-4 py-2 my-2 rounded-md"
-                          : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
+                          const buttonClass =
+                            blackOut && isRemoved
+                              ? "bg-black text-white px-4 py-2 my-2 rounded-md"
+                              : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
 
-                      const handleOnClick =
-                        blackOut && isRemoved
-                          ? undefined
-                          : () => !isRemoved && reserveTicket(number);
+                          const handleOnClick =
+                            blackOut && isRemoved
+                              ? undefined
+                              : () => !isRemoved && reserveTicket(number);
 
-                      return (
-                        <div key={number} className="">
-                          <button
-                            className={`${buttonClass} m-1`}
-                            onClick={handleOnClick}
-                            disabled={(blackOut && isRemoved) || isReserved}
-                          >
-                            {number}
-                          </button>
-                        </div>
-                      );
-                    })}
+                          return (
+                            <div key={number} className="">
+                              <button
+                                className={`${buttonClass} m-1`}
+                                onClick={handleOnClick}
+                                disabled={(blackOut && isRemoved) || isReserved}
+                              >
+                                {number}
+                              </button>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 );
               }}
@@ -341,6 +385,7 @@ export default function Buttons() {
           )}
         </AutoSizer>
       </div>
+
       {/*  */}
       {/*  */}
 

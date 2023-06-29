@@ -48,7 +48,7 @@ export default function FotoCarrosel() {
           className="ticketsButton px-4 py-2           bg-yellow-300 hover:bg-black text-black hover:text-yellow-300 border-black border-2 hover:border-2 hover:border-yellow-300
  text-lg rounded-md transition-all duration-300 transform hover:scale-105"
         >
-          <Link href="/sorteo">COMPRAR BOLETOS</Link>
+          <Link href="/sorteo">COMPRA TUS BOLETOS</Link>
         </button>
       </div>
     </div>

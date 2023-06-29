@@ -4,6 +4,7 @@ import CarroYfecha from "../components/CarroYfecha";
 import Footer from "../components/Footer";
 import FotoCarrosel from "../components/FotoCarrosel";
 import Navbar from "../components/Navbar";
+import CountdownTimer from "../components/CountdownTimer";
 
 export default function Home() {
   return (
@@ -15,9 +16,9 @@ export default function Home() {
         <FotoCarrosel />
 
         <Buttons />
-
-        <p className="text-center mt-5 text-3xl text-white">
-          CON TU BOLETO LIQUIDADO PARTICIPAS POR
+        <CountdownTimer />
+        <p className="text-center my-5 text-4xl text-white">
+          "CON TU BOLETO LIQUIDADO PARTICIPAS POR"
         </p>
         <CarroYfecha />
         <FotoCarrosel />
@@ -41,7 +42,6 @@ export default function Home() {
           SI PAGAS TU BOLETO ANTES DE 6 HRS TE LLEVAS: JEEP MOJAVE + $50,000 MXN
         </p>
         {/* </div> */}
-        <FotoCarrosel />
       </main>
       <Footer />
     </div>

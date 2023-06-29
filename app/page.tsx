@@ -1,4 +1,6 @@
 "use client";
+/** @jsxImportSource @emotion/react */
+import { css, keyframes } from "@emotion/react";
 import React from "react";
 import {
   FaHandHolding,
@@ -20,12 +22,43 @@ import CarroYfecha from "./components/CarroYfecha";
 import CountdownTimer from "./components/CountdownTimer";
 import { ImTicket } from "react-icons/im";
 import { BiHappyHeartEyes } from "react-icons/bi";
+import styled from "@emotion/styled";
 
 export default function Home() {
   // Then set up polling
+  const pulse = keyframes`
+  0% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
 
+  70% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(0.95);
+    opacity: 0.7;
+  }
+`;
   // Clean up function
+  const Button = styled.button`
+    animation: ${pulse} 2s ease-in-out infinite;
+    background-color: yellow;
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
 
+    text-align: center;
+    transition: all 0.5s;
+    &:hover {
+      background-color: black;
+      color: yellow;
+      border-color: yellow;
+      transform: scale(1.05);
+    }
+  `;
   return (
     <div>
       <Navbar />
@@ -34,11 +67,12 @@ export default function Home() {
         <CarroYfecha />
 
         <FotoCarrosel />
+        <CountdownTimer />
 
         <h2 className="bg-yellow-300 w-full text-5xl text-white text-center font-bold mb-4">
           PREGUNTAS FRECUENTES
         </h2>
-        <CountdownTimer />
+
         {/* FAQ section */}
         <div className="faqContainer flex flex-col items-center pt-5 md:w-1/2">
           {/* FAQ question 1 */}
@@ -67,7 +101,7 @@ export default function Home() {
             width={200}
             height={200}
           />
-          <p className="text-center md:text-2xl">
+          <p className="text-center md:text-2xl px-1">
             El ganador de{" "}
             <Link
               target="_blank"

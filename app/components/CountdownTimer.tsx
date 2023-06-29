@@ -2,6 +2,7 @@
 import { css, keyframes } from "@emotion/react";
 import { useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
+import Link from "next/link";
 
 const pulse = keyframes`
   0% {
@@ -61,9 +62,12 @@ const CountdownTimer: React.FC<CountdownProps> = ({ targetDate }) => {
   return (
     <div className="flex flex-col items-center mb-4 justify-center h-full text-2xl bg-black w-full">
       <h1 className="text-4xl my-5 text-yellow-300">SOLO FALTAN</h1>
-      <button className="animate-pulse mb-6 bg-yellow-300 text-black py-4 px-8 rounded-md text-lg transition-colors duration-200 ease-in-out cursor-pointer hover:bg-yellow-400">
+      <button className="animate-pulse mb-6 bg-red-500 text-black py-4 px-8 rounded-md text-lg transition-colors duration-200 ease-in-out cursor-pointer hover:bg-red-500">
         {timeLeft.days} DIAS, {timeLeft.hours} HORAS, {timeLeft.minutes}{" "}
         MINUTOS, {timeLeft.seconds} SEGUNDOS
+      </button>
+      <button className=" mb-6 bg-yellow-300 text-black py-4 px-8 rounded-md text-lg transition-colors duration-200 ease-in-out cursor-pointer hover:bg-red-500">
+        <Link href={"/sorteo"}>COMPRA TUS BOLETOS YA!!</Link>
       </button>
     </div>
   );
