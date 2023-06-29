@@ -18,7 +18,7 @@ export default function Home() {
         <Buttons />
         <CountdownTimer />
         <p className="text-center my-5 text-4xl text-white">
-          "CON TU BOLETO LIQUIDADO PARTICIPAS POR"
+          CON TU BOLETO LIQUIDADO PARTICIPAS POR
         </p>
         <CarroYfecha />
         <FotoCarrosel />
