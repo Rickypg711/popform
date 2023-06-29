@@ -267,10 +267,16 @@ export default function Buttons() {
 
             if (regex.test(input)) {
               setSearchQuery(input);
+              setErrorMessage(""); // Clear the error message if there are no errors
+            } else {
+              setErrorMessage("Invalid input! Please enter numbers only.");
             }
+
+            handleSearch(); // Call handleSearch function on input change
           }}
         />
-        <p>{errorMessage}</p>
+
+        <p className="text-2xl md:text-3xl text-center my-4">{errorMessage}</p>
       </div>
 
       {/* SEARCH BAR */}
