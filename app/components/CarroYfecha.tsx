@@ -36,7 +36,7 @@ export default function CarroYfecha() {
   }, []);
 
   return (
-    <div className="pt-20 bg-black w-full">
+    <div className="py-3 bg-black w-full">
       <h1 className="rifa text-3xl lg:text-6xl font-bold text-center text-yellow-300">
         {rifa}
       </h1>

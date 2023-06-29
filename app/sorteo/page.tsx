@@ -22,25 +22,27 @@ export default function Home() {
         </p>
         <CarroYfecha />
         <FotoCarrosel />
-        <p className="mt-5 text-3xl font-bold">COMBO - 30 JUNIO</p>
+        <div className="text-center text-2xl pb-2 ">
+          <p className="mt-5 text-5xl font-bold my-5 bg-yellow-300 w-full ">
+            COMBO - 30 JUNIO
+          </p>
 
-        <h3 className="mt-5 text-2xl font-bold">PRESORTEOS:</h3>
+          <h3 className="mt-5 text-4xl font-bold">PRESORTEOS:</h3>
 
-        <ul className="list-disc list-inside mt-3 text-left">
-          <li>$20,000 MXN - ENTREGADO</li>
-          <li>$20,000 MXN - ENTREGADO</li>
-        </ul>
+          <ul className="list-disc list-inside mt-3 text-center">
+            <li>$50,000 </li>
+          </ul>
 
-        <h3 className="mt-5 text-2xl font-bold">BONOS:</h3>
+          <h3 className="mt-5 text-4xl font-bold">BONOS:</h3>
 
-        <p className="mt-3 text-lg text-gray-500">
-          SI ERES EL GANADOR DEL COMBO Y PAGAS TU BOLETO ANTES DE 12 HRS TE
-          LLEVAS: $50,000 MXN
-        </p>
-
-        <p className="mt-3 text-lg text-gray-500">
-          SI PAGAS TU BOLETO ANTES DE 6 HRS TE LLEVAS: JEEP MOJAVE + $50,000 MXN
-        </p>
+          <p className="mt-3 text-2xg text-black px-2">
+            SI ERES EL GANADOR DEL COMBO Y PAGAS TU BOLETO ANTES DE 12 HRS TE
+            LLEVAS: <span className="text-yellow-300">$50,000 MXN</span>
+            <br />
+            <br /> SI PAGAS TU BOLETO ANTES DE 6 HRS TE LLEVAS:{" "}
+            <span className="text-yellow-300">JEEP MOJAVE + $50,000 MXN</span>
+          </p>
+        </div>
         {/* </div> */}
       </main>
       <Footer />
