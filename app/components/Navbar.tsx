@@ -27,7 +27,7 @@ export default function Navbar() {
                 className="text-xl font-bold text-gray-800 md:text-2xl"
                 href="/"
               >
-                Brand
+                PAREDES
               </Link>
             </div>
             <div className="flex">
