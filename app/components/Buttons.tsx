@@ -1,5 +1,5 @@
 import { useState, useEffect, FormEvent } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { IoCloseSharp } from "react-icons/io5";
 import Modal from "./modal";
 import Ruleta from "./Ruleta";
 import Estados from "./Estados";
@@ -104,6 +104,10 @@ export default function Buttons() {
 
   const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setState(e.target.value);
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -487,6 +491,12 @@ export default function Buttons() {
             className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center"
             onSubmit={handleSubmit}
           >
+            <button
+              className="absolute top-3 right-3 text-red-500 text-2xl"
+              onClick={() => setShowModal(false)}
+            >
+              <IoCloseSharp />
+            </button>
             {/* nombre */}
             <div className="mb-4">
               <label

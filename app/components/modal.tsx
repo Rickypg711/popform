@@ -26,17 +26,17 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center mx-3 z-20"
+      className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex justify-center items-center my-24 mx-3 z-20"
       id="wrapper"
       onClick={handleClose}
     >
       <div className="w-full max-w-md">
-        <button
+        {/* <button
           className="text-white text-xl place-self-end"
           onClick={() => onClose()}
         >
           x
-        </button>
+        </button> */}
         <div className="bg-yellow-300 backdrop-blur-sm p-2 bg-opacity-25 rounded">
           {children}
         </div>
