@@ -18,14 +18,15 @@ export default function Buttons() {
   const [state, setState] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
-
   const [buttons, setButtons] = useState(
     Array.from({ length: 35000 }, (_, i) => i + 1)
   );
 
   const [blackOut, setBlackOut] = useState(null);
 
+  // THIS HANDLES THE FORMSUMISION STATE
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false); // New state variable for success message
   // ruleta handling show numbers
   const [groupSize, setGroupSize] = useState(getGroupSize());
 
@@ -78,7 +79,7 @@ export default function Buttons() {
 
       if (res.ok) {
         setRemoved(data);
-        setIsLoading(false);
+        // setIsLoading(false);
       } else {
         console.error(data.error);
       }
@@ -106,6 +107,19 @@ export default function Buttons() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
+
+    // Check if all inputs are filled out
+    if (!name || !email || !phone || !state || reserved.length === 0) {
+      setErrorMessage("Please fill out all fields.");
+      return;
+    }
+
+    // Validate phone number
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      setErrorMessage("Please enter a valid phone number.");
+      return;
+    }
 
     let countryCode;
     if (state === "ESTADOS UNIDOS") {
@@ -136,6 +150,7 @@ export default function Buttons() {
       if (res.ok) {
         await fetchRemovedNumbers();
         setReserved([]);
+        setIsFormSubmitted(true); // Set the form submission status
 
         let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019! 🎟️
   \n✨ *1 BOLETO RESERVADO:*
@@ -176,6 +191,8 @@ export default function Buttons() {
     setName("");
     setEmail("");
     setPhone("");
+    setIsFormSubmitted(true); // Set the form submission status
+    setShowSuccessMessage(true); // Show the success message
   };
 
   const handleSelection = (selectedTickets: number[]) => {
@@ -453,6 +470,7 @@ export default function Buttons() {
                 placeholder="Enter your name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                required // Added required attribute
               />
             </div>
             {/* phone */}
@@ -470,6 +488,8 @@ export default function Buttons() {
                 placeholder="Enter your phone number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
+                maxLength={10} // Set the maximum length to 10 digits
+                required // Added required attribute
               />
             </div>
             {/* email */}
@@ -487,6 +507,7 @@ export default function Buttons() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required // Added required attribute
               />
             </div>
             {/* estado */}
@@ -497,7 +518,11 @@ export default function Buttons() {
               >
                 State
               </label>
-              <Estados value={state} onChange={handleStateChange} />
+              <Estados
+                value={state}
+                onChange={handleStateChange}
+                required // Added required attribute
+              />
             </div>
             <div className="bg-white p-2 rounded">
               <p>These numbers have been reserved:</p>
@@ -513,8 +538,9 @@ export default function Buttons() {
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
+                disabled={isFormSubmitted} // Disable the button when form is submitted
               >
-                Submit
+                {isFormSubmitted ? "Submitting..." : "Submit"}
               </button>
             </div>
           </form>

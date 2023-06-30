@@ -3,6 +3,7 @@ import React, { ChangeEvent } from "react";
 interface EstadosProps {
   value: string;
   onChange: (event: ChangeEvent<HTMLSelectElement>) => void;
+  required?: boolean; // Add the 'required' prop
 }
 
 const Estados: React.FC<EstadosProps> = ({ value, onChange }) => {
@@ -11,6 +12,7 @@ const Estados: React.FC<EstadosProps> = ({ value, onChange }) => {
       className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       value={value}
       onChange={onChange}
+      required // Added required attribute
     >
       <option value="">SELECCIONA ESTADO</option>
       <option value="ESTADOS UNIDOS">ESTADOS UNIDOS</option>
