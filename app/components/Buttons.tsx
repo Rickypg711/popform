@@ -131,7 +131,7 @@ export default function Buttons() {
     if (state === "ESTADOS UNIDOS") {
       countryCode = "+1";
     } else {
-      countryCode = "+52 1";
+      countryCode = "+521";
     }
 
     const phoneNumber = `${countryCode}${phone}`;
@@ -284,30 +284,6 @@ export default function Buttons() {
       <Ruleta onSelection={handleSelection} Butt={buttons} removed={removed} />
 
       {/* SEARCH BAR DOWN HERE  */}
-
-      {/* <div className="">
-        <input
-          className="text-center shadow appearance-none border rounded w-full   text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          type="text"
-          placeholder="🍀  BUSCA TU NUMERO DE LA SUERTE 🍀"
-          value={searchQuery}
-          onChange={(e) => {
-            const input = e.target.value;
-            const regex = /^[0-9]*$/; // Regular expression to match numbers only
-
-            if (regex.test(input)) {
-              setSearchQuery(input);
-              setErrorMessage(""); // Clear the error message if there are no errors
-            } else {
-              setErrorMessage("Invalid input! Please enter numbers only.");
-            }
-
-            handleSearch(); // Call handleSearch function on input change
-          }}
-        />
-
-        <p className="text-2xl md:text-3xl text-center my-4">{errorMessage}</p>
-      </div> */}
 
       {/* SEARCH BAR */}
 

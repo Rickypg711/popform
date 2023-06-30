@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     await prisma.$disconnect();
   }
 }
+
 // gets the phone number
 export async function GET() {
   try {
@@ -37,8 +38,10 @@ export async function GET() {
     });
 
     if (config && config.phoneNumber) {
+      console.log("Retrieved phoneNumber:", config.phoneNumber);
       return NextResponse.json({ phoneNumber: config.phoneNumber });
     } else {
+      console.log("Phone number not found");
       return NextResponse.json(
         { error: "Phone number not found" },
         { status: 404 }

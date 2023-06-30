@@ -2,28 +2,36 @@ import { prisma } from "@/app/lib/script";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-  const { id, email } = await request.json();
+  const { phone, name } = await request.json();
 
-  if (!id || !email) {
-    return NextResponse.json({ error: "Missing id or email" }, { status: 400 });
+  if (!phone || !name) {
+    return NextResponse.json({ error: "Missing phone or name" }, { status: 400 });
   }
 
   try {
-    const user = await prisma.user.findUnique({
-        where: {
-          id: Number(id),
-        },
-        select: {
-          email: true, // Add this line
-          reservedNumbers: {
-            select: {
-              number: true,
-            },
+    const user = await prisma.user.findFirst({
+      where: {
+        AND: [
+          {
+            phone: {
+            endsWith: phone.slice(-10),
+          }
+          },
+          {
+            name: name,
+          },
+        ],
+      },
+      include: {
+        reservedNumbers: {
+          select: {
+            number: true,
           },
         },
-      });
-      
-    if (!user || user.email !== email) {
+      },
+    });
+
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 

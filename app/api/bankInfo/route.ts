@@ -1,5 +1,3 @@
-
-
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from "@/app/lib/script";
 
@@ -41,6 +39,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const bankInfo = await prisma.bankInfo.create({ data });
+    console.log("Created bankInfo:", bankInfo);
 
     await prisma.$disconnect();
 
