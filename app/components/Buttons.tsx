@@ -281,7 +281,7 @@ export default function Buttons() {
 
       {/* SEARCH BAR DOWN HERE  */}
 
-      <div className="">
+      {/* <div className="">
         <input
           className="text-center shadow appearance-none border rounded w-full   text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           type="text"
@@ -303,7 +303,7 @@ export default function Buttons() {
         />
 
         <p className="text-2xl md:text-3xl text-center my-4">{errorMessage}</p>
-      </div>
+      </div> */}
 
       {/* SEARCH BAR */}
 
@@ -386,6 +386,31 @@ export default function Buttons() {
         </aside>
       )}
 
+      {/*  */}
+
+      <div className="mt-5">
+        <input
+          className="text-center shadow appearance-none border rounded w-full   text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          type="text"
+          placeholder="🍀  BUSCA TU NUMERO DE LA SUERTE 🍀"
+          value={searchQuery}
+          onChange={(e) => {
+            const input = e.target.value;
+            const regex = /^[0-9]*$/; // Regular expression to match numbers only
+
+            if (regex.test(input)) {
+              setSearchQuery(input);
+              setErrorMessage(""); // Clear the error message if there are no errors
+            } else {
+              setErrorMessage("Invalid input! Please enter numbers only.");
+            }
+
+            handleSearch(); // Call handleSearch function on input change
+          }}
+        />
+
+        <p className="text-2xl md:text-3xl text-center my-4">{errorMessage}</p>
+      </div>
       <div className="h-96 overflow-y-scroll mt-5 px-4 w-full mb-1">
         <AutoSizer>
           {({ height, width }: Size) => (
@@ -550,16 +575,18 @@ export default function Buttons() {
                 required // Added required attribute
               />
             </div>
-            <div className="flex flex-col items-center mt-4 bg-white rounded-lg p-4">
+
+            <div className="ticket-container mt-4 bg-white rounded-lg p-4 overflow-auto max-h-40 mb-1">
               <p>Estos son Tus Boletos:</p>
-              <ul className="flex text-center">
+              <ul className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-2 text-center">
                 {reserved.map((index) => (
-                  <li className="text-red-300 inline-block mx-2" key={index}>
+                  <li className="text-red-300 inline-block" key={index}>
                     {index}
                   </li>
                 ))}
               </ul>
             </div>
+
             <div className="flex items-center justify-center ">
               <button
                 className="bg-blue-500 shadow-sm  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

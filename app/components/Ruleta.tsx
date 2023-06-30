@@ -50,6 +50,10 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
     setSelectedRandomTickets([]);
   };
 
+  const removeTicket = (ticket: number) => {
+    setSelectedRandomTickets((prev) => prev.filter((t) => t !== ticket));
+  };
+
   return (
     <div className="ruleta-container  mx-auto ">
       {/* Ruleta button */}
@@ -136,8 +140,17 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
             Estos son tus Tickets:
           </h2>
           <p className="text-md md:text-lg text-center text-gray-800">
-            {selectedRandomTickets.join(", ")}
+            {selectedRandomTickets.map((ticket) => (
+              <button
+                key={ticket} // <-- Add this line
+                className="border rounded bg-gray-200 m-2 "
+                onClick={() => removeTicket(ticket)}
+              >
+                {ticket}
+              </button>
+            ))}
           </p>
+
           {/* Display randomly selected tickets */}
           <button
             className="mt-4           bg-yellow-300 hover:bg-black text-black hover:text-yellow-300 border-black  hover:border-3 hover:border-yellow-300

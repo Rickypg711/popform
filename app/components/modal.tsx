@@ -30,14 +30,14 @@ export default function Modal({
       id="wrapper"
       onClick={handleClose}
     >
-      <div className="w-[600px] flex flex-col">
+      <div className="w-full max-w-md">
         <button
-          className="text-white text-xl place-self-end "
+          className="text-white text-xl place-self-end"
           onClick={() => onClose()}
         >
           x
         </button>
-        <div className="bg-yellow-300  backdrop-blur-sm p-2 bg-opacity-25 round ">
+        <div className="bg-yellow-300 backdrop-blur-sm p-2 bg-opacity-25 rounded">
           {children}
         </div>
       </div>
