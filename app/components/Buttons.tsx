@@ -474,7 +474,7 @@ export default function Buttons() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="name"
                 type="text"
-                placeholder="Enter your name"
+                placeholder="Ingresa tu Nombre"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required // Added required attribute
@@ -492,7 +492,7 @@ export default function Buttons() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="lastName"
                 type="text"
-                placeholder="Enter your last name"
+                placeholder="Ingresa tu Apellido"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 required // Added required attribute
@@ -511,7 +511,7 @@ export default function Buttons() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="phone"
                 type="tel"
-                placeholder="Enter your phone number"
+                placeholder="Ingresa Tu Numero de WhatsApp"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 maxLength={10} // Set the maximum length to 10 digits
@@ -530,7 +530,7 @@ export default function Buttons() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Ingresa tu Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required // Added required attribute
