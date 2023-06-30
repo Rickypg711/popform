@@ -8,8 +8,10 @@ datasource db {
 }
 
 model User {
-  id              Int              @id @default(autoincrement())
-  name            String
+  id       Int    @id @default(autoincrement())
+  name     String
+  lastName String // Add the apellido field
+
   email           String
   numbers         Int[]
   phone           String?

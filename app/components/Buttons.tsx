@@ -12,6 +12,8 @@ export default function Buttons() {
   const [showModal, setShowModal] = useState(false);
   const [removed, setRemoved] = useState<number[]>([]);
   const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -138,6 +140,7 @@ export default function Buttons() {
         },
         body: JSON.stringify({
           name,
+          lastName,
           email,
           phone: phoneNumber,
           numbers: reserved,
@@ -234,6 +237,12 @@ export default function Buttons() {
       setErrorMessage(""); // Limpiar el mensaje de error si no hay errores
     }
   };
+
+  useEffect(() => {
+    if (isFormSubmitted) {
+      window.location.reload(); // Reload the page
+    }
+  }, [isFormSubmitted]);
 
   // uUI  dounw here
   //
@@ -344,13 +353,6 @@ export default function Buttons() {
           className="list__tickets show mt-3 "
           style={{ borderColor: "rgb(55, 94, 151)" }}
         >
-          {/* <button
-            className="list__tickets-button"
-            style={{ borderColor: "rgb(55, 94, 151)" }}
-            onClick={() => setShowModal(true)}
-          >
-            Apartar
-          </button> */}
           <p className="text-center"> Para remover haz click en el boleto</p>
 
           <section
@@ -423,13 +425,17 @@ export default function Buttons() {
 
                           return (
                             <div key={number} className="">
-                              <button
-                                className={`${buttonClass} m-1`}
-                                onClick={handleOnClick}
-                                disabled={(blackOut && isRemoved) || isReserved}
-                              >
-                                {number}
-                              </button>
+                              {!isRemoved && ( // Check if the button is not removed
+                                <button
+                                  className={`${buttonClass} m-1`}
+                                  onClick={handleOnClick}
+                                  disabled={
+                                    (blackOut && isRemoved) || isReserved
+                                  }
+                                >
+                                  {number}
+                                </button>
+                              )}
                             </div>
                           );
                         })}
@@ -453,15 +459,16 @@ export default function Buttons() {
       >
         <div className="max-w-md mx-auto">
           <form
-            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+            className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 text-center"
             onSubmit={handleSubmit}
           >
+            {/* nombre */}
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="name"
               >
-                Name
+                Nombre
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -473,13 +480,32 @@ export default function Buttons() {
                 required // Added required attribute
               />
             </div>
+            {/* appelido */}
+            <div className="mb-4">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="lastName"
+              >
+                Apellido
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="lastName"
+                type="text"
+                placeholder="Enter your last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required // Added required attribute
+              />
+            </div>
+
             {/* phone */}
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="phone"
               >
-                Phone
+                Numero de WhatsApp
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -516,7 +542,7 @@ export default function Buttons() {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="state"
               >
-                State
+                Estado
               </label>
               <Estados
                 value={state}
@@ -524,9 +550,9 @@ export default function Buttons() {
                 required // Added required attribute
               />
             </div>
-            <div className="bg-white p-2 rounded">
-              <p>These numbers have been reserved:</p>
-              <ul className="flex">
+            <div className="flex flex-col items-center mt-4 bg-white rounded-lg p-4">
+              <p>Estos son Tus Boletos:</p>
+              <ul className="flex text-center">
                 {reserved.map((index) => (
                   <li className="text-red-300 inline-block mx-2" key={index}>
                     {index}
@@ -534,15 +560,19 @@ export default function Buttons() {
                 ))}
               </ul>
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-center ">
               <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                className="bg-blue-500 shadow-sm  hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="submit"
                 disabled={isFormSubmitted} // Disable the button when form is submitted
               >
-                {isFormSubmitted ? "Submitting..." : "Submit"}
+                {isFormSubmitted ? "Mandando...👍" : "APARTAR "}
               </button>
             </div>
+            <p className="mt-5 text-center text-red-500 text-xs">
+              ¡Al finalizar serás redirigido a whatsapp para enviar la
+              información de tu boleto! Tu boleto sólo dura 24 horas apartado
+            </p>
           </form>
         </div>
       </Modal>

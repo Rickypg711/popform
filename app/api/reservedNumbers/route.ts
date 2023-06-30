@@ -3,11 +3,14 @@ import { prisma } from "@/app/lib/script";
 
 type Feedback = {
   name: string;
+  lastName: string; // Add the apellido field
   email: string;
-  phone: string;  // add this line
+  phone: string;
   numbers: number[];
   state: string;
+ 
 };
+
 
 export async function GET(request: Request) {
   try {
@@ -26,7 +29,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const data: Feedback = await request.json();
-  const { name, email, phone, numbers, state} = data;  // update this line
+  const { name, email, phone, numbers, state, lastName } = data;
 
   try {
     const reservedNumbers = await prisma.reservedNumber.findMany();
@@ -47,8 +50,9 @@ export async function POST(request: Request) {
     const user = await prisma.user.create({
       data: {
         name,
+        lastName, // Add the apellido field
         email,
-        phone,  // add this line
+        phone,
         state,
         numbers: {
           set: availableNumbers,
@@ -58,11 +62,19 @@ export async function POST(request: Request) {
         },
       },
     });
+    
 
     console.log("user", user);
 
-    return NextResponse.json({ name, email, phone, state, numbers: availableNumbers });  // update this line
-  } catch (error) {
+    return NextResponse.json({
+      name,
+     lastName , // Add the apellido field
+      email,
+      phone,
+      state,
+      numbers: availableNumbers,
+    });
+      } catch (error) {
     console.error(error);
 
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
