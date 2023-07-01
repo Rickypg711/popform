@@ -346,7 +346,7 @@ const SettModal: React.FC<SettModalProps> = ({ isVisible, onClose }) => {
                     id="fechaDeSorteo"
                     value={config.fechaDeSorteo}
                     onChange={handleChange}
-                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md"
+                    className="mt-1 block w-full shadow-sm sm:text-sm rounded-md text-blue-700"
                   />
                 </div>
               </div>

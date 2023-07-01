@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import {
@@ -66,7 +67,9 @@ const Footer = () => {
         </Link>
       </div>
       <p className="text-sm">Sitio desarrollado por PAREDES</p>
-      <p className="text-sm">Aviso de Privacidad</p>
+      <p className="text-sm">
+        <Link href={"/avisodeprivacidad"}>Aviso de Privacidad</Link>
+      </p>
     </footer>
   );
 };

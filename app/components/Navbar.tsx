@@ -1,5 +1,5 @@
 // components/Navbar.js
-
+"use client";
 import Link from "next/link";
 import { useState } from "react";
 import { FaTicketAlt } from "react-icons/fa"; // Import the ticket icon
@@ -10,7 +10,7 @@ export default function Navbar() {
   const [isOpen, setOpen] = useState(false);
 
   return (
-    <div className="fixed  w-full bg-black py-3 z-10 mb-4">
+    <div className="fixed  w-full bg-black py-3 z-10 mb-4 ">
       <nav
         className=" bg-yellow-300 px-4 py-2 shadow"
         // style={{ marginTop: "64px" }}

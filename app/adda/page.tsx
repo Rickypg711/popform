@@ -122,17 +122,34 @@ const AdmiPage = () => {
     });
 
   // ...
+  function createWhatsAppDeepLink(
+    phoneNumber: string | undefined,
+    message: string
+  ): string {
+    const encodedMessage = encodeURIComponent(message);
+    const phone = phoneNumber ?? ""; // Provide a default value for undefined phone numbers
+    return `whatsapp://send/?phone=${phone}&text=${encodedMessage}`;
+  }
 
   const sendWhatsAppReminder = async () => {
-    if (selectedUsers.length === 1) {
-      const user = users.find((u) => u.id === selectedUsers[0]);
-      // fetch the message from the database
-      const res = await fetch("/api/whatsappmessage");
-      const data = await res.json();
-      const message = `Hola ${user?.name}, ${data.message}`;
-      const encodedMessage = encodeURIComponent(message);
-      const link = `https://api.whatsapp.com/send/?phone=${user?.phone}&text=${encodedMessage}`;
-      window.open(link, "_blank");
+    for (const userId of selectedUsers) {
+      const user = users.find((u) => u.id === userId);
+      if (user) {
+        try {
+          const res = await fetch("/api/whatsappmessage");
+          if (!res.ok) {
+            throw new Error("Failed to fetch the message from the database.");
+          }
+          const data = await res.json();
+          const message = `Hola ${user.name}, ${data.message}`;
+          const link = createWhatsAppDeepLink(user.phone, message);
+          console.log("Phone number:", user.phone); // Added console log
+          window.open(link, "_blank");
+        } catch (error) {
+          console.error("Failed to send WhatsApp reminder:", error);
+          // Handle error here
+        }
+      }
     }
   };
 
