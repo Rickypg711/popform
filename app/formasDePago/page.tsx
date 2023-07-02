@@ -85,7 +85,7 @@ export default function FormasDePago() {
         <div className="flex items-center text-center">
           <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
           <Image
-            src={`/ima/${bank.bank}.png`}
+            src={`/ima/bankpictures/${bank.bank}.png`}
             alt={`${bank.bank} Logo`}
             width={100}
             height={100}
