@@ -76,7 +76,7 @@ export default function Buttons() {
   // to check numbes on data base
   const fetchRemovedNumbers = async () => {
     try {
-      const res = await fetch("http://localhost:3000/api/reservedNumbers");
+      const res = await fetch("https://popform.vercel.app/api/reservedNumbers");
       const data = await res.json();
 
       if (res.ok) {
