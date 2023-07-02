@@ -160,7 +160,7 @@ const AdmiPage = () => {
   );
 
   const paidCount = users.filter((user) => user.paid).length;
-  const totalCount = 3500; // Total number of tickets
+  const totalCount = 35000; // Total number of tickets
   const availableCount = totalCount - reservedCount + paidCount;
 
   return (
