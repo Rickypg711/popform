@@ -86,7 +86,7 @@ export default function FormasDePago() {
           <Image
             src={`/ima/${bank.bank}.png`}
             alt={`${bank.bank} Logo`}
-            width={300}
+            width={100}
             height={100}
           />
           <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
