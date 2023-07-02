@@ -110,7 +110,7 @@ export default function Buttons() {
     setShowModal(false);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setShowModal(false);
 
@@ -159,35 +159,27 @@ export default function Buttons() {
         setReserved([]);
         setIsFormSubmitted(true); // Set the form submission status
 
-        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019! 🎟️
-  \n✨ *1 BOLETO RESERVADO:*
-  *${reserved.join(", ")}*
-  \n✏️ *Nombre:* ${name}
-  ☎️ *Teléfono:* ${phone}
-  💲 *PRECIOS DE LOS BOLETOS:*
-  1 BOLETO: $67
-  2 BOLETOS: $129
-  3 BOLETOS: $193
-  4 BOLETOS: $255
-  5 BOLETOS: $310
-  10 BOLETOS: $599
-  100 BOLETOS: $5,900
-  🌐 *PAGO EN LÍNEA:* www.rifaseconomicaschihuahua.com/pagos
-  \n📸 Una vez realizado el pago, por favor envía una foto del comprobante de pago aquí.`;
+        // Generate the base message
+        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019! \u{1F39F}\n✨ *1 BOLETO RESERVADO:*\n*${reserved.join(
+          ", "
+        )}*\n\u270F\ufe0f *Nombre:* ${name}\n\u260E\ufe0f *Teléfono:* ${phone}\n\u{1F4B2} *PRECIOS DE LOS BOLETOS:*\n1 BOLETO: $67\n2 BOLETOS: $129\n3 BOLETOS: $193\n4 BOLETOS: $255\n5 BOLETOS: $310\n10 BOLETOS: $599\n100 BOLETOS: $5,900\n\ud83c\udf10 *PAGO EN LÍNEA:* www.rifaseconomicaschihuahua.com/pagos\n\n\ud83d\udcf8 Una vez realizado el pago, por favor envía una foto del comprobante de pago aquí.`;
 
+        // Encode the base message for URL
         let encodedMessage = encodeURI(baseMessage);
 
+        // Append additional message if present
         if (message !== "") {
           const formattedMessage = message
             .replace(/ENTER ENTER/g, "\n")
             .replace(/\\u([\d\w]{4})/gi, (match, grp) =>
               String.fromCharCode(parseInt(grp, 16))
             );
-
           encodedMessage += formattedMessage;
         }
 
-        window.open(`https://wa.me/17026751900?text=${encodedMessage}`);
+        const link = `https://wa.me/17026751900?text=${encodedMessage}`;
+        console.log("WhatsApp link:", link);
+        window.open(link, "_blank");
       } else {
         console.error(result.error);
       }
