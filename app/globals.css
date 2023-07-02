@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: "Segoe UI Emoji", "Twemoji", "Noto Color Emoji", "EmojiOne",
+    sans-serif;
+}
