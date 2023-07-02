@@ -82,20 +82,14 @@ export default function FormasDePago() {
         key={bank.id}
         className="text-black bg-yellow-300 bg-opacity-25  rounded-md mb-4 border-4 border-yellow-300 my-2"
       >
-        <div className="flex items-center">
+        <div className="flex items-center text-center">
+          <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
           <Image
             src={`/ima/${bank.bank}.png`}
             alt={`${bank.bank} Logo`}
             width={100}
             height={100}
           />
-          <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
-          {/* <Image
-            src={`/ima/${bank.bank}.png`}
-            alt={`${bank.bank} Logo`}
-            width={300}
-            height={300}
-          /> */}
         </div>{" "}
         {/* <p className="">Tipo: {bank.paymentMethod}</p> */}
         <p>Nombre: {bank.cardHolderName}</p>
