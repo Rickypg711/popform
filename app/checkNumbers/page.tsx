@@ -21,7 +21,7 @@ export default function CheckNumbers() {
     try {
       console.log("Request Body:", { phone, name }); // Added console log
 
-      const res = await fetch(`http://localhost:3000/api/userReserved`, {
+      const res = await fetch(`https://popform.vercel.app/api/userReserved`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, name }),
