@@ -11,6 +11,29 @@ const AdmiPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // fetching title for admin
+  const [rifa, setRifa] = useState("");
+
+  useEffect(() => {
+    const fetchRifa = async () => {
+      try {
+        const res = await fetch("/api/config/rifaYbono");
+        if (!res.ok) {
+          throw new Error("API response was not ok.");
+        }
+        const data = await res.json();
+
+        if (data.rifa) {
+          setRifa(data.rifa);
+        }
+      } catch (error) {
+        console.error("Failed to fetch rifa:", error);
+      }
+    };
+
+    fetchRifa();
+  }, []);
+
   // interface
 
   interface User {
@@ -170,7 +193,7 @@ const AdmiPage = () => {
     overflow-x-hidden bg-gray-800 text-white"
     >
       <div className="flex justify-between items-center my-8">
-        <h1 className="text-3xl ">S17 CORVETTE 2022</h1>
+        <h1 className="text-3xl ">{rifa}</h1>
         <FaCog
           className="cursor-pointer text-xl"
           onClick={() => setIsModalVisible(!isModalVisible)}
