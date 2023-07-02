@@ -137,20 +137,38 @@ export default function Buttons() {
     const phoneNumber = `${countryCode}${phone}`;
 
     try {
-      const res = await fetch("http://localhost:3000/api/reservedNumbers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          lastName,
-          email,
-          phone: phoneNumber,
-          numbers: reserved,
-          state,
-        }),
-      });
+      const res = await fetch(
+        "https://popform.vercel.app/api/reservedNumbers",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            lastName,
+            email,
+            phone: phoneNumber,
+            numbers: reserved,
+            state,
+          }),
+        }
+      );
+
+      // const res = await fetch("http://localhost:3000/api/reservedNumbers", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     name,
+      //     lastName,
+      //     email,
+      //     phone: phoneNumber,
+      //     numbers: reserved,
+      //     state,
+      //   }),
+      // });
 
       const result = await res.json();
 
