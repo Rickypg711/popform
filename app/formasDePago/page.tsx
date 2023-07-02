@@ -90,6 +90,12 @@ export default function FormasDePago() {
             height={300}
           />
           <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
+          <Image
+            src={`/ima/${bank.bank}.png`}
+            alt={`${bank.bank} Logo`}
+            width={300}
+            height={300}
+          />
         </div>{" "}
         {/* <p className="">Tipo: {bank.paymentMethod}</p> */}
         <p>Nombre: {bank.cardHolderName}</p>
@@ -109,6 +115,7 @@ export default function FormasDePago() {
   return (
     <div className=" flex flex-col min-h-screen ">
       <Navbar />
+
       <section className=" flex items-center justify-center bg-red-500 text-white mt-20 mx-3 ">
         <div className="text-center">
           <h1 className="text-3xl mb-4">
@@ -127,6 +134,7 @@ export default function FormasDePago() {
           {creditCardInfo.length > 0 && (
             <section className="mt-8">
               <h2 className="text-2xl mb-4">TRANSFERENCIAS</h2>
+
               <ul className="">{renderBankInfo(creditCardInfo)}</ul>
             </section>
           )}
