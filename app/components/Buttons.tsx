@@ -159,39 +159,29 @@ export default function Buttons() {
         setReserved([]);
         setIsFormSubmitted(true); // Set the form submission status
 
-        // Generate the base message
-        let baseMessage = `Hola, Aparte boletos de la rifa!! LOBO RAPTOR 2019! \u{1F39F}\n✨ *1 BOLETO RESERVADO:*\n*${reserved.join(
+        const message = `¡Hola! Aparta boletos de la rifa!! 🐺🦖 LOBO RAPTOR 2019! 🎟️✨\n\n*1 BOLETO RESERVADO:*\n${reserved.join(
           ", "
-        )}*\n\u270F\ufe0f *Nombre:* ${name}\n\u260E\ufe0f *Teléfono:* ${phone}\n\u{1F4B2} *PRECIOS DE LOS BOLETOS:*\n1 BOLETO: $67\n2 BOLETOS: $129\n3 BOLETOS: $193\n4 BOLETOS: $255\n5 BOLETOS: $310\n10 BOLETOS: $599\n100 BOLETOS: $5,900\n\ud83c\udf10 *PAGO EN LÍNEA:* www.rifaseconomicaschihuahua.com/pagos\n\n\ud83d\udcf8 Una vez realizado el pago, por favor envía una foto del comprobante de pago aquí.`;
+        )}\n\n✍️ *Nombre:* ${name}\n☎️ *Teléfono:* ${phone}\n\n🎟️ *PRECIOS DE LOS BOLETOS:*\n1 BOLETO: $67\n2 BOLETOS: $129\n3 BOLETOS: $193\n4 BOLETOS: $255\n5 BOLETOS: $310\n10 BOLETOS: $599\n100 BOLETOS: $5,900\n\n🌐 *PAGO EN LÍNEA:* [www.rifaseconomicaschihuahua.com/pagos](www.rifaseconomicaschihuahua.com/pagos)\n\n📸 Una vez realizado el pago, por favor envía una foto del comprobante de pago aquí.`;
 
-        // Encode the base message for URL
-        let encodedMessage = encodeURI(baseMessage);
+        // Create the WhatsApp deep link with the message
+        const encodedMessage = encodeURIComponent(message);
+        const link = `whatsapp://send/?phone=${phoneNumber}&text=${encodedMessage}`;
 
-        // Append additional message if present
-        if (message !== "") {
-          const formattedMessage = message
-            .replace(/ENTER ENTER/g, "\n")
-            .replace(/\\u([\d\w]{4})/gi, (match, grp) =>
-              String.fromCharCode(parseInt(grp, 16))
-            );
-          encodedMessage += formattedMessage;
-        }
-
-        const link = `https://wa.me/17026751900?text=${encodedMessage}`;
-        console.log("WhatsApp link:", link);
+        // Open the WhatsApp link in a new tab
         window.open(link, "_blank");
+
+        // Reset form fields and show success message
+        setName("");
+        setEmail("");
+        setPhone("");
+        setIsFormSubmitted(true); // Set the form submission status
+        setShowSuccessMessage(true); // Show the success message
       } else {
         console.error(result.error);
       }
     } catch (error) {
       console.error("Error:", error);
     }
-
-    setName("");
-    setEmail("");
-    setPhone("");
-    setIsFormSubmitted(true); // Set the form submission status
-    setShowSuccessMessage(true); // Show the success message
   };
 
   const handleSelection = (selectedTickets: number[]) => {
@@ -401,19 +391,61 @@ export default function Buttons() {
                     {filteredButtons.length === 0 ? (
                       <p>No matching numbers found.</p>
                     ) : (
+                      // <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4">
+                      //   {group.map((number) => {
+                      //     const isReserved = reserved?.includes(number);
+                      //     const isRemoved = removed?.includes(number);
+
+                      //     if (blackOut === false && isRemoved) {
+                      //       return null; // Don't display removed numbers when blackout is false
+                      //     }
+
+                      //     const buttonClass =
+                      //       blackOut && isRemoved
+                      //         ? "bg-black text-white px-4 py-2 my-2 rounded-md"
+                      //         : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
+
+                      //     const handleOnClick =
+                      //       blackOut && isRemoved
+                      //         ? undefined
+                      //         : () => !isRemoved && reserveTicket(number);
+
+                      //     return (
+                      //       <div key={number} className="">
+                      //         {!isRemoved && ( // Check if the button is not removed
+                      //           <button
+                      //             className={`${buttonClass} m-1`}
+                      //             onClick={handleOnClick}
+                      //             disabled={
+                      //               (blackOut && isRemoved) || isReserved
+                      //             }
+                      //           >
+                      //             {number}
+                      //           </button>
+                      //         )}
+                      //       </div>
+                      //     );
+                      //   })}
+                      // </div>
                       <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4">
                         {group.map((number) => {
                           const isReserved = reserved?.includes(number);
                           const isRemoved = removed?.includes(number);
 
-                          if (blackOut === false && isRemoved) {
-                            return null; // Don't display removed numbers when blackout is false
+                          if (blackOut && isRemoved) {
+                            return (
+                              <div
+                                key={number}
+                                className="bg-black text-white px-4 py-2 my-2 rounded-md"
+                              >
+                                {number}
+                              </div>
+                            );
                           }
 
-                          const buttonClass =
-                            blackOut && isRemoved
-                              ? "bg-black text-white px-4 py-2 my-2 rounded-md"
-                              : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
+                          const buttonClass = blackOut
+                            ? "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md"
+                            : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
 
                           const handleOnClick =
                             blackOut && isRemoved
@@ -421,13 +453,13 @@ export default function Buttons() {
                               : () => !isRemoved && reserveTicket(number);
 
                           return (
-                            <div key={number} className="">
+                            <div key={number}>
                               {!isRemoved && ( // Check if the button is not removed
                                 <button
                                   className={`${buttonClass} m-1`}
                                   onClick={handleOnClick}
                                   disabled={
-                                    (blackOut && isRemoved) || isReserved
+                                    blackOut && isReserved ? true : undefined
                                   }
                                 >
                                   {number}

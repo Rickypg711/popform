@@ -22,6 +22,7 @@ export default function FotoCarrosel({ showButton = true }) {
             width={300}
             height={100}
             layout="responsive"
+            priority // Add the priority attribute
           />
         </div>
         <div className="imageContainer">
@@ -31,6 +32,7 @@ export default function FotoCarrosel({ showButton = true }) {
             width={300}
             height={100}
             layout="responsive"
+            priority // Add the priority attribute
           />
         </div>
         <div className="imageContainer">
@@ -40,6 +42,7 @@ export default function FotoCarrosel({ showButton = true }) {
             width={300}
             height={100}
             layout="responsive"
+            priority // Add the priority attribute
           />
         </div>
       </Carousel>

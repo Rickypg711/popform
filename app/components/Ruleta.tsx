@@ -22,7 +22,6 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
     }
     setShowRandomOptions(!showRandomOptions);
   };
-
   const reserveRandomTickets = useCallback(() => {
     const randomTickets: number[] = [];
     let availableTickets = Butt.filter((ticket) => !removed.includes(ticket));
@@ -36,8 +35,23 @@ const Ruleta: FC<RuletaProps> = ({ onSelection, Butt, removed }) => {
     }
 
     setSelectedRandomTickets(randomTickets);
-    removed.length = 0; // Clear the 'removed' array
   }, [randomCount, Butt, removed]);
+
+  // const reserveRandomTickets = useCallback(() => {
+  //   const randomTickets: number[] = [];
+  //   let availableTickets = Butt.filter((ticket) => !removed.includes(ticket));
+
+  //   for (let i = 0; i < randomCount; i++) {
+  //     if (availableTickets.length === 0) break; // no available tickets left
+
+  //     const randomIndex = Math.floor(Math.random() * availableTickets.length);
+  //     randomTickets.push(availableTickets[randomIndex]);
+  //     availableTickets.splice(randomIndex, 1); // remove the selected ticket from available tickets
+  //   }
+
+  //   setSelectedRandomTickets(randomTickets);
+  //   removed.length = 0; // Clear the 'removed' array
+  // }, [randomCount, Butt, removed]);
 
   useEffect(() => {
     if (randomCount > 0) {
