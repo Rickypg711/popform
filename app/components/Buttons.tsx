@@ -186,7 +186,21 @@ export default function Buttons() {
         const link = `whatsapp://send/?phone=17026751900&text=${encodedMessage}`;
 
         // Open the WhatsApp link in a new tab
-        window.open(link, "_blank");
+        const openedWindow = window.open(link, "_blank");
+
+        // Fallback for devices that don't support window.open
+        if (
+          !openedWindow ||
+          typeof openedWindow === "undefined" ||
+          openedWindow.closed ||
+          typeof openedWindow.closed === "undefined"
+        ) {
+          // Provide a fallback option for the user
+          alert(
+            "Your tickets have been reserved. Please open WhatsApp and paste the following message: " +
+              message
+          );
+        }
 
         // Reset form fields and show success message
         setName("");
