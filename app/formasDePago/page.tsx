@@ -82,8 +82,16 @@ export default function FormasDePago() {
         key={bank.id}
         className="text-black bg-yellow-300 bg-opacity-25  rounded-md mb-4 border-4 border-yellow-300 my-2"
       >
-        <div className="flex items-center text-center">
-          <p className="font-bold text-gold ml-2">Banco: {bank.bank}</p>
+        <div className="flex justify-between items-center">
+          <div className="text-center flex-grow">
+            <p className="font-bold text-yellow-300 ml-2">Banco: {bank.bank}</p>
+            {/* <p className="">Tipo: {bank.paymentMethod}</p> */}
+            <p>Nombre: {bank.cardHolderName}</p>
+            <p className="mb-2">
+              Numero de Tarjeta: {formatCardNumber(bank.cardNumber)}
+            </p>
+            {/* Render other bank details */}
+          </div>
           <Image
             src={`/ima/bankpictures/${bank.bank}.png`}
             alt={`${bank.bank} Logo`}
@@ -91,12 +99,6 @@ export default function FormasDePago() {
             height={100}
           />
         </div>{" "}
-        {/* <p className="">Tipo: {bank.paymentMethod}</p> */}
-        <p>Nombre: {bank.cardHolderName}</p>
-        <p className="mb-2">
-          Numero de Tarjeta: {formatCardNumber(bank.cardNumber)}
-        </p>
-        {/* Render other bank details */}
       </li>
     ));
   };
