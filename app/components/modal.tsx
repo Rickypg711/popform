@@ -26,7 +26,7 @@ export default function Modal({
 
   return (
     <div
-      className="fixed inset-0 flex justify-center items-center z-20"
+      className="fixed inset-0 flex mt-5 justify-center items-center z-20"
       id="wrapper"
       onClick={handleClose}
     >
