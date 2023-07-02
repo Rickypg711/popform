@@ -183,7 +183,7 @@ export default function Buttons() {
 
         // Create the WhatsApp deep link with the message
         const encodedMessage = encodeURIComponent(message);
-        const link = `whatsapp://send/?phone=${phoneNumber}&text=${encodedMessage}`;
+        const link = `whatsapp://send/?phone=17026751900&text=${encodedMessage}`;
 
         // Open the WhatsApp link in a new tab
         window.open(link, "_blank");
