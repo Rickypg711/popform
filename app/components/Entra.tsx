@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import AdmiPage from "../adda/page";
+import AdmiPage from "../adda/ad";
 
 const LOGIN_USERNAME = "ya"; // Hard-coded username
 const LOGIN_PASSWORD = "se"; // Hard-coded password
