@@ -2,8 +2,8 @@
 import { useState } from "react";
 import AdmiPage from "../adda/ad";
 
-const LOGIN_USERNAME = "ya"; // Hard-coded username
-const LOGIN_PASSWORD = "se"; // Hard-coded password
+const LOGIN_USERNAME = process.env.LOGIN_USERNAME;
+const LOGIN_PASSWORD = process.env.LOGIN_PASSWORD;
 
 const Entra = () => {
   const [username, setUsername] = useState("");
