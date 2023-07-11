@@ -114,8 +114,8 @@ export default function Buttons() {
     event.preventDefault();
     setShowModal(false);
 
-    // Check if all inputs are filled out
-    if (!name || !email || !phone || !state || reserved.length === 0) {
+    // Check if all inputs are filled out except for email
+    if (!name || !phone || !state || reserved.length === 0) {
       setErrorMessage("Please fill out all fields.");
       return;
     }
@@ -125,6 +125,16 @@ export default function Buttons() {
     if (!phoneRegex.test(phone)) {
       setErrorMessage("Please enter a valid phone number.");
       return;
+    }
+
+    // Only perform email validation if the email field is not empty
+    if (email.trim() !== "") {
+      // Validate email address
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setErrorMessage("Please enter a valid email address.");
+        return;
+      }
     }
 
     let countryCode;
@@ -155,21 +165,6 @@ export default function Buttons() {
         }
       );
 
-      // const res = await fetch("http://localhost:3000/api/reservedNumbers", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     name,
-      //     lastName,
-      //     email,
-      //     phone: phoneNumber,
-      //     numbers: reserved,
-      //     state,
-      //   }),
-      // });
-
       const result = await res.json();
 
       if (res.ok) {
@@ -190,20 +185,6 @@ export default function Buttons() {
         window.location.href = link;
 
         // const openedWindow = window.open(link, "_blank");
-
-        // // Fallback for devices that don't support window.open
-        // if (
-        //   !openedWindow ||
-        //   typeof openedWindow === "undefined" ||
-        //   openedWindow.closed ||
-        //   typeof openedWindow.closed === "undefined"
-        // ) {
-        //   // Provide a fallback option for the user
-        //   alert(
-        //     "Your tickets have been reserved. Please open WhatsApp and paste the following message: " +
-        //       message
-        //   );
-        // }
 
         // Reset form fields and show success message
         setName("");
@@ -426,42 +407,6 @@ export default function Buttons() {
                     {filteredButtons.length === 0 ? (
                       <p>No matching numbers found.</p>
                     ) : (
-                      // <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4">
-                      //   {group.map((number) => {
-                      //     const isReserved = reserved?.includes(number);
-                      //     const isRemoved = removed?.includes(number);
-
-                      //     if (blackOut === false && isRemoved) {
-                      //       return null; // Don't display removed numbers when blackout is false
-                      //     }
-
-                      //     const buttonClass =
-                      //       blackOut && isRemoved
-                      //         ? "bg-black text-white px-4 py-2 my-2 rounded-md"
-                      //         : "bg-yellow-300 text-black px-4 py-2 my-2 rounded-md hover:bg-white hover:text-yellow-300";
-
-                      //     const handleOnClick =
-                      //       blackOut && isRemoved
-                      //         ? undefined
-                      //         : () => !isRemoved && reserveTicket(number);
-
-                      //     return (
-                      //       <div key={number} className="">
-                      //         {!isRemoved && ( // Check if the button is not removed
-                      //           <button
-                      //             className={`${buttonClass} m-1`}
-                      //             onClick={handleOnClick}
-                      //             disabled={
-                      //               (blackOut && isRemoved) || isReserved
-                      //             }
-                      //           >
-                      //             {number}
-                      //           </button>
-                      //         )}
-                      //       </div>
-                      //     );
-                      //   })}
-                      // </div>
                       <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 lg:grid-cols-11 gap-4">
                         {group.map((number) => {
                           const isReserved = reserved?.includes(number);
