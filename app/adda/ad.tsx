@@ -10,6 +10,8 @@ const AdmiPage = () => {
   const [filter, setFilter] = useState("all");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 200; // Set the desired number of users per page
 
   // fetching title for admin
   const [rifa, setRifa] = useState("");
@@ -45,8 +47,8 @@ const AdmiPage = () => {
     paid: boolean;
     state?: string;
     reservedNumbers: ReservedNumber[];
+    submissionTime: string; // Add the submissionTime field
   }
-
   interface ReservedNumber {
     id: number;
     number: number;
@@ -144,6 +146,19 @@ const AdmiPage = () => {
       );
     });
 
+  const totalUsers = filteredUsers.length;
+  const totalPages = Math.ceil(totalUsers / usersPerPage);
+
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  const paginate = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Rest of your code...
+
   // ...
   function createWhatsAppDeepLink(
     phoneNumber: string | undefined,
@@ -190,7 +205,7 @@ const AdmiPage = () => {
     <div
       className="px-4 md:px-8 lg:px-10
  
-    overflow-x-hidden bg-gray-800 text-white"
+    overflow-x-hidden bg-gray-800 text-white "
     >
       <div className="flex justify-between items-center my-8">
         <h1 className="text-3xl ">{rifa}</h1>
@@ -199,7 +214,6 @@ const AdmiPage = () => {
           onClick={() => setIsModalVisible(!isModalVisible)}
         />
       </div>
-
       {/* Ticket Statistics */}
       <div className="flex justify-center space-x-8 mb-4">
         <div>
@@ -215,7 +229,6 @@ const AdmiPage = () => {
           <p className="text-2xl font-bold">{availableCount}</p>
         </div>
       </div>
-
       {/* Search bar */}
       <div className="flex justify-center mt-4">
         <input
@@ -226,9 +239,7 @@ const AdmiPage = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
         />
       </div>
-
       {/* Rest of your page... */}
-
       <div className="flex justify-center mx-2 space-x-4 mt-4 px-2">
         <button
           className={`px-4 py-2 rounded-md ${
@@ -278,9 +289,7 @@ const AdmiPage = () => {
           Delete
         </button>
       </div>
-
       {/* radio buttons  */}
-
       <div className="flex justify-center sm:justify-start space-x-4 my-4">
         <div>
           <input
@@ -337,9 +346,8 @@ const AdmiPage = () => {
           </label>
         </div>
       </div>
-
-      <div className="overflow-x-auto mt-4 bg-gray-200 bg-opacity-60 rounded-lg shadow-lg ml-3 mr-3">
-        <table className="table-auto w-full">
+      <div className="overflow-x-auto mt-4 bg-gray-200 bg-opacity-60 rounded-lg shadow-lg ml-3 mr-3 mb-8">
+        <table className="table-auto w-full m-3">
           <thead>
             <tr>
               <th className="px-4 py-2">Select</th>
@@ -347,11 +355,12 @@ const AdmiPage = () => {
               <th className="px-4 py-2">Name</th>
               <th className="px-4 py-2">Email</th>
               <th className="px-4 py-2">Phone</th>
+              <th className="px-4 py-2">Apartado en</th> {/* New Column */}
               <th className="px-4 py-2">Status</th> {/* New Column */}
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
+            {currentUsers.map((user) => (
               <tr key={user.id} className="border p-4">
                 <td className="px-6 border-r">
                   <input
@@ -378,6 +387,8 @@ const AdmiPage = () => {
                 <td className="px-6 border-r">{user.name}</td>
                 <td className="px-6 border-r">{user.email}</td>
                 <td className="px-6 border-r">{user.phone}</td>
+                <td className="px-6 border-r">{user.submissionTime}</td>{" "}
+                {/* New Column */}
                 <td
                   className={`px-6 ${
                     user.paid
@@ -392,8 +403,24 @@ const AdmiPage = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center my-4 ">
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+            (pageNumber) => (
+              <button
+                key={pageNumber}
+                className={`mx-1 px-3 py-2 rounded ${
+                  currentPage === pageNumber
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-300"
+                }`}
+                onClick={() => paginate(pageNumber)}
+              >
+                {pageNumber}
+              </button>
+            )
+          )}
+        </div>
       </div>
-
       {isModalVisible && (
         <SettModal
           isVisible={isModalVisible}

@@ -10,13 +10,14 @@ datasource db {
 model User {
   id              Int              @id @default(autoincrement())
   name            String
-  lastName        String // Add the apellido field
+  lastName        String
   email           String
   numbers         Int[]
   phone           String?
   paid            Boolean          @default(false)
   state           String?
   reservedNumbers ReservedNumber[]
+  submissionTime  DateTime         @default(now()) // Add the submissionTime field
 
   @@unique([name, phone])
 }

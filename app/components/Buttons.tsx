@@ -13,7 +13,7 @@ export default function Buttons() {
   const [removed, setRemoved] = useState<number[]>([]);
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
-
+  const [submissionTime, setSubmissionTime] = useState(""); // Add this line
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
@@ -145,6 +145,7 @@ export default function Buttons() {
     }
 
     const phoneNumber = `${countryCode}${phone}`;
+    const submissionTime = new Date().toISOString(); // Get the current time
 
     try {
       const res = await fetch(
@@ -161,6 +162,7 @@ export default function Buttons() {
             phone: phoneNumber,
             numbers: reserved,
             state,
+            submissionTime, // Include the submission time in the request body
           }),
         }
       );

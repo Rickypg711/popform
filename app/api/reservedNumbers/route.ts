@@ -47,10 +47,12 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "All numbers are already reserved" }, { status: 400 });
     }
 
+    const submissionTime = new Date().toISOString(); // Get the current time
+
     const user = await prisma.user.create({
       data: {
         name,
-        lastName, // Add the apellido field
+        lastName,
         email,
         phone,
         state,
@@ -60,21 +62,22 @@ export async function POST(request: Request) {
         reservedNumbers: {
           create: availableNumbers.map((number) => ({ number })),
         },
+        submissionTime: submissionTime, // Add the submission time to the user data
       },
     });
-    
 
     console.log("user", user);
 
     return NextResponse.json({
       name,
-     lastName , // Add the apellido field
+      lastName,
       email,
       phone,
       state,
       numbers: availableNumbers,
+      submissionTime, // Include the submission time in the response
     });
-      } catch (error) {
+  } catch (error) {
     console.error(error);
 
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
